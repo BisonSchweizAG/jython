@@ -1,5 +1,7 @@
-- Switch Text File Encoding to UTF-8
-- Set JDK 8 as Default
-- Java -> Code Style -> Formatter: Import bison/formatting/Jython-like.xml
+- set JDK 8 as Default
+- add JDK 11 as well
 - Java -> Compiler -> Errors/Warnings -> Incomplete 'switch' cases on enum: Warning (instead of Error)
-- antlr generation (Ant) config (run with JDK 11)
+- import existing eclipse project
+- switch Text File Encoding to UTF-8
+- Java -> Code Style -> Formatter: import bison/formatting/Jython-like.xml
+- run the antlr-gen (Ant) launch configuration (run with JDK 11)
