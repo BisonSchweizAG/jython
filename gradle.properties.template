@@ -1,0 +1,5 @@
+# set the proxy configuration if required
+systemProp.https.proxyHost=<https-proxy>
+systemProp.https.proxyPort=<https-proxy-port>
+systemProp.http.proxyHost=<http-proxy>
+systemProp.http.proxyPort=<http-proxy-port>
