@@ -724,6 +724,13 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
+
+    // disable DocLint
+    allprojects {
+      tasks.withType(Javadoc) {
+          options.addStringOption('Xdoclint:none', '-quiet')
+      }
+    }
 }
 
 publishing {
