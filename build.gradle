@@ -151,13 +151,13 @@ dependencies {
     //implementation 'org.postgresql:postgresql:42.1.1.jre7'
 
     // pin to Antlr 3 until we upgrade parsing
-    antlr 'org.antlr:antlr:3.5.2'
-    implementation 'org.antlr:antlr-runtime:3.5.2'
+    antlr 'org.antlr:antlr:3.5.3'
+    implementation 'org.antlr:antlr-runtime:3.5.3'
 
-    implementation 'org.apache.commons:commons-compress:1.21'
+    implementation 'org.apache.commons:commons-compress:1.25.0'
 
-    implementation 'org.bouncycastle:bcpkix-jdk18on:1.71'
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.71'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.77'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.77'
 
     implementation 'org.ow2.asm:asm:9.3'
     implementation 'org.ow2.asm:asm-commons:9.3'
@@ -165,7 +165,7 @@ dependencies {
 
     implementation 'com.google.guava:guava:32.1.2-jre'
 
-    implementation 'com.ibm.icu:icu4j:71.1'
+    implementation 'com.ibm.icu:icu4j:74.2'
 
     implementation 'com.carrotsearch:java-sizeof:0.0.5'
 
@@ -185,7 +185,7 @@ dependencies {
     implementation 'io.netty:netty-transport:4.1.73.Final'
 
     // Used implicitly in the Ant build, must be explicit here
-    implementation 'org.apache.ant:ant:1.10.12'
+    implementation 'org.apache.ant:ant:1.10.14'
 
     // Pin to 4.10 until dependency on hamcrest classes resolved.
     testImplementation 'junit:junit:4.10'
