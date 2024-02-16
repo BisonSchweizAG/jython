@@ -63,8 +63,8 @@ public class _localeTest {
     private void importAndInit() {
         interp.exec("import _locale");
         /*
-         * Following line is a hacky workaround, because interpreter and PySystemState can't be
-         * fully reinitialized. classDictInit() is called implicitly on first module import only.
+         * Following line is a hacky workaround, because interpreter and PySystemState can't be fully reinitialized.
+         * classDictInit() is called implicitly on first module import only.
          */
         interp.exec("_locale.classDictInit({})");
     }
@@ -129,33 +129,25 @@ public class _localeTest {
         // Anchor test to a popular locale to prove alignment
         settableInit();
         /*
-         * Java 8 and Python use en-US negative currency formatting ($123). This changes to -$123
-         * from 9 onwards.
+         * Java 8 and Python use en-US negative currency formatting ($123). This changes to -$123 from 9 onwards.
          */
         int nSignPosition = 0;
         if (javaMajorVersion() >= 9) {
             nSignPosition = 1;
         }
         // @formatter:off
-        String script =
-                  "from _locale import setlocale, localeconv\n"
-                + "setlocale(_locale.LC_ALL, '" + tag + "' ) \n"
-                + "expected = "
-                + "{'mon_decimal_point': '.', 'int_frac_digits': 2, "
-                + " 'p_sep_by_space': 0, 'frac_digits': 2, "
-                + " 'thousands_sep': ',', "
-                + " 'n_sign_posn': " + String.valueOf(nSignPosition) + " , "
-                + "'decimal_point': '.', 'int_curr_symbol': 'USD', "
-                + "'n_cs_precedes': 1, 'p_sign_posn': 3, "
-                + "'mon_thousands_sep': ',', 'negative_sign': '-', "
-                + "'currency_symbol': '$', 'n_sep_by_space': 0 , "
-                + "'positive_sign': '', 'p_cs_precedes': 1  } \n"
-                + "actual = localeconv() \n"
-                + "grouping = actual.pop('grouping',None) \n"
-                + "mon_grouping = actual.pop('mon_grouping',None) \n"
-                + "result = set( actual.items() ) ^ set(expected.items()) \n"
-                + "resultGrouping = (grouping == [3,0] )  \n"
-                + "resultMonGrouping = (mon_grouping == [3,0]  ) \n";
+        String script = "from _locale import setlocale, localeconv\n" + "setlocale(_locale.LC_ALL, '" + tag + "' ) \n"
+                        + "expected = " + "{'mon_decimal_point': '.', 'int_frac_digits': 2, "
+                        + " 'p_sep_by_space': 0, 'frac_digits': 2, " + " 'thousands_sep': ',', " + " 'n_sign_posn': "
+                        + String.valueOf(nSignPosition) + " , " + "'decimal_point': '.', 'int_curr_symbol': 'USD', "
+                        + "'n_cs_precedes': 1, 'p_sign_posn': 3, " + "'mon_thousands_sep': ',', 'negative_sign': '-', "
+                        + "'currency_symbol': '$', 'n_sep_by_space': 0 , "
+                        + "'positive_sign': '', 'p_cs_precedes': 1  } \n" + "actual = localeconv() \n"
+                        + "grouping = actual.pop('grouping',None) \n"
+                        + "mon_grouping = actual.pop('mon_grouping',None) \n"
+                        + "result = set( actual.items() ) ^ set(expected.items()) \n"
+                        + "resultGrouping = (grouping == [3,0] )  \n"
+                        + "resultMonGrouping = (mon_grouping == [3,0]  ) \n";
         // @formatter:on
         interp.exec(script);
         PyObject result = interp.get("result");
@@ -167,8 +159,8 @@ public class _localeTest {
     @Test
     public void setLocaleEN_US_Underscore() {
         /*
-         * Locales are aliased to underscore equivalents, due to that being a common convention in
-         * Python and Java itself.
+         * Locales are aliased to underscore equivalents, due to that being a common convention in Python and Java
+         * itself.
          */
         setLocaleEN_US("en_US.ISO8859-1");
     }
@@ -182,11 +174,9 @@ public class _localeTest {
     public void setLocaleEN_US_Tuple() {
         settableInit();
         // @formatter:off
-        String script =
-                  "from locale import setlocale, getlocale, LC_ALL \n"
-                + "setlocale(LC_ALL,('en-US','ISO8859-1') ) \n"
-                + "actual = getlocale() \n"
-                + "expected = ('en_US', 'ISO8859-1') \n";
+        String script = "from locale import setlocale, getlocale, LC_ALL \n"
+                        + "setlocale(LC_ALL,('en-US','ISO8859-1') ) \n" + "actual = getlocale() \n"
+                        + "expected = ('en_US', 'ISO8859-1') \n";
         // @formatter:on
         PyCode code = interp.compile(script);
         interp.exec(code);
@@ -197,8 +187,8 @@ public class _localeTest {
     public void setLocaleNotLCALL() {
         settableInit();
         String script = "import locale \n" + "caught = False \n" + "try: \n"
-                + "    locale.setlocale(locale.LC_MONETARY,'zh-CN') \n"
-                + "except locale.Error as e: \n" + "    caught = True \n";
+                        + "    locale.setlocale(locale.LC_MONETARY,'zh-CN') \n" + "except locale.Error as e: \n"
+                        + "    caught = True \n";
         // @formatter:on
         interp.exec(script);
         assertPyTrue("caught");
@@ -208,12 +198,9 @@ public class _localeTest {
     public void setLocaleEmpty() {
         settableInit();
         // @formatter:off
-        String script =
-                "from _locale import setlocale \n"
-              + "setlocale(_locale.LC_ALL,'zh_CN.UTF-8') \n"
-              + "result1 = setlocale(_locale.LC_ALL) \n"
-              + "result2 = setlocale(_locale.LC_MONETARY,None) \n"
-              + "result3 = setlocale(_locale.LC_MONETARY,'zh_CN.UTF-8') \n";
+        String script = "from _locale import setlocale \n" + "setlocale(_locale.LC_ALL,'zh_CN.UTF-8') \n"
+                        + "result1 = setlocale(_locale.LC_ALL) \n" + "result2 = setlocale(_locale.LC_MONETARY,None) \n"
+                        + "result3 = setlocale(_locale.LC_MONETARY,'zh_CN.UTF-8') \n";
         interp.exec(script);
         assertPyEquals("zh_CN.UTF-8", "result1");
         assertPyEquals("zh_CN.UTF-8", "result2");
@@ -224,24 +211,20 @@ public class _localeTest {
     public void setLocaleDefault() {
         settableInit();
         // @formatter:off
-        String script =
-                "from locale import setlocale \n"
-              + "result1 = setlocale(_locale.LC_ALL,'zh_CN.UTF-8') \n"
-              + "result2 = setlocale(_locale.LC_ALL,'') ";
+        String script = "from locale import setlocale \n" + "result1 = setlocale(_locale.LC_ALL,'zh_CN.UTF-8') \n"
+                        + "result2 = setlocale(_locale.LC_ALL,'') ";
         // @formatter:on
         interp.exec(script);
         assertPyEquals("zh_CN.UTF-8", "result1");
-        assertPyEquals(Locale.getDefault().toString() + "." + Charset.defaultCharset().name(),
-                "result2");
+        assertPyEquals(Locale.getDefault().toString() + "." + Charset.defaultCharset().name(), "result2");
     }
 
     @Test(expected = PyException.class)
     public void setLocaleInvalid() {
         settableInit();
         // @formatter:off
-        String script =
-            "from _locale import setlocale \n"
-          + "result = setlocale(_locale.LC_ALL,'green_midget_cafe_nosuch') \n";
+        String script = "from _locale import setlocale \n"
+                        + "result = setlocale(_locale.LC_ALL,'green_midget_cafe_nosuch') \n";
         // @formatter:on
         interp.exec(script);
     }
@@ -250,24 +233,19 @@ public class _localeTest {
     public void setLocaleGerman() {
         settableInit();
         // @formatter:off
-        String script =
-                  "from _locale import setlocale, localeconv\n"
-                + "setlocale(_locale.LC_ALL,'de_DE.ISO8859-15') \n"
-                + "expected = "
-                + "{'mon_decimal_point': ',', 'int_frac_digits': 2, "
-                + " 'p_sep_by_space': 1, 'frac_digits': 2, "
-                + "'thousands_sep': '.', 'n_sign_posn': 1, "
-                + "'decimal_point': ',', 'int_curr_symbol': 'EUR', "
-                + "'n_cs_precedes': 0, 'p_sign_posn': 3, "
-                + "'mon_thousands_sep': '.', 'negative_sign': '-', "
-                + "'currency_symbol':  '\\xa4' , 'n_sep_by_space': 1, "
-                + "'p_cs_precedes': 0, 'positive_sign': ''} \n"
-                + "actual = localeconv() \n"
-                + "grouping = actual.pop('grouping',None) \n"
-                + "mon_grouping = actual.pop('mon_grouping',None) \n"
-                + "result = set( actual.items() ) ^ set(expected.items()) \n"
-                + "resultGrouping = (grouping == [3,0] )  \n"
-                + "resultMonGrouping = (mon_grouping == [3,0]  ) \n";
+        String script = "from _locale import setlocale, localeconv\n"
+                        + "setlocale(_locale.LC_ALL,'de_DE.ISO8859-15') \n" + "expected = "
+                        + "{'mon_decimal_point': ',', 'int_frac_digits': 2, "
+                        + " 'p_sep_by_space': 1, 'frac_digits': 2, " + "'thousands_sep': '.', 'n_sign_posn': 1, "
+                        + "'decimal_point': ',', 'int_curr_symbol': 'EUR', " + "'n_cs_precedes': 0, 'p_sign_posn': 3, "
+                        + "'mon_thousands_sep': '.', 'negative_sign': '-', "
+                        + "'currency_symbol':  '\\xa4' , 'n_sep_by_space': 1, "
+                        + "'p_cs_precedes': 0, 'positive_sign': ''} \n" + "actual = localeconv() \n"
+                        + "grouping = actual.pop('grouping',None) \n"
+                        + "mon_grouping = actual.pop('mon_grouping',None) \n"
+                        + "result = set( actual.items() ) ^ set(expected.items()) \n"
+                        + "resultGrouping = (grouping == [3,0] )  \n"
+                        + "resultMonGrouping = (mon_grouping == [3,0]  ) \n";
         // @formatter:on
         PyCode code = interp.compile(script);
         interp.exec(code);
@@ -281,29 +259,21 @@ public class _localeTest {
     public void setLocaleChinaMainland() {
         settableInit();
         /*
-         * Java has ¥ \uffe5 rather than 元 \u5143 for zh-CN Java has negative sign preceding, Python
-         * following.
+         * Java has ¥ \uffe5 rather than 元 \u5143 for zh-CN Java has negative sign preceding, Python following.
          */
         // @formatter:off
-        String script =
-                  "from _locale import setlocale, localeconv\n"
-                + "setlocale(_locale.LC_ALL,'zh_CN.UTF-8') \n"
-                + "expected = "
-                + "{'mon_decimal_point': '.', 'int_frac_digits': 2, "
-                + " 'p_sep_by_space': 0, 'frac_digits': 2, "
-                + "'thousands_sep': ',', 'n_sign_posn': 1, "
-                + "'decimal_point': '.', 'int_curr_symbol': 'CNY', "
-                + "'n_cs_precedes': 1, 'p_sign_posn': 3, "
-                + "'mon_thousands_sep': ',', 'negative_sign': '-', "
-                + "'currency_symbol':  '\\xef\\xbf\\xa5' , "
-                + "'n_sep_by_space': 0, "
-                + "'p_cs_precedes': 1, 'positive_sign': ''} \n"
-                + "actual = localeconv() \n"
-                + "grouping = actual.pop('grouping',None) \n"
-                + "mon_grouping = actual.pop('mon_grouping',None) \n"
-                + "result = set( actual.items() ) ^ set(expected.items()) \n"
-                + "resultGrouping = (grouping == [3,0] )  \n"
-                + "resultMonGrouping = (mon_grouping == [3,0]  ) \n";
+        String script = "from _locale import setlocale, localeconv\n" + "setlocale(_locale.LC_ALL,'zh_CN.UTF-8') \n"
+                        + "expected = " + "{'mon_decimal_point': '.', 'int_frac_digits': 2, "
+                        + " 'p_sep_by_space': 0, 'frac_digits': 2, " + "'thousands_sep': ',', 'n_sign_posn': 1, "
+                        + "'decimal_point': '.', 'int_curr_symbol': 'CNY', " + "'n_cs_precedes': 1, 'p_sign_posn': 3, "
+                        + "'mon_thousands_sep': ',', 'negative_sign': '-', "
+                        + "'currency_symbol':  '\\xef\\xbf\\xa5' , " + "'n_sep_by_space': 0, "
+                        + "'p_cs_precedes': 1, 'positive_sign': ''} \n" + "actual = localeconv() \n"
+                        + "grouping = actual.pop('grouping',None) \n"
+                        + "mon_grouping = actual.pop('mon_grouping',None) \n"
+                        + "result = set( actual.items() ) ^ set(expected.items()) \n"
+                        + "resultGrouping = (grouping == [3,0] )  \n"
+                        + "resultMonGrouping = (mon_grouping == [3,0]  ) \n";
         // @formatter:on
         PyCode code = interp.compile(script);
         interp.exec(code);
@@ -317,14 +287,12 @@ public class _localeTest {
     public void setlocaleJPEncodingCurrencyFallback() {
         settableInit();
         /*
-         * Deliberately set a Japanese locale with an ANSI US codepage lacking the ¥ \uffe5
-         * character. Which is a bit weird, but shows fallback.
+         * Deliberately set a Japanese locale with an ANSI US codepage lacking the ¥ \uffe5 character. Which is a bit
+         * weird, but shows fallback.
          */
         // @formatter:off
-        String script =
-                  "from _locale import setlocale, localeconv\n"
-                + "setlocale(_locale.LC_ALL,'ja_JP.ISO8859-1') \n"
-                + "result = localeconv()['currency_symbol']  \n";
+        String script = "from _locale import setlocale, localeconv\n" + "setlocale(_locale.LC_ALL,'ja_JP.ISO8859-1') \n"
+                        + "result = localeconv()['currency_symbol']  \n";
         // @formatter:on
         interp.exec(script);
         PyObject result = interp.get("result");
@@ -332,8 +300,8 @@ public class _localeTest {
     }
 
     /**
-     * We use the unconventional "~h" as a byte marker, rather than say \x, to show the conversion
-     * happens in this unit test, when troubleshooting.
+     * We use the unconventional "~h" as a byte marker, rather than say \x, to show the conversion happens in this unit
+     * test, when troubleshooting.
      */
     private String byteStr(byte[] bytes, boolean lePadding) {
         StringBuffer sb = new StringBuffer();
@@ -356,8 +324,8 @@ public class _localeTest {
     }
 
     /**
-     * Assert byte transcription equality for the PyString found in {@code}dict{code} using
-     * {@code}key{code} under encoding utf-16le
+     * Assert byte transcription equality for the PyString found in {@code}dict{code} using {@code}key{code} under
+     * encoding utf-16le
      */
     private void assertDictUTF16LEEquals(PyDictionary dict, String expectedStr, String key) {
         PyString value = (PyString) dict.__getitem__(new PyString(key));
@@ -368,8 +336,8 @@ public class _localeTest {
     @Test
     public void utf16EncodingAndFallback() {
         /*
-         * Chinese Finland is not usually found in locale databases, so this lets us create our own
-         * locale with unusual symbols.
+         * Chinese Finland is not usually found in locale databases, so this lets us create our own locale with unusual
+         * symbols.
          */
         Locale unicodeMockLocale = new Locale.Builder().setLanguage("zh").setRegion("FI").build();
         DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(unicodeMockLocale);
@@ -404,7 +372,7 @@ public class _localeTest {
         df.setNegativePrefix("-"); // -123 EUR as in es_ES Spanish
         df.setNegativeSuffix("EUR");
         assertEquals(1, JyLocale.negativeSignPosition(df));
-        df.setNegativePrefix("");      // No clear example of this
+        df.setNegativePrefix(""); // No clear example of this
         df.setNegativeSuffix("SPAM-"); // that is distinguishable from 4
         // fy Western Frisian doesn't qualify (see below) so this is a synthetic one.
         assertEquals(2, JyLocale.negativeSignPosition(df));
@@ -412,10 +380,10 @@ public class _localeTest {
         df.setNegativeSuffix("");
         assertEquals(3, JyLocale.negativeSignPosition(df));
         df.setNegativePrefix("CHF"); // CHF123- as in German Swiss Francs
-        df.setNegativeSuffix("-");   // Python de_CH.ISO8859-1
+        df.setNegativeSuffix("-"); // Python de_CH.ISO8859-1
         assertEquals(4, JyLocale.negativeSignPosition(df));
         df.setNegativePrefix("¤ "); // U0164 fy Western Frisian is the only Python
-        df.setNegativeSuffix("-");  // example of 2, and appears identical to 4
+        df.setNegativeSuffix("-"); // example of 2, and appears identical to 4
         assertEquals(4, JyLocale.negativeSignPosition(df));
         df.setNegativePrefix(""); // 123 as in empty locales
         df.setNegativeSuffix("");
@@ -488,11 +456,9 @@ public class _localeTest {
     public void getlocale() {
         settableInit();
         // @formatter:off
-        String script =
-                  "from locale import normalize, setlocale, getlocale, LC_ALL, LC_NUMERIC\n"
-                + "norm = normalize('zh_CN') \n"
-                + "setlocale(LC_ALL,('zh_CN',None)) \n"
-                + "actual = getlocale() \n" + "expected = ('zh_CN', 'gb2312') \n";
+        String script = "from locale import normalize, setlocale, getlocale, LC_ALL, LC_NUMERIC\n"
+                        + "norm = normalize('zh_CN') \n" + "setlocale(LC_ALL,('zh_CN',None)) \n"
+                        + "actual = getlocale() \n" + "expected = ('zh_CN', 'gb2312') \n";
         // @formatter:on
         PyCode code = interp.compile(script);
         interp.exec(code);
@@ -511,26 +477,20 @@ public class _localeTest {
     public void setlocaleC() {
         settableInit();
         // @formatter:off
-        String script =
-                  "from locale import setlocale, getlocale, localeconv, LC_ALL\n"
-                + "setlocale(LC_ALL,'C') \n"
-                + "actualLocale = getlocale() \n"
-                + "actual = localeconv() \n"
-                + "expected = { "
-                + "  'mon_decimal_point': '', 'int_frac_digits': 127, "
-                + "  'p_sep_by_space': 127, 'frac_digits': 127, "
-                + "  'thousands_sep': '', 'n_sign_posn': 127, "
-                + "  'decimal_point': '.', 'int_curr_symbol': '', "
-                + "  'n_cs_precedes': 127, 'p_sign_posn': 127, "
-                + "  'mon_thousands_sep': '', 'negative_sign': '', "
-                + "  'currency_symbol': '', 'n_sep_by_space': 127, "
-                + "  'p_cs_precedes': 127, 'positive_sign': '' } \n"
-                + "expectedLocale = (None,None) \n"
-                + "grouping = actual.pop('grouping',None) \n"
-                + "mon_grouping = actual.pop('mon_grouping',None) \n"
-                + "result = set( actual.items() ) ^ set(expected.items()) \n"
-                + "resultGrouping = (grouping == [] )  \n"
-                + "resultMonGrouping = (mon_grouping == []  ) \n";
+        String script = "from locale import setlocale, getlocale, localeconv, LC_ALL\n" + "setlocale(LC_ALL,'C') \n"
+                        + "actualLocale = getlocale() \n" + "actual = localeconv() \n" + "expected = { "
+                        + "  'mon_decimal_point': '', 'int_frac_digits': 127, "
+                        + "  'p_sep_by_space': 127, 'frac_digits': 127, "
+                        + "  'thousands_sep': '', 'n_sign_posn': 127, "
+                        + "  'decimal_point': '.', 'int_curr_symbol': '', "
+                        + "  'n_cs_precedes': 127, 'p_sign_posn': 127, "
+                        + "  'mon_thousands_sep': '', 'negative_sign': '', "
+                        + "  'currency_symbol': '', 'n_sep_by_space': 127, "
+                        + "  'p_cs_precedes': 127, 'positive_sign': '' } \n" + "expectedLocale = (None,None) \n"
+                        + "grouping = actual.pop('grouping',None) \n"
+                        + "mon_grouping = actual.pop('mon_grouping',None) \n"
+                        + "result = set( actual.items() ) ^ set(expected.items()) \n"
+                        + "resultGrouping = (grouping == [] )  \n" + "resultMonGrouping = (mon_grouping == []  ) \n";
         // @formatter:on
         interp.exec(script);
         assertInterpEquals("expectedLocale", "actualLocale");
@@ -555,13 +515,13 @@ public class _localeTest {
         // also test exposure through locale itself here
         settableInit();
         // @formatter:off
-        String script = "from _locale import setlocale, LC_ALL, strcoll \n"
-                + "setlocale(LC_ALL, 'zh_CN.UTF-8'  ) \n"
-                + "resultSame = strcoll( u'\\u4e00', u'\\u4e00' ) \n" // yi / yi
-                + "resultLvsU = strcoll( '\\xe4\\xb8\\x80', u'\\u4e00' ) \n"
-                + "resultAscii = strcoll( 'b', 'a' ) \n"
-                + "resultUltU1 = strcoll( u'\\u4e00', u'\\u5f00' ) \n" // yi / kai
-                + "resultUltU2 = strcoll( u'\\u597d', u'\\u4e00' ) \n"; // hao / yi
+        String script = "from _locale import setlocale, LC_ALL, strcoll \n" + "setlocale(LC_ALL, 'zh_CN.UTF-8'  ) \n"
+                        + "resultSame = strcoll( u'\\u4e00', u'\\u4e00' ) \n" // yi / yi
+                        + "resultLvsU = strcoll( '\\xe4\\xb8\\x80', u'\\u4e00' ) \n"
+                        + "resultAscii = strcoll( 'b', 'a' ) \n" + "resultUltU1 = strcoll( u'\\u4e00', u'\\u5f00' ) \n" // yi
+                                                                                                                        // /
+                                                                                                                        // kai
+                        + "resultUltU2 = strcoll( u'\\u597d', u'\\u4e00' ) \n"; // hao / yi
         // @formatter:on
         interp.exec(script);
         assertPyEquals(0, "resultSame");
@@ -577,11 +537,8 @@ public class _localeTest {
         // also test exposure through locale itself here
         settableInit();
         // @formatter:off
-        String script =
-                  "from locale import setlocale, LC_ALL, strcoll \n"
-                + "setlocale(LC_ALL, 'C' ) \n"
-                + "result1 = strcoll( 'a', 'b' ) \n"
-                + "result2 = strcoll( 'b', 'a' ) \n";
+        String script = "from locale import setlocale, LC_ALL, strcoll \n" + "setlocale(LC_ALL, 'C' ) \n"
+                        + "result1 = strcoll( 'a', 'b' ) \n" + "result2 = strcoll( 'b', 'a' ) \n";
         // @formatter:on
         interp.exec(script);
         assertPyEquals(-1, "result1");
@@ -593,13 +550,9 @@ public class _localeTest {
         Py.writeDebug("_localeTest", "strxfrm()");
         settableInit();
         // @formatter:off
-        String script =
-                  "from _locale import setlocale, LC_ALL, strxfrm \n"
-                + "setlocale(LC_ALL, 'zh_CN.UTF-8'  ) \n"
-                + "resultU = strxfrm( u'\\u4e00') \n"
-                + "resultL = strxfrm( '\\xe4\\xb8\\x80' ) \n"
-                + "result1 = (resultU == u'\\u4e00')  \n"
-                + "result2 = (resultU == resultL)  \n" ;
+        String script = "from _locale import setlocale, LC_ALL, strxfrm \n" + "setlocale(LC_ALL, 'zh_CN.UTF-8'  ) \n"
+                        + "resultU = strxfrm( u'\\u4e00') \n" + "resultL = strxfrm( '\\xe4\\xb8\\x80' ) \n"
+                        + "result1 = (resultU == u'\\u4e00')  \n" + "result2 = (resultU == resultL)  \n";
         // @formatter:on
         interp.exec(script);
         assertPyTrue("result1");
@@ -610,13 +563,10 @@ public class _localeTest {
     public void dateSymbols() {
         settableInit();
         // @formatter:off
-        String script =
-                "from locale import setlocale, LC_ALL \n" +
-                "from datetime import datetime \n" +
-                "setlocale(LC_ALL, 'C' ) \n" +
-                "resultC = datetime(2019,04,15,15, 56, 44).strftime('%c') \n" +
-                "setlocale(LC_ALL, 'de_DE' ) \n" +
-                "resultD = datetime(1919,05,16,15, 56, 44).strftime('%A %Y') \n" ;
+        String script = "from locale import setlocale, LC_ALL \n" + "from datetime import datetime \n"
+                        + "setlocale(LC_ALL, 'C' ) \n" + "resultC = datetime(2019,04,15,15, 56, 44).strftime('%c') \n"
+                        + "setlocale(LC_ALL, 'de_DE' ) \n"
+                        + "resultD = datetime(1919,05,16,15, 56, 44).strftime('%A %Y') \n";
         // @formatter:on
         interp.exec(script);
         assertPyEquals("Mon Apr 15 15:56:44 2019", "resultC");
