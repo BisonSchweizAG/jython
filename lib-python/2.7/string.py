@@ -39,6 +39,13 @@ l = map(chr, xrange(256))
 _idmap = str('').join(l)
 del l
 
+# for a little bit of speed
+_StringType = type('')
+
+from java.lang import String
+def _isJavaString(s):
+    return isinstance(s, String)
+
 # Functions which aren't available as string methods.
 
 # Capitalize the words in a string, e.g. " aBc  dEf " -> "Abc Def".
@@ -53,6 +60,10 @@ def capwords(s, sep=None):
     sep is used to split and join the words.
 
     """
+    if sep and _isJavaString(sep):
+        sep = '%s' % sep
+    if _isJavaString(s):
+        s = '%s' % s
     return (sep or ' ').join(x.capitalize() for x in s.split(sep))
 
 
@@ -66,6 +77,8 @@ def maketrans(fromstr, tostr):
     must be of the same length.
 
     """
+    fromstr = '%s'%fromstr
+    tostr = '%s'%tostr
     if len(fromstr) != len(tostr):
         raise ValueError, "maketrans arguments must have same length"
     global _idmapL
@@ -223,7 +236,7 @@ def lower(s):
     Return a copy of the string s converted to lowercase.
 
     """
-    return s.lower()
+    return ('%s'%s).lower()
 
 # Convert lower case letters to UPPER CASE
 def upper(s):
@@ -232,7 +245,7 @@ def upper(s):
     Return a copy of the string s converted to uppercase.
 
     """
-    return s.upper()
+    return ('%s'%s).upper()
 
 # Swap lower case letters and UPPER CASE
 def swapcase(s):
@@ -242,7 +255,7 @@ def swapcase(s):
     converted to lowercase and vice versa.
 
     """
-    return s.swapcase()
+    return ('%s'%s).swapcase()
 
 # Strip leading and trailing tabs and spaces
 def strip(s, chars=None):
@@ -254,7 +267,7 @@ def strip(s, chars=None):
     If chars is unicode, S will be converted to unicode before stripping.
 
     """
-    return s.strip(chars)
+    return ('%s'%s).strip(chars)
 
 # Strip leading tabs and spaces
 def lstrip(s, chars=None):
@@ -264,7 +277,7 @@ def lstrip(s, chars=None):
     If chars is given and not None, remove characters in chars instead.
 
     """
-    return s.lstrip(chars)
+    return ('%s'%s).lstrip(chars)
 
 # Strip trailing tabs and spaces
 def rstrip(s, chars=None):
@@ -274,7 +287,7 @@ def rstrip(s, chars=None):
     If chars is given and not None, remove characters in chars instead.
 
     """
-    return s.rstrip(chars)
+    return ('%s'%s).rstrip(chars)
 
 
 # Split a string into a list of space/tab-separated words
@@ -289,7 +302,7 @@ def split(s, sep=None, maxsplit=-1):
     (split and splitfields are synonymous)
 
     """
-    return s.split(sep, maxsplit)
+    return ('%s'%s).split(sep, maxsplit)
 splitfields = split
 
 # Split a string into a list of space/tab-separated words
@@ -302,7 +315,7 @@ def rsplit(s, sep=None, maxsplit=-1):
     done. If sep is not specified or is None, any whitespace string
     is a separator.
     """
-    return s.rsplit(sep, maxsplit)
+    return ('%s'%s).rsplit(sep, maxsplit)
 
 # Join fields with optional separator
 def join(words, sep = ' '):
@@ -315,8 +328,18 @@ def join(words, sep = ' '):
     (joinfields and join are synonymous)
 
     """
-    return sep.join(words)
+    wordslist = []
+    for word in words:
+        if _isJavaString(word):
+            word = '%s'%word
+        wordslist.append(word)
+    if len(wordslist) > 0:
+        words = tuple(wordslist)
+    return ('%s'%sep).join(words)
+
+
 joinfields = join
+
 
 # Find substring, raise exception if not found
 def index(s, *args):
@@ -325,7 +348,15 @@ def index(s, *args):
     Like find but raises ValueError when the substring is not found.
 
     """
-    return s.index(*args)
+    argslist = []
+    for arg in args:
+        if _isJavaString(arg):
+            arg = '%s'%arg
+        argslist.append(arg)
+    if len(argslist) > 0:
+        args = tuple(argslist)
+    return ('%s'%s).index(*args)
+
 
 # Find last substring, raise exception if not found
 def rindex(s, *args):
@@ -334,7 +365,15 @@ def rindex(s, *args):
     Like rfind but raises ValueError when the substring is not found.
 
     """
-    return s.rindex(*args)
+    argslist = []
+    for arg in args:
+        if _isJavaString(arg):
+            arg = '%s'%arg
+        argslist.append(arg)
+    if len(argslist) > 0:
+        args = tuple(argslist)
+    return ('%s'%s).rindex(*args)
+
 
 # Count non-overlapping occurrences of substring
 def count(s, *args):
@@ -345,7 +384,15 @@ def count(s, *args):
     interpreted as in slice notation.
 
     """
-    return s.count(*args)
+    argslist = []
+    for arg in args:
+        if _isJavaString(arg):
+            arg = '%s'%arg
+        argslist.append(arg)
+    if len(argslist) > 0:
+        args = tuple(argslist)
+    return ('%s'%s).count(*args)
+
 
 # Find substring, return -1 if not found
 def find(s, *args):
@@ -358,7 +405,15 @@ def find(s, *args):
     Return -1 on failure.
 
     """
-    return s.find(*args)
+    argslist = []
+    for arg in args:
+        if _isJavaString(arg):
+            arg = '%s'%arg
+        argslist.append(arg)
+    if len(argslist) > 0:
+        args = tuple(argslist)
+    return ('%s'%s).find(*args)
+
 
 # Find last substring, return -1 if not found
 def rfind(s, *args):
@@ -371,7 +426,15 @@ def rfind(s, *args):
     Return -1 on failure.
 
     """
-    return s.rfind(*args)
+    argslist = []
+    for arg in args:
+        if _isJavaString(arg):
+            arg = '%s'%arg
+        argslist.append(arg)
+    if len(argslist) > 0:
+        args = tuple(argslist)
+    return ('%s'%s).rfind(*args)
+
 
 # for a bit of speed
 _float = float
@@ -385,7 +448,10 @@ def atof(s):
     Return the floating point number represented by the string s.
 
     """
-    return _float(s)
+    if type(s) == _StringType:
+        return _float(s)
+    else:
+        return _float('%s'%s)
 
 
 # Convert string to integer
@@ -400,7 +466,10 @@ def atoi(s , base=10):
     accepted.
 
     """
-    return _int(s, base)
+    if type(s) == _StringType:
+        return _int(s, base)
+    else:
+        return _int('%s'%s, base)
 
 
 # Convert string to long integer
@@ -416,7 +485,10 @@ def atol(s, base=10):
     unless base is 0.
 
     """
-    return _long(s, base)
+    if type(s) == _StringType:
+        return _long(s, base)
+    else:
+        return _long('%s'%s, base)
 
 
 # Left-justify a string
@@ -428,7 +500,8 @@ def ljust(s, width, *args):
     never truncated.  If specified the fillchar is used instead of spaces.
 
     """
-    return s.ljust(width, *args)
+    return ('%s'%s).ljust(width, *args)
+
 
 # Right-justify a string
 def rjust(s, width, *args):
@@ -439,7 +512,8 @@ def rjust(s, width, *args):
     never truncated.  If specified the fillchar is used instead of spaces.
 
     """
-    return s.rjust(width, *args)
+    return ('%s'%s).rjust(width, *args)
+
 
 # Center a string
 def center(s, width, *args):
@@ -450,7 +524,8 @@ def center(s, width, *args):
     truncated.  If specified the fillchar is used instead of spaces.
 
     """
-    return s.center(width, *args)
+    return ('%s'%s).center(width, *args)
+
 
 # Zero-fill a number, e.g., (12, 3) --> '012' and (-3, 3) --> '-03'
 # Decadent feature: the argument may be a string or a number
@@ -476,7 +551,7 @@ def expandtabs(s, tabsize=8):
     column, and the tabsize (default 8).
 
     """
-    return s.expandtabs(tabsize)
+    return ('%s'%s).expandtabs(tabsize)
 
 # Character translation through look-up table.
 def translate(s, table, deletions=""):
@@ -490,12 +565,12 @@ def translate(s, table, deletions=""):
 
     """
     if deletions or table is None:
-        return s.translate(table, deletions)
+        return ('%s'%s).translate('%s'%table, deletions)
     else:
         # Add s[:0] so that if s is Unicode and table is an 8-bit string,
         # table is converted to Unicode.  This means that table *cannot*
         # be a dictionary -- for that feature, use u.translate() directly.
-        return s.translate(table + s[:0])
+        return ('%s'%s).translate('%s'%table + ('%s'%s)[:0])
 
 # Capitalize a string, e.g. "aBc  dEf" -> "Abc  def".
 def capitalize(s):
@@ -505,18 +580,24 @@ def capitalize(s):
     capitalized.
 
     """
-    return s.capitalize()
+    return ('%s'%s).capitalize()
 
 # Substring replacement (global)
-def replace(s, old, new, maxreplace=-1):
-    """replace (str, old, new[, maxreplace]) -> string
+def replace(s, old, new, maxsplit=-1):
+    """replace (str, old, new[, maxsplit]) -> string
 
     Return a copy of string str with all occurrences of substring
-    old replaced by new. If the optional argument maxreplace is
-    given, only the first maxreplace occurrences are replaced.
+    old replaced by new. If the optional argument maxsplit is
+    given, only the first maxsplit occurrences are replaced.
 
     """
-    return s.replace(old, new, maxreplace)
+    if _isJavaString(s):
+        s = '%s' % s
+    if _isJavaString(old):
+        old = '%s' % old
+    if _isJavaString(new):
+        new = '%s' % new
+    return s.replace(old, new, maxsplit)
 
 
 # Try importing optional built-in module "strop" -- if it exists,
