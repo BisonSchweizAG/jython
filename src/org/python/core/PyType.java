@@ -92,6 +92,8 @@ public class PyType extends PyObject implements Serializable, Traverseproc {
     /** The <code>PyType</code> of <code>PyType</code> (or <code>type(type)</code>). */
     public static final PyType TYPE = fromClass(PyType.class);
 
+    private static final String SUPER__ = "super__";
+
     /**
      * The type's name. builtin types include their fully qualified name, e.g.: time.struct_time.
      */
@@ -2018,6 +2020,20 @@ public class PyType extends PyObject implements Serializable, Traverseproc {
                         where[0] = t;
                     }
                     return obj;
+                } else {
+                    // deviation for protected final java superclass methods
+                    if (t instanceof PyJavaType) {
+                        if (!name.startsWith(SUPER__)) {
+                            final String superName = SUPER__.concat(name);
+                            obj = dict.__finditem__(superName);
+                            if (obj != null) {
+                                if (where != null) {
+                                    where[0] = t;
+                                }
+                                return obj;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -2047,8 +2063,8 @@ public class PyType extends PyObject implements Serializable, Traverseproc {
                  * http://bugs.jython.org/issue1540 Also ignore this if we're doing super during
                  * __init__ as we want it to behave Fixes http://bugs.jython.org/issue2375
                  */
-                if (name != "__init__" && !name.startsWith("super__")) {
-                    lookupName = "super__" + name;
+                if (name != "__init__" && !name.startsWith(SUPER__)) {
+                  lookupName = SUPER__ + name;
                 } else {
                     lookupName = name;
                 }
