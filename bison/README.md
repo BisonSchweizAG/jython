@@ -9,8 +9,9 @@
 
 # Differences to upstream
 - `jakarta` migration
-- improvement of `string.py`
+- improvement of `string.py` for `java.lang.String` arguments
 - consistent calling/overwriting of protected final superclass methods
+- build with JDK 17
 
 # Artifactory publishing
 - `./gradlew publish`
