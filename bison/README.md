@@ -9,7 +9,19 @@
 
 # Differences to upstream
 - `jakarta` migration
+- improvement of `string.py`
+- consistent calling/overwriting of protected final superclass methods
+
+# Artifactory publishing
+- `./gradlew publish`
+- copy `build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-SNAPSHOT.pom`
+- deploy `jython-2.7.x-SNAPSHOT.pom`
+- deploy `/build2/libs/jython-2.7.x-SNAPSHOT.jar` (adjust the `Group ID` to `org.python`)
+- deploy `/build2/libs/jython-2.7.x-SNAPSHOT-sources.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `sources`)
+- deploy `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `javadoc`)
+
 
 # TODO
-- do we need jnr-*.jar in bison tools?
--
+- MANIFEST.MF does not contain -SNAPHSOT if it is a SNAPSHOT
+- test jline on Ubuntu
+- maketrans UnicodeDecodeError (see also: PyString in 2.5.3.bison)
