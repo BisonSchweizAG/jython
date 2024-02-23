@@ -25,4 +25,3 @@
 # TODO
 - MANIFEST.MF does not contain -SNAPHSOT if it is a SNAPSHOT
 - test jline on Ubuntu
-- maketrans UnicodeDecodeError (see also: PyString in 2.5.3.bison)
