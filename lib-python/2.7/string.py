@@ -77,8 +77,8 @@ def maketrans(fromstr, tostr):
     must be of the same length.
 
     """
-    fromstr = '%s'%fromstr
-    tostr = '%s'%tostr
+    fromstr = str(fromstr)
+    tostr = str(tostr)
     if len(fromstr) != len(tostr):
         raise ValueError, "maketrans arguments must have same length"
     global _idmapL
