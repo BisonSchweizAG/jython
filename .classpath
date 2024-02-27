@@ -9,7 +9,7 @@
 	<classpathentry kind="lib" path="extlibs/asm-9.6.jar"/>
 	<classpathentry kind="lib" path="extlibs/asm-commons-9.6.jar"/>
 	<classpathentry kind="lib" path="extlibs/asm-util-9.6.jar"/>
-	<classpathentry kind="lib" path="extlibs/commons-compress-1.21.jar"/>
+	<classpathentry kind="lib" path="extlibs/commons-compress-1.26.0.jar"/>
 	<classpathentry kind="lib" path="extlibs/guava-32.1.2-jre.jar"/>
 	<classpathentry kind="lib" path="extlibs/jakartaee-api-10.0.0.jar"/>
 	<classpathentry kind="lib" path="extlibs/java-sizeof-0.0.5.jar"/>
