@@ -13,7 +13,7 @@
 - consistent calling/overwriting of protected final superclass methods
 - build with JDK 17
 
-# Artifactory publishing
+# Artifactory publishing of a SNAPSHOT
 - `./gradlew publish`
 - copy `build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-SNAPSHOT.pom`
 - deploy `jython-2.7.x-SNAPSHOT.pom`
@@ -21,6 +21,14 @@
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT-sources.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `sources`)
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `javadoc`)
 
+# Artifactory publishing of a final version
+- `git tag -a v2.7.x -m "Jython version 2.7.x"`
+- `git push origin v2.7.x`
+- `./gradlew publish` (this creates all files correctly named in `build2/stagingRepo/org/python/jython/2.7.x`)
+- deploy `jython-2.7.x.pom`
+- deploy `jython-2.7.x.jar` (adjust the `Group ID` to `org.python`)
+- deploy `jython-2.7.x-sources.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `sources`)
+- deploy `jython-2.7.x-javadoc.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `javadoc`)
 
 # TODO
 - MANIFEST.MF does not contain -SNAPHSOT if it is a SNAPSHOT
