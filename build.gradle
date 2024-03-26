@@ -232,7 +232,7 @@ generateGrammarSource {
 
 compileJava {
     // Divert compiled classes to intermediate location pre-exposure.
-    destinationDir = file(unexposedDir)
+    destinationDirectory = file(unexposedDir)
 }
 
 // ---------------- Expose Task ------------------------------------------------
@@ -688,12 +688,12 @@ javadoc {
  */
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allJava
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
     from javadoc.destinationDir
 
     // disable DocLint
