@@ -12,6 +12,8 @@
 - improvement of `string.py` for `java.lang.String` arguments
 - consistent calling/overwriting of protected final superclass methods
 - build with JDK 17
+- newer gradle version
+- newer external libraries
 
 # Artifactory publishing of a SNAPSHOT
 - `./gradlew clean publish`
