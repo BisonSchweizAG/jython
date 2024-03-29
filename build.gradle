@@ -819,6 +819,7 @@ sourceSets.test {
 
 compileTestJava {
     dependsOn expose
+	dependsOn pycompile
     options.debug = project.compileJava.options.debug
 }
 
