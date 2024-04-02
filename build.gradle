@@ -648,6 +648,7 @@ jar {
         attributes ([
             'Main-Class': 'org.python.util.jython',
             'Built-By': 'build.gradle',
+            'Automatic-Module-Name': 'org.python.jython.bison'
         ])
 
         attributes( [ // Build-Info section
