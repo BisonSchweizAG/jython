@@ -102,7 +102,7 @@ informix.jar = ../support/jdbc-4.10.12.jar
         <property name="jython.major_version" value="2"/>
         <property name="jython.minor_version" value="7"/>
         <property name="jython.micro_version" value="4"/>
-        <property name="jython.release_level" value="${PY_RELEASE_LEVEL_ALPHA}"/>
+        <property name="jython.release_level" value="${PY_RELEASE_LEVEL_BETA}"/>
 
         <!-- Zero at full release: one-up number for alpha, beta and candidate versions. -->
         <property name="jython.release_serial" value="1"/>
@@ -859,7 +859,7 @@ The text for an official release would continue like ...
             <zipfileset src="extlibs/commons-io-2.15.1.jar" excludes="META-INF/versions/9/module-info.class"/>
             <rule pattern="org.apache.commons.io.**" result="org.python.apache.commons.io.@1"/>
             <zipfileset src="extlibs/failureaccess-1.0.1.jar"/>
-            <zipfileset src="extlibs/guava-32.1.2-jre.jar"/>
+            <zipfileset src="extlibs/guava-32.1.2-jre.jar" excludes="META-INF/**"/>
             <rule pattern="com.google.**" result="org.python.google.@1"/>
             <zipfileset src="extlibs/icu4j-71.1.jar"/>
             <rule pattern="com.ibm.icu.**" result="org.python.icu.@1"/>
