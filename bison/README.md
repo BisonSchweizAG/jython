@@ -12,8 +12,11 @@
 - improvement of `string.py` for `java.lang.String` arguments
 - consistent calling/overwriting of protected final superclass methods
 - build with JDK 17
+- artifact name is `jython` (instead of `jython.slim`)
+- add an automatic module name `org.python.jython.bison`
 - newer gradle version
 - newer external libraries
+- remove jline import from Py.java (to allow jline being excluded from ear)
 
 # Artifactory publishing of a SNAPSHOT
 - `./gradlew clean publish`
