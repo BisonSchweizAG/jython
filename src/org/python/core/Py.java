@@ -28,7 +28,6 @@ import org.python.core.adapter.ClassicPyObjectAdapter;
 import org.python.core.adapter.ExtensiblePyObjectAdapter;
 import org.python.modules.posix.PosixModule;
 
-import jline.console.UserInterruptException;
 import jnr.constants.Constant;
 import jnr.constants.platform.Errno;
 import jnr.posix.util.Platform;
@@ -538,7 +537,7 @@ public final class Py extends PrePy {
             return Py.RuntimeError("maximum recursion depth exceeded (Java StackOverflowError)");
         } else if (t instanceof OutOfMemoryError) {
             memory_error((OutOfMemoryError) t);
-        } else if (t instanceof UserInterruptException) {
+          } else if (t.getClass().getName().contains("UserInterruptException")) {
             return Py.KeyboardInterrupt("");
         }
         PyObject exc = PyJavaType.wrapJavaObject(t);
