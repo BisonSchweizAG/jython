@@ -27,6 +27,7 @@
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `javadoc`)
 
 # Artifactory publishing of a final version
+- make sure your local copy is clean (`git status` should display `nothing to commit, working tree clean`)
 - `git tag -a v2.7.x -m "Jython version 2.7.x"`
 - `git push origin v2.7.x`
 - `./gradlew clean publish` (this creates all files correctly named in `build2/stagingRepo/org/python/jython/2.7.x`)
@@ -34,6 +35,7 @@
 - deploy `jython-2.7.x.jar` (adjust the `Group ID` to `org.python`)
 - deploy `jython-2.7.x-sources.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `sources`)
 - deploy `jython-2.7.x-javadoc.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `javadoc`)
+- prepare for the next version by increasing the patch version in `build.gradle`
 
 # TODO
 - MANIFEST.MF does not contain -SNAPHSOT if it is a SNAPSHOT
