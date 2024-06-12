@@ -141,16 +141,4 @@ public class SyspathArchive extends PyString {
         istream.close();
         return new ByteArrayInputStream(buffer);
     }
-
-/*
-    private static Logger logger = Logger.getLogger("org.python.import");
-    protected void finalize() {
-        System.out.println("closing zip file " + toString());
-        try {
-            zipFile.close();
-        } catch (IOException e) {
-            logger.log(Level.FINE, "closing zipEntry failed");
-        }
-    }
-*/
 }
