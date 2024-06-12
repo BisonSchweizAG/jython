@@ -17,6 +17,8 @@
 - newer gradle version
 - newer external libraries (except: guava is older because of gradle variants)
 - remove jline import from Py.java (to allow jline being excluded from ear)
+- replace `AccessControlException`
+- remove `getSecurityManager()`
 
 # Artifactory publishing of a SNAPSHOT
 - `./gradlew clean publish`
@@ -40,3 +42,4 @@
 # TODO
 - MANIFEST.MF does not contain -SNAPHSOT if it is a SNAPSHOT
 - test jline on Ubuntu
+- replace `finalize()`
