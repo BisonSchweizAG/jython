@@ -3,11 +3,6 @@
 
 package org.python.core.packagecache;
 
-import org.python.core.Options;
-import org.python.core.PyJavaPackage;
-import org.python.core.util.FileUtil;
-import org.python.util.Generic;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -28,7 +23,6 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +30,11 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import org.python.core.Options;
+import org.python.core.PyJavaPackage;
+import org.python.core.util.FileUtil;
+import org.python.util.Generic;
 
 /**
  * Abstract package manager that gathers info about statically known classes from a set of jars and
@@ -851,8 +850,8 @@ public abstract class CachedJarsPackageManager extends PackageManager {
                     warning("failed to create cache dir ''{0}''", cachedir);
                 }
             }
-        } catch (AccessControlException ace) {
-            warning("Not permitted to access cache ''{0}'' ({1})", cachedir, ace.getMessage());
+        } catch (SecurityException se) {
+            warning("Not permitted to access cache ''{0}'' ({1})", cachedir, se.getMessage());
         }
         return false;
     }
