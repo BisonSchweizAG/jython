@@ -1,5 +1,5 @@
 # Setup Eclipse Workspace
-- set JDK 17 as Default
+- set JDK 21 as Default
 - import existing eclipse project
 - switch Text File Encoding to UTF-8
 - run the `antlr-gen` (Ant) launch configuration (run with JDK 11)
