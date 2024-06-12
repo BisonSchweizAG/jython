@@ -1,8 +1,7 @@
 package org.python.core.finalization;
 
-import org.python.core.PyObject;
 import org.python.core.JyAttribute;
-import org.python.core.PySystemState;
+import org.python.core.PyObject;
 import org.python.modules.gc;
 
 /**
@@ -195,6 +194,7 @@ public class FinalizeTrigger {
         }
     }
 
+    @Override
     protected void finalize() throws Throwable {
         flags |= FINALIZED_FLAG;
         gc.notifyPreFinalization();
