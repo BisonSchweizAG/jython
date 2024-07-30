@@ -250,22 +250,24 @@ informix.jar = ../support/jdbc-4.10.12.jar
 
             <!-- Other JARs (alphabetical) -->
             <filelist dir="${extlibs.dir}">
-                <file name="antlr-complete-3.5.2.jar" /> <!-- ANTLR 3 until we upgrade parsing -->
-                <file name="asm-9.6.jar" />
-                <file name="asm-commons-9.6.jar" />
-                <file name="asm-util-9.6.jar" />
-                <file name="commons-compress-1.26.0.jar"/>
-                <file name="commons-io-2.15.1.jar"/>
+                <file name="antlr-complete-3.5.3.jar" /> <!-- ANTLR 3 until we upgrade parsing -->
+                <file name="asm-9.7.jar" />
+                <file name="asm-commons-9.7.jar" />
+                <file name="asm-util-9.7.jar" />
+                <file name="commons-compress-1.26.2.jar"/>
+                <file name="commons-io-2.16.1.jar"/>
                 <file name="failureaccess-1.0.1.jar" />
-                <file name="guava-32.1.2-jre.jar" />
-                <file name="icu4j-71.1.jar" />
-                <file name="jffi-1.3.9.jar"/>
+                <file name="guava-33.2.1-jre.jar" />
+                <file name="icu4j-75.1.jar" />
+                <file name="jffi-1.3.13.jar"/>
                 <file name="java-sizeof-0.0.5.jar"/>
-                <file name="jnr-constants-0.10.3.jar"/>
-                <file name="jnr-ffi-2.2.12.jar"/>
+                <file name="jnr-constants-0.10.4.jar"/>
+                <file name="jnr-ffi-2.2.16.jar"/>
                 <file name="jnr-netdb-1.2.0.jar"/>
-                <file name="jnr-posix-3.1.15.jar"/>
-                <file name="jline-2.14.5.jar"/>
+                <file name="jnr-posix-3.1.19.jar"/>
+                <file name="jline-2.14.6.jar"/>
+                <!-- Netty JARs currently pinned at 4.1.73 by issue #349.
+                     Later versions (tried .80, .112) produce test failures. -->
                 <file name="netty-buffer-4.1.73.Final.jar"/>
                 <file name="netty-codec-4.1.73.Final.jar"/>
                 <file name="netty-common-4.1.73.Final.jar"/>
@@ -845,24 +847,26 @@ The text for an official release would continue like ...
         <jarjar destfile="${dist.dir}/${jython.deploy.jar}"  update="${jar.update}">
             <zipfileset src="${dist.dir}/${jython.dev.jar}"/>
             <!-- pin to Antlr 3 until we upgrade parsing -->
-            <zipfileset src="extlibs/antlr-runtime-3.5.2.jar"/>
+            <zipfileset src="extlibs/antlr-runtime-3.5.3.jar"/>
             <rule pattern="org.antlr.runtime.**" result="org.python.antlr.runtime.@1"/>
-            <zipfileset src="extlibs/asm-9.6.jar" excludes="module-info.class"/>
-            <zipfileset src="extlibs/asm-commons-9.6.jar" excludes="module-info.class"/>
-            <zipfileset src="extlibs/asm-util-9.6.jar" excludes="module-info.class"/>
+            <zipfileset src="extlibs/asm-9.7.jar" excludes="module-info.class"/>
+            <zipfileset src="extlibs/asm-commons-9.7.jar" excludes="module-info.class"/>
+            <zipfileset src="extlibs/asm-util-9.7.jar" excludes="module-info.class"/>
             <rule pattern="org.objectweb.asm.**" result="org.python.objectweb.asm.@1"/>
-            <zipfileset src="extlibs/bcpkix-jdk18on-1.77.jar" excludes="META-INF/**"/>
-            <zipfileset src="extlibs/bcprov-jdk18on-1.77.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/bcpkix-jdk18on-1.78.1.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/bcprov-jdk18on-1.78.1.jar" excludes="META-INF/**"/>
             <rule pattern="org.bouncycastle.**" result="org.python.bouncycastle.@1"/>
-            <zipfileset src="extlibs/commons-compress-1.26.0.jar" excludes="META-INF/versions/9/module-info.class"/>
+            <zipfileset src="extlibs/commons-compress-1.26.2.jar" excludes="META-INF/versions/9/module-info.class"/>
             <rule pattern="org.apache.commons.compress.**" result="org.python.apache.commons.compress.@1"/>
-            <zipfileset src="extlibs/commons-io-2.15.1.jar" excludes="META-INF/versions/9/module-info.class"/>
+            <zipfileset src="extlibs/commons-io-2.16.1.jar" excludes="META-INF/versions/9/module-info.class"/>
             <rule pattern="org.apache.commons.io.**" result="org.python.apache.commons.io.@1"/>
             <zipfileset src="extlibs/failureaccess-1.0.1.jar"/>
-            <zipfileset src="extlibs/guava-32.1.2-jre.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/guava-33.2.1-jre.jar" excludes="META-INF/**"/>
             <rule pattern="com.google.**" result="org.python.google.@1"/>
-            <zipfileset src="extlibs/icu4j-71.1.jar"/>
+            <zipfileset src="extlibs/icu4j-75.1.jar"/>
             <rule pattern="com.ibm.icu.**" result="org.python.icu.@1"/>
+            <!-- Netty JARs currently pinned at 4.1.73 by issue #349.
+                 Later versions (tried .80, .112) produce test failures. -->
             <zipfileset src="extlibs/netty-buffer-4.1.73.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
             <zipfileset src="extlibs/netty-codec-4.1.73.Final.jar" excludes="META-INF/**"/>
@@ -900,18 +904,18 @@ The text for an official release would continue like ...
             <zipfileset src="extlibs/jffi-x86_64-SunOS.jar"/>
             <zipfileset src="extlibs/jffi-x86_64-Windows.jar"/>
             <!-- remainder of JNR, JFFI -->
-            <zipfileset src="extlibs/jffi-1.3.9.jar"/>
-            <zipfileset src="${extlibs.dir}/jnr-constants-0.10.3.jar"/>
-            <zipfileset src="${extlibs.dir}/jnr-ffi-2.2.12.jar"/>
+            <zipfileset src="extlibs/jffi-1.3.13.jar"/>
+            <zipfileset src="${extlibs.dir}/jnr-constants-0.10.4.jar"/>
+            <zipfileset src="${extlibs.dir}/jnr-ffi-2.2.16.jar"/>
             <zipfileset src="${extlibs.dir}/jnr-netdb-1.2.0.jar"/>
-            <zipfileset src="${extlibs.dir}/jnr-posix-3.1.15.jar"/>
+            <zipfileset src="${extlibs.dir}/jnr-posix-3.1.19.jar"/>
             <zipfileset src="extlibs/xercesImpl-2.12.2.jar"
                 excludes="META-INF/services/*, org/w3c/**"/>
             <rule pattern="org.apache.xml.**" result="org.python.apache.xml.@1"/>
             <rule pattern="org.apache.xerces.**" result="org.python.apache.xerces.@1"/>
             <rule pattern="org.apache.wml.**" result="org.python.apache.wml.@1"/>
             <rule pattern="org.apache.html.**" result="org.python.apache.html.@1"/>
-            <zipfileset src="extlibs/jline-2.14.5.jar"/>
+            <zipfileset src="extlibs/jline-2.14.6.jar"/>
             <rule pattern="jline.**" result="org.python.jline.@1"/>
             <manifest>
                 <attribute name="Main-Class" value="org.python.util.jython" />

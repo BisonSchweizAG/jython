@@ -16,6 +16,7 @@ jobs:
   ant-regrtest-ubuntu-jdk8:
 
     runs-on: ubuntu-latest
+    timeout-minutes: 40
 
     steps:
     - run: echo "Branch ${{ github.ref }} of repository ${{ github.repository }}."
@@ -23,10 +24,10 @@ jobs:
     # Some tests require exactly-expected line endings
     - run: git config --global core.autocrlf input
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up JDK 8
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '8'
         distribution: 'temurin'
@@ -38,6 +39,7 @@ jobs:
   ant-regrtest-windows-jdk11:
 
     runs-on: windows-latest
+    timeout-minutes: 60
 
     steps:
     - run: echo "Branch ${{ github.ref }} of repository ${{ github.repository }}."
@@ -45,10 +47,10 @@ jobs:
     # Some tests require exactly-expected line endings
     - run: git config --global core.autocrlf input
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up JDK 11
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '11'
         distribution: 'temurin'
