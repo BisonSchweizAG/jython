@@ -18,5 +18,6 @@
 	<classpathentry kind="lib" path="extlibs/jline-2.14.6.jar"/>
 	<classpathentry kind="lib" path="extlibs/jnr-constants-0.10.4.jar"/>
 	<classpathentry kind="lib" path="extlibs/jnr-posix-3.1.19.jar"/>
+	<classpathentry kind="lib" path="extlibs/jnr-ffi-2.2.16.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
