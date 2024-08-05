@@ -40,7 +40,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
     /** Supports the buffer API, see {@link #getBuffer(int)}. */
     private Reference<BaseBuffer> export;
 
-    public String getString() {
+    final public String getString() {
         return string;
     }
 
@@ -117,7 +117,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
      * @param width number of bits within which each character must fit (<16)
      * @return true if and only if every character has a code less than 2^width
      */
-    static boolean charsFitWidth(String s, int width) {
+    final static boolean charsFitWidth(String s, int width) {
 
         final int N = s.length();
 
@@ -179,7 +179,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
     }
 
     @ExposedNew
-    static PyObject str_new(PyNewWrapper new_, boolean init, PyType subtype, PyObject[] args,
+    final static PyObject str_new(PyNewWrapper new_, boolean init, PyType subtype, PyObject[] args,
             String[] keywords) {
         ArgParser ap = new ArgParser("str", args, keywords, new String[] {"object"}, 0);
         PyObject S = ap.getPyObject(0, null);
@@ -277,10 +277,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(doc = BuiltinDocs.str___str___doc)
     final PyString str___str__() {
-        if (getClass() == PyString.class) {
-            return this;
-        }
-        return new PyString(getString(), true);
+        return new PyString(encode_UnicodeEscape(getString(), false, false));
     }
 
     @Override
@@ -299,11 +296,11 @@ public class PyString extends PyBaseString implements BufferProtocol {
     }
 
     @Override
-    public String toString() {
+    final public String toString() {
         return getString();
     }
 
-    public String internedString() {
+    final public String internedString() {
         if (interned) {
             return getString();
         } else {
@@ -320,15 +317,25 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(doc = BuiltinDocs.str___repr___doc)
     final PyString str___repr__() {
-        return new PyString(encode_UnicodeEscape(getString(), true));
+        return new PyString(encode_UnicodeEscape(getString(), true, true));
+    }
+
+    final public static String encode_UnicodeEscape(String str, boolean use_quotes) {
+        char quote = use_quotes ? '?' : 0;
+        return encode_UnicodeEscape(str, quote, true);
+    }
+
+    // for usage in PyBaseCode and imp
+    final static String encode_UnicodeEscape(String str, char quote) {
+        return encode_UnicodeEscape(str, quote, true);
+    }
+
+    final protected static String encode_UnicodeEscape(String str, boolean use_quotes, boolean for__repr__) {
+        char quote = use_quotes ? '?' : 0;
+        return encode_UnicodeEscape(str, quote, for__repr__);
     }
 
     private static char[] hexdigit = "0123456789abcdef".toCharArray();
-
-    public static String encode_UnicodeEscape(String str, boolean use_quotes) {
-        char quote = use_quotes ? '?' : 0;
-        return encode_UnicodeEscape(str, quote);
-    }
 
     /**
      * The inner logic of the string __repr__ producing an ASCII representation of the target
@@ -340,7 +347,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
      * @param quoteChar '"' or '\'' use that, '?' = let Python choose, 0 or anything = no quotes
      * @return encoded string (possibly the same string if unchanged)
      */
-    static String encode_UnicodeEscape(String str, char quote) {
+    private static String encode_UnicodeEscape(String str, char quote, boolean for__repr__) {
 
         // Choose whether to quote and the actual quote character
         boolean use_quotes;
@@ -409,12 +416,26 @@ public class PyString extends PyBaseString implements BufferProtocol {
             }
             /* Map special whitespace to '\t', \n', '\r' */
             else if (ch == '\t') {
-                v.append("\\t");
+                if (for__repr__) {
+                    v.append("\\t");
+                } else {
+                    v.append("\t");
+                }
             } else if (ch == '\n') {
-                v.append("\\n");
+                if (for__repr__) {
+                    v.append("\\n");
+                } else {
+                    v.append("\n");
+                }
             } else if (ch == '\r') {
-                v.append("\\r");
-            } else if (ch < ' ' || ch >= 127) {
+                if (for__repr__) {
+                    v.append("\\r");
+                } else {
+                    v.append("\r");
+                }
+            } else if (Character.isJavaIdentifierPart(ch)) {
+                v.append((char) ch);
+            } else if ((ch < ' ' || ch >= 127)) {
                 /* Map non-printable US ASCII to '\xNN' */
                 v.append('\\');
                 v.append('x');
@@ -742,10 +763,12 @@ public class PyString extends PyBaseString implements BufferProtocol {
         return getString().compareTo(s) >= 0 ? Py.True : Py.False;
     }
 
-    /** Interpret the object as a Java String representing bytes or return <code>null</code>. */
-    private static String coerce(PyObject o) {
-        if (o instanceof PyString && !(o instanceof PyUnicode)) {
-            return o.toString();
+    /** Interpret the object as a Java String or return <code>null</code>. */
+    final protected static String coerce(PyObject o) {
+        if (o instanceof PyString) {
+            return ((PyString) o).getString();
+        } else if (o instanceof PyUnicode) {
+            return ((PyUnicode) o).getString();
         }
         return null;
     }
@@ -4335,21 +4358,6 @@ public class PyString extends PyBaseString implements BufferProtocol {
             return "cannot concatenate ''{1}'' and ''{2}'' objects";
         }
         return super.unsupportedopMessage(op, o2);
-    }
-
-    @Override
-    public char charAt(int index) {
-        return string.charAt(index);
-    }
-
-    @Override
-    public int length() {
-        return string.length();
-    }
-
-    @Override
-    public CharSequence subSequence(int start, int end) {
-        return string.subSequence(start, end);
     }
 
     /**

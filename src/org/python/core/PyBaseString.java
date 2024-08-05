@@ -15,17 +15,17 @@ public abstract class PyBaseString extends PySequence implements CharSequence {
     }
 
     @Override
-    public char charAt(int index) {
+    final public char charAt(int index) {
         return toString().charAt(index);
     }
 
     @Override
-    public int length() {
+    final public int length() {
         return toString().length();
     }
 
     @Override
-    public CharSequence subSequence(int start, int end) {
+    final public CharSequence subSequence(int start, int end) {
         return toString().subSequence(start, end);
     }
 }

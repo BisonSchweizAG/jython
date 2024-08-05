@@ -781,7 +781,7 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
 
     @ExposedMethod(doc = BuiltinDocs.unicode___str___doc)
     final PyString unicode___str__() {
-        return new PyString(encode());
+        return new PyString(encode_UnicodeEscape(getString(), false, false));
     }
 
     @Override
@@ -801,7 +801,7 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
 
     @ExposedMethod(doc = BuiltinDocs.unicode___repr___doc)
     final PyString unicode___repr__() {
-        return new PyString("u" + encode_UnicodeEscape(getString(), true));
+        return new PyString(encode_UnicodeEscape(getString(), true, true));
     }
 
     @ExposedMethod(doc = BuiltinDocs.unicode___getitem___doc)
@@ -1143,13 +1143,13 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         if (o instanceof PyUnicode) {
             return ((PyUnicode) o).getString();
         } else if (o instanceof PyString) {
-            return ((PyString) o).decode().toString();
+            return ((PyString) o).getString();
         } else if (o instanceof Py2kBuffer) {
             // We ought to be able to call codecs.decode on o but see Issue #2164
             try (PyBuffer buf = ((BufferProtocol) o).getBuffer(PyBUF.FULL_RO)) {
                 PyString s = new PyString(buf);
                 // For any sensible codec, the return is unicode and toString() is getString().
-                return s.decode().toString();
+                return s.getString();
             }
         } else {
             // o is some type not allowed:
