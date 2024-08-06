@@ -965,8 +965,6 @@ public class PyString extends PyBaseString implements BufferProtocol {
         String other = asU16BytesOrNull(o);
         if (other != null) {
             return getString().indexOf(other) >= 0;
-        } else if (o instanceof PyUnicode) {
-            return decode().__contains__(o);
         } else {
             throw Py.TypeError("'in <string>' requires string as left operand, not "
                     + (o == null ? Py.None : o).getType().fastGetName());

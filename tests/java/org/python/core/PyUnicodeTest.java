@@ -227,6 +227,18 @@ public class PyUnicodeTest {
         assertEquals("GUGUS", ((PyString) result).getString());
     }
 
+    @Test
+    public void test__contains__() {
+        PyUnicode searchString = new PyUnicode(SMALL_O_UMLAUT);
+        assertTrue(pyUnicode.__contains__(searchString));
+    }
+
+    @Test
+    public void test__contains__PyString() {
+        PyString searchString = new PyString(SMALL_O_UMLAUT);
+        assertTrue(pyUnicode.__contains__(searchString));
+    }
+
     private void assertPyTrue(PyObject value) {
         assertTrue(value instanceof PyBoolean);
         assertTrue(((PyBoolean) value).__nonzero__());

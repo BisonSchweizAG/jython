@@ -247,6 +247,18 @@ public class PyStringTest {
         assertEquals("schoen \n und \n toeier", result.getString());
     }
 
+    @Test
+    public void test__contains__() {
+        PyString searchString = new PyString(SMALL_O_UMLAUT);
+        assertTrue(pyString.__contains__(searchString));
+    }
+
+    @Test
+    public void test__contains__PyUnicode() {
+        PyUnicode searchString = new PyUnicode(SMALL_O_UMLAUT);
+        assertTrue(pyString.__contains__(searchString));
+    }
+
     private void assertPyTrue(PyObject value) {
         assertTrue(value instanceof PyBoolean);
         assertTrue(((PyBoolean) value).__nonzero__());
