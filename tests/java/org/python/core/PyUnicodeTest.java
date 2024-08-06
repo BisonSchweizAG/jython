@@ -233,8 +233,8 @@ public class PyUnicodeTest {
         String originalString = SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT //
                         + "GUGUS" //
                         + SMALL_O_UMLAUT + SMALL_O_UMLAUT;
-        PyString originalPyString = new PyString(originalString);
-        PyObject result = originalPyString.strip(toBeStripped);
+        PyUnicode originalPyUnicode = new PyUnicode(originalString);
+        PyObject result = originalPyUnicode.strip(toBeStripped);
         assertTrue(result instanceof PyString);
         assertEquals("GUGUS", ((PyString) result).getString());
     }
@@ -245,10 +245,60 @@ public class PyUnicodeTest {
         String originalString = SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT //
                         + "GUGUS" //
                         + SMALL_O_UMLAUT + SMALL_O_UMLAUT;
-        PyString originalPyString = new PyString(originalString);
-        PyObject result = originalPyString.strip(toBeStripped);
+        PyUnicode originalPyUnicode = new PyUnicode(originalString);
+        PyObject result = originalPyUnicode.strip(toBeStripped);
         assertTrue(result instanceof PyString);
         assertEquals("GUGUS", ((PyString) result).getString());
+    }
+
+    @Test
+    public void testLStrip() {
+        PyUnicode toBeStripped = new PyUnicode(SMALL_O_UMLAUT + SMALL_O_UMLAUT);
+        String originalString = SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT //
+                        + "GUGUS" //
+                        + SMALL_O_UMLAUT + SMALL_O_UMLAUT;
+        PyUnicode originalPyUnicode = new PyUnicode(originalString);
+        PyObject result = originalPyUnicode.lstrip(toBeStripped);
+        assertTrue(result instanceof PyString);
+        assertEquals("GUGUS" + SMALL_O_UMLAUT + SMALL_O_UMLAUT, ((PyString) result).getString());
+    }
+
+    @Test
+    public void testLStripPyString() {
+        PyString toBeStripped = new PyString(SMALL_O_UMLAUT + SMALL_O_UMLAUT);
+        String originalString = SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT //
+                        + "GUGUS" //
+                        + SMALL_O_UMLAUT + SMALL_O_UMLAUT;
+        PyUnicode originalPyUnicode = new PyUnicode(originalString);
+        PyObject result = originalPyUnicode.lstrip(toBeStripped);
+        assertTrue(result instanceof PyString);
+        assertEquals("GUGUS" + SMALL_O_UMLAUT + SMALL_O_UMLAUT, ((PyString) result).getString());
+    }
+
+    @Test
+    public void testRStrip() {
+        PyUnicode toBeStripped = new PyUnicode(SMALL_O_UMLAUT + SMALL_O_UMLAUT);
+        String originalString = SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT //
+                        + "GUGUS" //
+                        + SMALL_O_UMLAUT + SMALL_O_UMLAUT;
+        PyUnicode originalPyUnicode = new PyUnicode(originalString);
+        PyObject result = originalPyUnicode.rstrip(toBeStripped);
+        assertTrue(result instanceof PyString);
+        assertEquals(SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + "GUGUS",
+                        ((PyString) result).getString());
+    }
+
+    @Test
+    public void testRStripPyString() {
+        PyString toBeStripped = new PyString(SMALL_O_UMLAUT + SMALL_O_UMLAUT);
+        String originalString = SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT //
+                        + "GUGUS" //
+                        + SMALL_O_UMLAUT + SMALL_O_UMLAUT;
+        PyUnicode originalPyUnicode = new PyUnicode(originalString);
+        PyObject result = originalPyUnicode.rstrip(toBeStripped);
+        assertTrue(result instanceof PyString);
+        assertEquals(SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + "GUGUS",
+                        ((PyString) result).getString());
     }
 
     @Test

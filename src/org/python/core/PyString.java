@@ -1408,15 +1408,10 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(defaults = "null", doc = BuiltinDocs.str_lstrip_doc)
     final PyObject str_lstrip(PyObject chars) {
-        if (chars instanceof PyUnicode) {
-            // Promote the problem to a Unicode one
-            return ((PyUnicode) decode()).unicode_lstrip(chars);
-        } else {
-            // It ought to be None, null, some kind of bytes with the buffer API.
-            String stripChars = asU16BytesNullOrError(chars, "lstrip");
-            // Strip specified characters or whitespace if stripChars == null
-            return new PyString(_lstrip(stripChars), true);
-        }
+        // It ought to be None, null, some kind of bytes with the buffer API.
+        String stripChars = asU16BytesNullOrError(chars, "lstrip");
+        // Strip specified characters or whitespace if stripChars == null
+        return new PyString(_lstrip(stripChars), true);
     }
 
     /**
@@ -1497,15 +1492,10 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(defaults = "null", doc = BuiltinDocs.str_rstrip_doc)
     final PyObject str_rstrip(PyObject chars) {
-        if (chars instanceof PyUnicode) {
-            // Promote the problem to a Unicode one
-            return ((PyUnicode) decode()).unicode_rstrip(chars);
-        } else {
-            // It ought to be None, null, some kind of bytes with the buffer API.
-            String stripChars = asU16BytesNullOrError(chars, "rstrip");
-            // Strip specified characters or whitespace if stripChars == null
-            return new PyString(_rstrip(stripChars), true);
-        }
+        // It ought to be None, null, some kind of bytes with the buffer API.
+        String stripChars = asU16BytesNullOrError(chars, "rstrip");
+        // Strip specified characters or whitespace if stripChars == null
+        return new PyString(_rstrip(stripChars), true);
     }
 
     /**
