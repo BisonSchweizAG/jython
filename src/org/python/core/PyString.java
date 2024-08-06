@@ -40,7 +40,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
     /** Supports the buffer API, see {@link #getBuffer(int)}. */
     private Reference<BaseBuffer> export;
 
-    public String getString() {
+    final public String getString() {
         return string;
     }
 
@@ -117,7 +117,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
      * @param width number of bits within which each character must fit (<16)
      * @return true if and only if every character has a code less than 2^width
      */
-    static boolean charsFitWidth(String s, int width) {
+    final static boolean charsFitWidth(String s, int width) {
 
         final int N = s.length();
 
@@ -179,7 +179,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
     }
 
     @ExposedNew
-    static PyObject str_new(PyNewWrapper new_, boolean init, PyType subtype, PyObject[] args,
+    final static PyObject str_new(PyNewWrapper new_, boolean init, PyType subtype, PyObject[] args,
             String[] keywords) {
         ArgParser ap = new ArgParser("str", args, keywords, new String[] {"object"}, 0);
         PyObject S = ap.getPyObject(0, null);
@@ -277,15 +277,12 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(doc = BuiltinDocs.str___str___doc)
     final PyString str___str__() {
-        if (getClass() == PyString.class) {
-            return this;
-        }
-        return new PyString(getString(), true);
+        return new PyString(encode_UnicodeEscape(getString(), false, false));
     }
 
     @Override
     public PyUnicode __unicode__() {
-        return new PyUnicode(this);  // Decodes with default codec.
+        return new PyUnicode(getString());
     }
 
     @Override
@@ -299,11 +296,11 @@ public class PyString extends PyBaseString implements BufferProtocol {
     }
 
     @Override
-    public String toString() {
+    final public String toString() {
         return getString();
     }
 
-    public String internedString() {
+    final public String internedString() {
         if (interned) {
             return getString();
         } else {
@@ -320,15 +317,25 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(doc = BuiltinDocs.str___repr___doc)
     final PyString str___repr__() {
-        return new PyString(encode_UnicodeEscape(getString(), true));
+        return new PyString(encode_UnicodeEscape(getString(), true, true));
+    }
+
+    final public static String encode_UnicodeEscape(String str, boolean use_quotes) {
+        char quote = use_quotes ? '?' : 0;
+        return encode_UnicodeEscape(str, quote, true);
+    }
+
+    // for usage in PyBaseCode and imp
+    final static String encode_UnicodeEscape(String str, char quote) {
+        return encode_UnicodeEscape(str, quote, true);
+    }
+
+    final protected static String encode_UnicodeEscape(String str, boolean use_quotes, boolean for__repr__) {
+        char quote = use_quotes ? '?' : 0;
+        return encode_UnicodeEscape(str, quote, for__repr__);
     }
 
     private static char[] hexdigit = "0123456789abcdef".toCharArray();
-
-    public static String encode_UnicodeEscape(String str, boolean use_quotes) {
-        char quote = use_quotes ? '?' : 0;
-        return encode_UnicodeEscape(str, quote);
-    }
 
     /**
      * The inner logic of the string __repr__ producing an ASCII representation of the target
@@ -340,7 +347,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
      * @param quoteChar '"' or '\'' use that, '?' = let Python choose, 0 or anything = no quotes
      * @return encoded string (possibly the same string if unchanged)
      */
-    static String encode_UnicodeEscape(String str, char quote) {
+    private static String encode_UnicodeEscape(String str, char quote, boolean for__repr__) {
 
         // Choose whether to quote and the actual quote character
         boolean use_quotes;
@@ -409,12 +416,26 @@ public class PyString extends PyBaseString implements BufferProtocol {
             }
             /* Map special whitespace to '\t', \n', '\r' */
             else if (ch == '\t') {
-                v.append("\\t");
+                if (for__repr__) {
+                    v.append("\\t");
+                } else {
+                    v.append("\t");
+                }
             } else if (ch == '\n') {
-                v.append("\\n");
+                if (for__repr__) {
+                    v.append("\\n");
+                } else {
+                    v.append("\n");
+                }
             } else if (ch == '\r') {
-                v.append("\\r");
-            } else if (ch < ' ' || ch >= 127) {
+                if (for__repr__) {
+                    v.append("\\r");
+                } else {
+                    v.append("\r");
+                }
+            } else if (Character.isJavaIdentifierPart(ch)) {
+                v.append((char) ch);
+            } else if ((ch < ' ' || ch >= 127)) {
                 /* Map non-printable US ASCII to '\xNN' */
                 v.append('\\');
                 v.append('x');
@@ -742,10 +763,12 @@ public class PyString extends PyBaseString implements BufferProtocol {
         return getString().compareTo(s) >= 0 ? Py.True : Py.False;
     }
 
-    /** Interpret the object as a Java String representing bytes or return <code>null</code>. */
-    private static String coerce(PyObject o) {
-        if (o instanceof PyString && !(o instanceof PyUnicode)) {
-            return o.toString();
+    /** Interpret the object as a Java String or return <code>null</code>. */
+    final protected static String coerce(PyObject o) {
+        if (o instanceof PyString) {
+            return ((PyString) o).getString();
+        } else if (o instanceof PyUnicode) {
+            return ((PyUnicode) o).getString();
         }
         return null;
     }
@@ -873,10 +896,6 @@ public class PyString extends PyBaseString implements BufferProtocol {
      */
     private static String asU16BytesOrNull(PyObject obj) {
         if (obj instanceof PyString) {
-            if (obj instanceof PyUnicode) {
-                return null;
-            }
-            // str but not unicode object: go directly to the String
             return ((PyString) obj).getString();
         } else if (obj instanceof BufferProtocol) {
             // Other object with buffer API: briefly access the buffer
@@ -946,8 +965,6 @@ public class PyString extends PyBaseString implements BufferProtocol {
         String other = asU16BytesOrNull(o);
         if (other != null) {
             return getString().indexOf(other) >= 0;
-        } else if (o instanceof PyUnicode) {
-            return decode().__contains__(o);
         } else {
             throw Py.TypeError("'in <string>' requires string as left operand, not "
                     + (o == null ? Py.None : o).getType().fastGetName());
@@ -1017,9 +1034,6 @@ public class PyString extends PyBaseString implements BufferProtocol {
         if (otherStr != null) {
             // Yes it is: concatenate as strings, which are guaranteed byte-like.
             return new PyString(getString().concat(otherStr), true);
-        } else if (other instanceof PyUnicode) {
-            // Escalate the problem to PyUnicode
-            return decode().__add__(other);
         } else {
             // Allow PyObject._basic_add to pick up the pieces or raise informative error
             return null;
@@ -1231,15 +1245,10 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(defaults = "null", doc = BuiltinDocs.str_strip_doc)
     final PyObject str_strip(PyObject chars) {
-        if (chars instanceof PyUnicode) {
-            // Promote the problem to a Unicode one
-            return ((PyUnicode) decode()).unicode_strip(chars);
-        } else {
-            // It ought to be None, null, some kind of bytes with the buffer API.
-            String stripChars = asU16BytesNullOrError(chars, "strip");
-            // Strip specified characters or whitespace if stripChars == null
-            return new PyString(_strip(stripChars), true);
-        }
+        // It ought to be None, null, some kind of bytes with the buffer API.
+        String stripChars = asU16BytesNullOrError(chars, "strip");
+        // Strip specified characters or whitespace if stripChars == null
+        return new PyString(_strip(stripChars), true);
     }
 
     /**
@@ -1399,15 +1408,10 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(defaults = "null", doc = BuiltinDocs.str_lstrip_doc)
     final PyObject str_lstrip(PyObject chars) {
-        if (chars instanceof PyUnicode) {
-            // Promote the problem to a Unicode one
-            return ((PyUnicode) decode()).unicode_lstrip(chars);
-        } else {
-            // It ought to be None, null, some kind of bytes with the buffer API.
-            String stripChars = asU16BytesNullOrError(chars, "lstrip");
-            // Strip specified characters or whitespace if stripChars == null
-            return new PyString(_lstrip(stripChars), true);
-        }
+        // It ought to be None, null, some kind of bytes with the buffer API.
+        String stripChars = asU16BytesNullOrError(chars, "lstrip");
+        // Strip specified characters or whitespace if stripChars == null
+        return new PyString(_lstrip(stripChars), true);
     }
 
     /**
@@ -1488,15 +1492,10 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(defaults = "null", doc = BuiltinDocs.str_rstrip_doc)
     final PyObject str_rstrip(PyObject chars) {
-        if (chars instanceof PyUnicode) {
-            // Promote the problem to a Unicode one
-            return ((PyUnicode) decode()).unicode_rstrip(chars);
-        } else {
-            // It ought to be None, null, some kind of bytes with the buffer API.
-            String stripChars = asU16BytesNullOrError(chars, "rstrip");
-            // Strip specified characters or whitespace if stripChars == null
-            return new PyString(_rstrip(stripChars), true);
-        }
+        // It ought to be None, null, some kind of bytes with the buffer API.
+        String stripChars = asU16BytesNullOrError(chars, "rstrip");
+        // Strip specified characters or whitespace if stripChars == null
+        return new PyString(_rstrip(stripChars), true);
     }
 
     /**
@@ -3204,7 +3203,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
     final PyString str_replace(PyObject oldPieceObj, PyObject newPieceObj, int count) {
         if (oldPieceObj instanceof PyUnicode || newPieceObj instanceof PyUnicode) {
             // Promote the problem to a Unicode one
-            return ((PyUnicode) decode()).unicode_replace(oldPieceObj, newPieceObj, count);
+            return new PyUnicode(getString()).unicode_replace(oldPieceObj, newPieceObj, count);
         } else {
             // Neither is a PyUnicode: both ought to be some kind of bytes with the buffer API.
             String oldPiece = asU16BytesOrError(oldPieceObj);
@@ -3226,38 +3225,25 @@ public class PyString extends PyBaseString implements BufferProtocol {
      * @return PyString (or PyUnicode if this string is one), this string after replacements.
      */
     protected final PyString _replace(String oldPiece, String newPiece, int count) {
-
-        String s = getString();
-        int len = s.length();
-        int oldLen = oldPiece.length();
-        int newLen = newPiece.length();
-
-        if (len == 0) {
-            if (count < 0 && oldLen == 0) {
-                return createInstance(newPiece, true);
-            }
-            return createInstance(s, true);
-
-        } else if (oldLen == 0 && newLen != 0 && count != 0) {
-            /*
-             * old="" and new != "", interleave new piece with each char in original, taking into
-             * account count
-             */
-            StringBuilder buffer = new StringBuilder();
-            int i = 0;
-            buffer.append(newPiece);
-            for (; i < len && (count < 0 || i < count - 1); i++) {
-                buffer.append(s.charAt(i)).append(newPiece);
-            }
-            buffer.append(s.substring(i));
-            return createInstance(buffer.toString(), true);
-
+        String current = getString();
+        String replaced = current;
+        if (count < 0) {
+            replaced = current.replaceAll(oldPiece, newPiece);
         } else {
-            if (count < 0) {
-                count = (oldLen == 0) ? len + 1 : len;
+            int attempts = 1;
+            while (attempts <= count) {
+                replaced = replaced.replaceFirst(oldPiece, newPiece);
+                attempts++;
             }
-            return createInstance(newPiece).join(splitfields(oldPiece, count));
         }
+        if (!replaced.equals(current)) {
+            if (this instanceof PyUnicode) {
+                return new PyUnicode(replaced);
+            } else {
+                return new PyString(replaced);
+            }
+        }
+        return this;
     }
 
     public PyString join(PyObject seq) {
@@ -4335,21 +4321,6 @@ public class PyString extends PyBaseString implements BufferProtocol {
             return "cannot concatenate ''{1}'' and ''{2}'' objects";
         }
         return super.unsupportedopMessage(op, o2);
-    }
-
-    @Override
-    public char charAt(int index) {
-        return string.charAt(index);
-    }
-
-    @Override
-    public int length() {
-        return string.length();
-    }
-
-    @Override
-    public CharSequence subSequence(int start, int end) {
-        return string.subSequence(start, end);
     }
 
     /**
