@@ -1,8 +1,10 @@
 package org.python.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +12,8 @@ import org.junit.Test;
 public class PyStringTest {
 
     private static final String BEAUTIFUL = "sch\u00F6n \n und \n t\u00F6ier";
+    private static final String LESS_BEAUTIFUL = "sch\u00F6an";
+    private static final String MORE_BEAUTIFUL = "sch\u00F6zn";
 
     private PyString pyString;
 
@@ -85,4 +89,113 @@ public class PyStringTest {
         assertNull(PyString.coerce(new PyObject()));
     }
 
+    @Test
+    public void test__eq__() {
+        PyString otherPyString = new PyString(BEAUTIFUL);
+        assertPyTrue(pyString.__eq__(otherPyString));
+        otherPyString = new PyString("gugus");
+        assertPyFalse(pyString.__eq__(otherPyString));
+    }
+
+    @Test
+    public void test__eq__PyUnicode() {
+        PyUnicode otherPyUnicode = new PyUnicode(BEAUTIFUL);
+        assertPyTrue(pyString.__eq__(otherPyUnicode));
+        otherPyUnicode = new PyUnicode("gugus");
+        assertPyFalse(pyString.__eq__(otherPyUnicode));
+    }
+
+    @Test
+    public void test__ne__() {
+        PyString otherPyString = new PyString(BEAUTIFUL);
+        assertPyFalse(pyString.__ne__(otherPyString));
+        otherPyString = new PyString("gugus");
+        assertPyTrue(pyString.__ne__(otherPyString));
+    }
+
+    @Test
+    public void test__ne__PyUnicode() {
+        PyUnicode otherPyUnicode = new PyUnicode(BEAUTIFUL);
+        assertPyFalse(pyString.__ne__(otherPyUnicode));
+        otherPyUnicode = new PyUnicode("gugus");
+        assertPyTrue(pyString.__ne__(otherPyUnicode));
+    }
+
+    @Test
+    public void test__lt__() {
+        PyString otherPyString = new PyString(LESS_BEAUTIFUL);
+        assertPyTrue(otherPyString.__lt__(pyString));
+        assertPyFalse(pyString.__lt__(otherPyString));
+    }
+
+    @Test
+    public void test__lt__PyUnicode() {
+        PyUnicode otherPyUnicode = new PyUnicode(LESS_BEAUTIFUL);
+        assertPyTrue(otherPyUnicode.__lt__(pyString));
+        assertPyFalse(pyString.__lt__(otherPyUnicode));
+    }
+
+    @Test
+    public void test__le__() {
+        PyString otherPyString = new PyString(LESS_BEAUTIFUL);
+        assertPyTrue(otherPyString.__le__(pyString));
+        assertPyFalse(pyString.__le__(otherPyString));
+        otherPyString = new PyString(BEAUTIFUL);
+        assertPyTrue(otherPyString.__le__(pyString));
+        assertPyTrue(pyString.__le__(otherPyString));
+    }
+
+    @Test
+    public void test__le__PyUnicode() {
+        PyUnicode otherPyUnicode = new PyUnicode(LESS_BEAUTIFUL);
+        assertPyTrue(otherPyUnicode.__le__(pyString));
+        assertPyFalse(pyString.__le__(otherPyUnicode));
+        otherPyUnicode = new PyUnicode(BEAUTIFUL);
+        assertPyTrue(otherPyUnicode.__le__(pyString));
+        assertPyTrue(pyString.__le__(otherPyUnicode));
+    }
+
+    @Test
+    public void test__gt__() {
+        PyString otherPyString = new PyString(MORE_BEAUTIFUL);
+        assertPyTrue(otherPyString.__gt__(pyString));
+        assertPyFalse(pyString.__gt__(otherPyString));
+    }
+
+    @Test
+    public void test__gt__PyUnicode() {
+        PyUnicode otherPyUnicode = new PyUnicode(MORE_BEAUTIFUL);
+        assertPyTrue(otherPyUnicode.__gt__(pyString));
+        assertPyFalse(pyString.__gt__(otherPyUnicode));
+    }
+
+    @Test
+    public void test__ge__() {
+        PyString otherPyString = new PyString(MORE_BEAUTIFUL);
+        assertPyTrue(otherPyString.__ge__(pyString));
+        assertPyFalse(pyString.__ge__(otherPyString));
+        otherPyString = new PyString(BEAUTIFUL);
+        assertPyTrue(otherPyString.__ge__(pyString));
+        assertPyTrue(pyString.__ge__(otherPyString));
+    }
+
+    @Test
+    public void test__ge__PyUnicode() {
+        PyUnicode otherPyUnicode = new PyUnicode(MORE_BEAUTIFUL);
+        assertPyTrue(otherPyUnicode.__ge__(pyString));
+        assertPyFalse(pyString.__ge__(otherPyUnicode));
+        otherPyUnicode = new PyUnicode(BEAUTIFUL);
+        assertPyTrue(otherPyUnicode.__ge__(pyString));
+        assertPyTrue(pyString.__ge__(otherPyUnicode));
+    }
+
+    private void assertPyTrue(PyObject value) {
+        assertTrue(value instanceof PyBoolean);
+        assertTrue(((PyBoolean) value).__nonzero__());
+    }
+
+    private void assertPyFalse(PyObject value) {
+        assertTrue(value instanceof PyBoolean);
+        assertFalse(((PyBoolean) value).__nonzero__());
+    }
 }
