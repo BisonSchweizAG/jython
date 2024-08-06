@@ -43,8 +43,20 @@ public class PyStringTest {
     }
 
     @Test
+    public void test__len__() {
+        assertEquals(BEAUTIFUL.length(), pyString.__len__());
+    }
+
+    @Test
     public void testSubSequence() {
         assertEquals(BEAUTIFUL.subSequence(2, 4), pyString.subSequence(2, 4));
+    }
+
+    @Test
+    public void testSubstring() {
+        int start = 2;
+        int end = 5;
+        assertEquals(BEAUTIFUL.substring(start, end), pyString.substring(start, end));
     }
 
     @Test
@@ -187,6 +199,11 @@ public class PyStringTest {
         otherPyUnicode = new PyUnicode(BEAUTIFUL);
         assertPyTrue(otherPyUnicode.__ge__(pyString));
         assertPyTrue(pyString.__ge__(otherPyUnicode));
+    }
+
+    @Test
+    public void test__unicode__() {
+        assertPyTrue(pyString.__eq__(pyString.__unicode__()));
     }
 
     private void assertPyTrue(PyObject value) {

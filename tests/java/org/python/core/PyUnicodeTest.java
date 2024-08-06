@@ -143,6 +143,23 @@ public class PyUnicodeTest {
         assertPyTrue(pyUnicode.__ge__(otherPyString));
     }
 
+    @Test
+    public void test__len__() {
+        assertEquals(BEAUTIFUL.length(), pyUnicode.__len__());
+    }
+
+    @Test
+    public void testSubstring() {
+        int start = 2;
+        int end = 5;
+        assertEquals(BEAUTIFUL.substring(start, end), pyUnicode.substring(start, end));
+    }
+
+    @Test
+    public void test__unicode__() {
+        assertSame(pyUnicode, pyUnicode.__unicode__());
+    }
+
     private void assertPyTrue(PyObject value) {
         assertTrue(value instanceof PyBoolean);
         assertTrue(((PyBoolean) value).__nonzero__());

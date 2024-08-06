@@ -282,7 +282,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @Override
     public PyUnicode __unicode__() {
-        return new PyUnicode(this);  // Decodes with default codec.
+        return new PyUnicode(getString());
     }
 
     @Override
