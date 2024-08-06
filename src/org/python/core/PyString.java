@@ -896,10 +896,6 @@ public class PyString extends PyBaseString implements BufferProtocol {
      */
     private static String asU16BytesOrNull(PyObject obj) {
         if (obj instanceof PyString) {
-            if (obj instanceof PyUnicode) {
-                return null;
-            }
-            // str but not unicode object: go directly to the String
             return ((PyString) obj).getString();
         } else if (obj instanceof BufferProtocol) {
             // Other object with buffer API: briefly access the buffer
@@ -3227,7 +3223,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
     final PyString str_replace(PyObject oldPieceObj, PyObject newPieceObj, int count) {
         if (oldPieceObj instanceof PyUnicode || newPieceObj instanceof PyUnicode) {
             // Promote the problem to a Unicode one
-            return ((PyUnicode) decode()).unicode_replace(oldPieceObj, newPieceObj, count);
+            return new PyUnicode(getString()).unicode_replace(oldPieceObj, newPieceObj, count);
         } else {
             // Neither is a PyUnicode: both ought to be some kind of bytes with the buffer API.
             String oldPiece = asU16BytesOrError(oldPieceObj);

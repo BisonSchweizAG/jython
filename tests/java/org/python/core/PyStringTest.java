@@ -231,6 +231,22 @@ public class PyStringTest {
         assertEquals("schoen \n und \n toeier", result.getString());
     }
 
+    @Test
+    public void testReplacePyUnicode() {
+        PyUnicode toBeReplaced = new PyUnicode(SMALL_O_UMLAUT);
+        PyUnicode replacement = new PyUnicode("oe");
+        PyString result = pyString.replace(toBeReplaced, replacement, -1);
+        assertEquals("schoen \n und \n toeier", result.getString());
+    }
+
+    @Test
+    public void testReplace() {
+        PyString toBeReplaced = new PyString(SMALL_O_UMLAUT);
+        PyString replacement = new PyString("oe");
+        PyString result = pyString.replace(toBeReplaced, replacement, -1);
+        assertEquals("schoen \n und \n toeier", result.getString());
+    }
+
     private void assertPyTrue(PyObject value) {
         assertTrue(value instanceof PyBoolean);
         assertTrue(((PyBoolean) value).__nonzero__());
