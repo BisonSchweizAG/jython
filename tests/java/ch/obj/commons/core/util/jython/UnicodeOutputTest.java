@@ -7,8 +7,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.python.core.PyObject;
+import org.python.core.PyString;
 import org.python.core.PySystemState;
-import org.python.core.PyUnicode;
 import org.python.util.PythonInterpreter;
 
 public class UnicodeOutputTest {
@@ -24,7 +24,8 @@ public class UnicodeOutputTest {
 
             PyObject res = interpreter.get("result");
             assertNotNull(res);
-            assertTrue(res instanceof PyUnicode);
+            assertTrue(res instanceof PyString);
+            assertEquals(BEAUTIFUL, ((PyString) res).getString());
         }
     }
 
