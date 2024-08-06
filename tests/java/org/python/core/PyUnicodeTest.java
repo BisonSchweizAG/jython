@@ -14,6 +14,7 @@ public class PyUnicodeTest {
     private static final String BEAUTIFUL = "sch\u00F6n \n und \n t\u00F6ier";
     private static final String LESS_BEAUTIFUL = "sch\u00F6an";
     private static final String MORE_BEAUTIFUL = "sch\u00F6zn";
+    private static final String SMALL_O_UMLAUT = "\\u00F6";
 
     private PyUnicode pyUnicode;
 
@@ -158,6 +159,24 @@ public class PyUnicodeTest {
     @Test
     public void test__unicode__() {
         assertSame(pyUnicode, pyUnicode.__unicode__());
+    }
+
+    @Test
+    public void testUnicode_replaceBasicPyString() {
+        PyString toBeReplaced = new PyString(SMALL_O_UMLAUT);
+        PyString replacement = new PyString("oe");
+        PyString result = pyUnicode.unicode_replace(toBeReplaced, replacement, -1); // all occurrences
+        assertTrue(result instanceof PyUnicode);
+        assertEquals("schoen \n und \n toeier", result.getString());
+    }
+
+    @Test
+    public void testUnicode_replaceBasicPyUnicode() {
+        PyString toBeReplaced = new PyUnicode(SMALL_O_UMLAUT);
+        PyString replacement = new PyUnicode("oe");
+        PyString result = pyUnicode.unicode_replace(toBeReplaced, replacement, -1); // all occurrences
+        assertTrue(result instanceof PyUnicode);
+        assertEquals("schoen \n und \n toeier", result.getString());
     }
 
     private void assertPyTrue(PyObject value) {

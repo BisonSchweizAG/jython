@@ -1209,17 +1209,12 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         if (o instanceof PyUnicode) {
             return (PyUnicode) o;
         } else if (o instanceof PyString) {
-            // For any sensible codec, the return here is unicode.
-            PyObject u = ((PyString) o).decode();
-            return (u instanceof PyUnicode) ? (PyUnicode) u : new PyUnicode(o.toString());
+            return new PyUnicode(((PyString) o).getString());
         } else if (o instanceof BufferProtocol) {
             // PyByteArray, PyMemoryView, Py2kBuffer ...
             // We ought to be able to call codecs.decode on o but see Issue #2164
             try (PyBuffer buf = ((BufferProtocol) o).getBuffer(PyBUF.FULL_RO)) {
-                PyString s = new PyString(buf);
-                // For any sensible codec, the return is unicode and toString() is getString().
-                PyObject u = s.decode();
-                return (u instanceof PyUnicode) ? (PyUnicode) u : new PyUnicode(o.toString());
+                return new PyUnicode(new PyString(buf).getString());
             }
         } else {
             // o is some type not allowed:

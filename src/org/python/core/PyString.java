@@ -3249,38 +3249,25 @@ public class PyString extends PyBaseString implements BufferProtocol {
      * @return PyString (or PyUnicode if this string is one), this string after replacements.
      */
     protected final PyString _replace(String oldPiece, String newPiece, int count) {
-
-        String s = getString();
-        int len = s.length();
-        int oldLen = oldPiece.length();
-        int newLen = newPiece.length();
-
-        if (len == 0) {
-            if (count < 0 && oldLen == 0) {
-                return createInstance(newPiece, true);
-            }
-            return createInstance(s, true);
-
-        } else if (oldLen == 0 && newLen != 0 && count != 0) {
-            /*
-             * old="" and new != "", interleave new piece with each char in original, taking into
-             * account count
-             */
-            StringBuilder buffer = new StringBuilder();
-            int i = 0;
-            buffer.append(newPiece);
-            for (; i < len && (count < 0 || i < count - 1); i++) {
-                buffer.append(s.charAt(i)).append(newPiece);
-            }
-            buffer.append(s.substring(i));
-            return createInstance(buffer.toString(), true);
-
+        String current = getString();
+        String replaced = current;
+        if (count < 0) {
+            replaced = current.replaceAll(oldPiece, newPiece);
         } else {
-            if (count < 0) {
-                count = (oldLen == 0) ? len + 1 : len;
+            int attempts = 1;
+            while (attempts <= count) {
+                replaced = replaced.replaceFirst(oldPiece, newPiece);
+                attempts++;
             }
-            return createInstance(newPiece).join(splitfields(oldPiece, count));
         }
+        if (!replaced.equals(current)) {
+            if (this instanceof PyUnicode) {
+                return new PyUnicode(replaced);
+            } else {
+                return new PyString(replaced);
+            }
+        }
+        return this;
     }
 
     public PyString join(PyObject seq) {

@@ -66,17 +66,17 @@ public class UnicodeOutputTest {
 
             PyObject res = interpreter.get("result");
             assertNotNull(res);
-            assertEquals("Expect umlaut to be replaced", "schoen".equals(res.toString()));
+            assertEquals("Expect umlaut to be replaced", "schoen", res.toString());
         }
     }
 
     // FEN
     private String replaceScript() {
         StringBuilder b = new StringBuilder();
-        b.append("Uml = ['ä', 'Ä', 'ü', 'Ü', 'ö', 'Ö']\n");
-        b.append("DC = ['ae', 'Ae', 'ue', 'Ue', 'oe', 'Oe']\n");
-        b.append("for i in range(len(Uml)):\n");
-        b.append("  bv = bv.replace(Uml[i], DC[i])\n");
+        b.append("umlauts = ['ä', 'Ä', 'ü', 'Ü', 'ö', 'Ö']\n");
+        b.append("replacements = ['ae', 'Ae', 'ue', 'Ue', 'oe', 'Oe']\n");
+        b.append("for i in range(len(umlauts)):\n");
+        b.append("  bv = bv.replace(umlauts[i], replacements[i])\n");
         b.append("result = bv\n");
         return b.toString();
     }

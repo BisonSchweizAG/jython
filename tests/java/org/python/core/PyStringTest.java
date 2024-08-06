@@ -14,6 +14,7 @@ public class PyStringTest {
     private static final String BEAUTIFUL = "sch\u00F6n \n und \n t\u00F6ier";
     private static final String LESS_BEAUTIFUL = "sch\u00F6an";
     private static final String MORE_BEAUTIFUL = "sch\u00F6zn";
+    private static final String SMALL_O_UMLAUT = "\\u00F6";
 
     private PyString pyString;
 
@@ -204,6 +205,30 @@ public class PyStringTest {
     @Test
     public void test__unicode__() {
         assertPyTrue(pyString.__eq__(pyString.__unicode__()));
+    }
+
+    @Test
+    public void test_ReplaceAll() {
+        PyString result = pyString._replace(SMALL_O_UMLAUT, "oe", -1);
+        assertEquals("schoen \n und \n toeier", result.getString());
+    }
+
+    @Test
+    public void test_ReplaceNothing() {
+        PyString result = pyString._replace(SMALL_O_UMLAUT, "oe", 0);
+        assertEquals(BEAUTIFUL, result.getString());
+    }
+
+    @Test
+    public void test_ReplaceOne() {
+        PyString result = pyString._replace(SMALL_O_UMLAUT, "oe", 1);
+        assertEquals("schoen \n und \n t\u00F6ier", result.getString());
+    }
+
+    @Test
+    public void test_ReplaceTooMuch() {
+        PyString result = pyString._replace(SMALL_O_UMLAUT, "oe", 4);
+        assertEquals("schoen \n und \n toeier", result.getString());
     }
 
     private void assertPyTrue(PyObject value) {
