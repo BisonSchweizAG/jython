@@ -1034,9 +1034,6 @@ public class PyString extends PyBaseString implements BufferProtocol {
         if (otherStr != null) {
             // Yes it is: concatenate as strings, which are guaranteed byte-like.
             return new PyString(getString().concat(otherStr), true);
-        } else if (other instanceof PyUnicode) {
-            // Escalate the problem to PyUnicode
-            return decode().__add__(other);
         } else {
             // Allow PyObject._basic_add to pick up the pieces or raise informative error
             return null;
@@ -1248,15 +1245,10 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(defaults = "null", doc = BuiltinDocs.str_strip_doc)
     final PyObject str_strip(PyObject chars) {
-        if (chars instanceof PyUnicode) {
-            // Promote the problem to a Unicode one
-            return ((PyUnicode) decode()).unicode_strip(chars);
-        } else {
-            // It ought to be None, null, some kind of bytes with the buffer API.
-            String stripChars = asU16BytesNullOrError(chars, "strip");
-            // Strip specified characters or whitespace if stripChars == null
-            return new PyString(_strip(stripChars), true);
-        }
+        // It ought to be None, null, some kind of bytes with the buffer API.
+        String stripChars = asU16BytesNullOrError(chars, "strip");
+        // Strip specified characters or whitespace if stripChars == null
+        return new PyString(_strip(stripChars), true);
     }
 
     /**

@@ -228,6 +228,30 @@ public class PyUnicodeTest {
     }
 
     @Test
+    public void testStrip() {
+        PyUnicode toBeStripped = new PyUnicode(SMALL_O_UMLAUT + SMALL_O_UMLAUT);
+        String originalString = SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT //
+                        + "GUGUS" //
+                        + SMALL_O_UMLAUT + SMALL_O_UMLAUT;
+        PyString originalPyString = new PyString(originalString);
+        PyObject result = originalPyString.strip(toBeStripped);
+        assertTrue(result instanceof PyString);
+        assertEquals("GUGUS", ((PyString) result).getString());
+    }
+
+    @Test
+    public void testStripPyString() {
+        PyString toBeStripped = new PyString(SMALL_O_UMLAUT + SMALL_O_UMLAUT);
+        String originalString = SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT //
+                        + "GUGUS" //
+                        + SMALL_O_UMLAUT + SMALL_O_UMLAUT;
+        PyString originalPyString = new PyString(originalString);
+        PyObject result = originalPyString.strip(toBeStripped);
+        assertTrue(result instanceof PyString);
+        assertEquals("GUGUS", ((PyString) result).getString());
+    }
+
+    @Test
     public void test__contains__() {
         PyUnicode searchString = new PyUnicode(SMALL_O_UMLAUT);
         assertTrue(pyUnicode.__contains__(searchString));
