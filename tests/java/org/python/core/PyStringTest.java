@@ -14,7 +14,7 @@ public class PyStringTest {
     private static final String BEAUTIFUL = "sch\u00F6n \n und \n t\u00F6ier";
     private static final String LESS_BEAUTIFUL = "sch\u00F6an";
     private static final String MORE_BEAUTIFUL = "sch\u00F6zn";
-    private static final String SMALL_O_UMLAUT = "\\u00F6";
+    private static final String SMALL_O_UMLAUT = "\u00F6";
 
     private PyString pyString;
 

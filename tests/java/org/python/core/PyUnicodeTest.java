@@ -13,7 +13,7 @@ public class PyUnicodeTest {
     private static final String BEAUTIFUL = "sch\u00F6n \n und \n t\u00F6ier";
     private static final String LESS_BEAUTIFUL = "sch\u00F6an";
     private static final String MORE_BEAUTIFUL = "sch\u00F6zn";
-    private static final String SMALL_O_UMLAUT = "\\u00F6";
+    private static final String SMALL_O_UMLAUT = "\u00F6";
 
     private PyUnicode pyUnicode;
 
@@ -192,6 +192,39 @@ public class PyUnicodeTest {
         PyObject result = pyUnicode.__add__(addition);
         assertTrue(result instanceof PyString);
         assertEquals(BEAUTIFUL.concat(addition.getString()), ((PyString) result).getString());
+    }
+
+    @Test
+    public void testUnicode_stripReallyBasic() {
+        PyUnicode toBeStripped = new PyUnicode("abc");
+        PyUnicode originalPyUnicode = new PyUnicode("abcabcGUGUSabc");
+        PyObject result = originalPyUnicode.unicode_strip(toBeStripped);
+        assertTrue(result instanceof PyString);
+        assertEquals("GUGUS", ((PyString) result).getString());
+    }
+
+    @Test
+    public void testUnicode_strip() {
+        PyUnicode toBeStripped = new PyUnicode(SMALL_O_UMLAUT + SMALL_O_UMLAUT);
+        String originalString = SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT //
+                        + "GUGUS" //
+                        + SMALL_O_UMLAUT + SMALL_O_UMLAUT;
+        PyUnicode originalPyUnicode = new PyUnicode(originalString);
+        PyObject result = originalPyUnicode.unicode_strip(toBeStripped);
+        assertTrue(result instanceof PyString);
+        assertEquals("GUGUS", ((PyString) result).getString());
+    }
+
+    @Test
+    public void testUnicode_stripPyString() {
+        PyString toBeStripped = new PyString(SMALL_O_UMLAUT + SMALL_O_UMLAUT);
+        String originalString = SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT + SMALL_O_UMLAUT //
+                        + "GUGUS" //
+                        + SMALL_O_UMLAUT + SMALL_O_UMLAUT;
+        PyUnicode originalPyUnicode = new PyUnicode(originalString);
+        PyObject result = originalPyUnicode.unicode_strip(toBeStripped);
+        assertTrue(result instanceof PyString);
+        assertEquals("GUGUS", ((PyString) result).getString());
     }
 
     private void assertPyTrue(PyObject value) {

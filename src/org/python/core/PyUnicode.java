@@ -1397,8 +1397,7 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         } else if (o instanceof PyUnicode) {
             return (PyUnicode) o;
         } else if (o instanceof PyString) {
-            PyObject u = ((PyString) o).decode();
-            return (u instanceof PyUnicode) ? (PyUnicode) u : new PyUnicode(u.toString());
+            return new PyUnicode(((PyString) o).getString());
         } else if (o == Py.None) {
             return null;
         } else {
