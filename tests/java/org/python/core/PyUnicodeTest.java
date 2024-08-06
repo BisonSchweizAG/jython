@@ -10,7 +10,6 @@ import org.junit.Test;
 
 public class PyUnicodeTest {
 
-
     private static final String BEAUTIFUL = "sch\u00F6n \n und \n t\u00F6ier";
     private static final String LESS_BEAUTIFUL = "sch\u00F6an";
     private static final String MORE_BEAUTIFUL = "sch\u00F6zn";
@@ -177,6 +176,22 @@ public class PyUnicodeTest {
         PyString result = pyUnicode.unicode_replace(toBeReplaced, replacement, -1); // all occurrences
         assertTrue(result instanceof PyUnicode);
         assertEquals("schoen \n und \n toeier", result.getString());
+    }
+
+    @Test
+    public void test__add__() {
+        PyUnicode addition = new PyUnicode(" und h\u00E4rzig");
+        PyObject result = pyUnicode.__add__(addition);
+        assertTrue(result instanceof PyString);
+        assertEquals(BEAUTIFUL.concat(addition.getString()), ((PyString) result).getString());
+    }
+
+    @Test
+    public void test__add__PyString() {
+        PyString addition = new PyString(" und h\\u00E4rzig");
+        PyObject result = pyUnicode.__add__(addition);
+        assertTrue(result instanceof PyString);
+        assertEquals(BEAUTIFUL.concat(addition.getString()), ((PyString) result).getString());
     }
 
     private void assertPyTrue(PyObject value) {
