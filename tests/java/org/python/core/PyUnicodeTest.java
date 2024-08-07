@@ -16,6 +16,7 @@ public class PyUnicodeTest {
     private static final String SMALL_O_UMLAUT = "\u00F6";
 
     private static final String FRENCH_APOSTROPHE = "\u02B9";
+    private static final String RIGHT_SINGLE_QUOTATION_MARK = "\u2019";
     private static final String TURKISH_C = "\u00E7";
     private static final String TURKISH_I = "\u0131";
 
@@ -50,6 +51,15 @@ public class PyUnicodeTest {
     @Test
     public void test__str__French() {
         String frenchString = "Rabais d" + FRENCH_APOSTROPHE + "action annuel %";
+        PyString frenchPyString = new PyString(frenchString);
+
+        PyString result = frenchPyString.__str__();
+        assertEquals(frenchString, result.toString());
+    }
+
+    @Test
+    public void test__str__SimpleFrench() {
+        String frenchString = "Rabais d" + RIGHT_SINGLE_QUOTATION_MARK + "action annuel %";
         PyString frenchPyString = new PyString(frenchString);
 
         PyString result = frenchPyString.__str__();

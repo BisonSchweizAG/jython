@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +36,10 @@ import org.python.expose.MethodType;
 public class PyString extends PyBaseString implements BufferProtocol {
 
     public static final PyType TYPE = PyType.fromClass(PyString.class);
+
+    // 8217 = right single quotation mark
+    private static final Set<Integer> OTHER_ALPHABETIC_CHARACTERS = Set.of(Integer.valueOf(8217));
+
     protected String string; // cannot make final because of Python intern support
     protected transient boolean interned = false;
     /** Supports the buffer API, see {@link #getBuffer(int)}. */
@@ -390,7 +395,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
             }
             /* Map 16-bit characters to '\\uxxxx' */
             if (ch >= 256) {
-                if (Character.isAlphabetic(ch)) {
+                if (isAlphabetic(ch)) {
                     v.append((char) ch);
                 } else {
                     v.append('\\');
@@ -420,14 +425,16 @@ public class PyString extends PyBaseString implements BufferProtocol {
                 } else {
                     v.append("\r");
                 }
-            } else if (Character.isAlphabetic(ch)) {
-                v.append((char) ch);
             } else if ((ch < ' ' || ch >= 127)) {
-                /* Map non-printable US ASCII to '\xNN' */
-                v.append('\\');
-                v.append('x');
-                v.append(hexdigit[(ch >> 4) & 0xf]);
-                v.append(hexdigit[ch & 0xf]);
+                if (isAlphabetic(ch)) {
+                    v.append((char) ch);
+                } else {
+                    /* Map non-printable US ASCII to '\xNN' */
+                    v.append('\\');
+                    v.append('x');
+                    v.append(hexdigit[(ch >> 4) & 0xf]);
+                    v.append(hexdigit[ch & 0xf]);
+                }
             } else {/* Copy everything else as-is */
                 v.append((char) ch);
             }
@@ -439,6 +446,10 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
         // Return the original string if we didn't quote or escape anything
         return v.length() > size ? v.toString() : str;
+    }
+
+    private static boolean isAlphabetic(int ch) {
+        return Character.isAlphabetic(ch) || OTHER_ALPHABETIC_CHARACTERS.contains(Integer.valueOf(ch));
     }
 
     private static ucnhashAPI pucnHash = null;
