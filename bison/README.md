@@ -7,6 +7,11 @@
 - [overridden by Oomph settings in a bison eclipse:] Java -> Code Style -> Formatter: import `bison/formatting/Jython-like.xml`
 - [overridden by Oomph settings in a bison eclipse:] Java -> Editor -> Save Actions: format edited lines
 
+
+# Hint how to run unit tests from within Eclipse
+- add `exposed-2.7.x.jar` topmost to the run configuration of those unit tests which need initialization
+- at the moment this is the full `jython-2.7.x.jar`
+  
 # Differences to upstream
 - `jakarta` migration
 - improvement of `string.py` for `java.lang.String` arguments
@@ -19,7 +24,8 @@
 - remove jline import from Py.java (to allow jline being excluded from ear)
 - replace `AccessControlException`
 - remove `getSecurityManager()`
-
+- treat `PyString` and `PyUnicode` more like Java `String`
+ 
 # Artifactory publishing of a SNAPSHOT
 - `./gradlew clean publish`
 - copy `build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-SNAPSHOT.pom`
