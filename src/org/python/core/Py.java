@@ -643,34 +643,18 @@ public final class Py extends PrePy {
         return makeCharacter(c);
     }
 
-    /**
-     * Return a not-necessarily new {@link PyString} from a Java {@code String}. The character codes
-     * must all be all &lt; 256.
-     *
-     * @param s character codes are all &lt; 256.
-     * @param promise is true if the caller promises the codes are all &lt; 256.
-     * @return a new or re-used {@code PyString}
-     */
-    static PyString newString(String s, boolean promise) {
-        int n = s.length();
-        if (n > 1) {
-            return new PyString(s, promise);
-        } else if (n == 1) {
-            return makeCharacter(s.charAt(0));
-        } else {
-            return Py.EmptyString;
-        }
-    }
 
     /**
-     * Return a not-necessarily new {@link PyString} from a Java {@code String}. The character codes
-     * must all be all &lt; 256. (This is checked.)
+     * Return a not-necessarily new {@link PyString} from a Java {@code String}.
      *
-     * @param s character codes should all be &lt; 256 or an error occurs.
      * @return a new or re-used {@code PyString}
      */
     public static PyString newString(String s) {
-        return newString(s, false);
+        if (s != null && s.isEmpty()) {
+            return Py.EmptyString;
+        } else {
+            return new PyString(s);
+        }
     }
 
     /**
@@ -681,7 +665,7 @@ public final class Py extends PrePy {
      * @return a new {@code PyString}
      */
     static PyString newBytes(String s) {
-        return newString(s, true);
+        return newString(s);
     }
 
     /**

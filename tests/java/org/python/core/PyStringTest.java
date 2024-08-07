@@ -16,6 +16,10 @@ public class PyStringTest {
     private static final String MORE_BEAUTIFUL = "sch\u00F6zn";
     private static final String SMALL_O_UMLAUT = "\u00F6";
 
+    private static final String FRENCH_APOSTROPHE = "\u02B9";
+    private static final String TURKISH_C = "\u00E7";
+    private static final String TURKISH_I = "\u0131";
+
     private PyString pyString;
 
     @Before
@@ -85,6 +89,24 @@ public class PyStringTest {
     public void test__str__() {
         PyString result = pyString.__str__();
         assertEquals(BEAUTIFUL, result.toString());
+    }
+
+    @Test
+    public void test__str__French() {
+        String frenchString = "Rabais d" + FRENCH_APOSTROPHE + "action annuel %";
+        PyString frenchPyString = new PyString(frenchString);
+
+        PyString result = frenchPyString.__str__();
+        assertEquals(frenchString, result.toString());
+    }
+
+    @Test
+    public void test__str__Turkish() {
+        String turkishString = "Sa" + TURKISH_C + "l" + TURKISH_I;
+        PyString turkishPyString = new PyString(turkishString);
+
+        PyString result = turkishPyString.__str__();
+        assertEquals(turkishString, result.toString());
     }
 
     @Test

@@ -46,29 +46,9 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     // for PyJavaClass.init()
     public PyString() {
-        this(TYPE, "", true);
+        this(TYPE, "");
     }
 
-    protected PyString(PyType subType, String string, boolean isBytes) {
-        super(subType);
-        if (string == null) {
-            throw new IllegalArgumentException("Cannot create PyString from null");
-        } else if (!isBytes && !charsFitWidth(string, 8)) {
-            throw new IllegalArgumentException(nonByteStringMsg(string));
-        }
-        this.string = string;
-    }
-
-    /**
-     * Create the dreaded "non-byte value" error message.
-     *
-     * @param s problematic string
-     * @return the message
-     */
-    private static String nonByteStringMsg(String s) {
-        return String.format("Cannot create PyString with non-byte value: %.500s",
-                encode_UnicodeEscape(s, true));
-    }
 
     /**
      * Fundamental constructor for <code>PyString</code> objects when the client provides a Java
@@ -78,7 +58,11 @@ public class PyString extends PyBaseString implements BufferProtocol {
      * @param string a Java String to be wrapped
      */
     public PyString(PyType subType, String string) {
-        this(subType, string, false);
+        super(subType);
+        if (string == null) {
+            throw new IllegalArgumentException("Cannot create PyString from null");
+        }
+        this.string = string;
     }
 
     public PyString(String string) {
@@ -86,7 +70,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
     }
 
     public PyString(char c) {
-        this(TYPE, String.valueOf(c), c < 256);
+        this(TYPE, String.valueOf(c));
     }
 
     PyString(StringBuilder buffer) {
@@ -94,7 +78,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
     }
 
     PyString(PyBuffer buffer) {
-        this(TYPE, buffer.toString(), true);
+        this(TYPE, buffer.toString());
     }
 
     /**
@@ -105,8 +89,8 @@ public class PyString extends PyBaseString implements BufferProtocol {
      * @param string a Java String to be wrapped (not null)
      * @param isBytes true if the client guarantees we are dealing with bytes
      */
-    PyString(String string, boolean isBytes) {
-        this(TYPE, string, isBytes);
+    PyString(String string, boolean isBytes) {// +++++
+        this(TYPE, string);
     }
 
     /**
@@ -161,8 +145,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
      * @return {@code PyString} for those bytes
      */
     public static PyString fromInterned(String interned) {
-        assert charsFitWidth(interned, 8);
-        PyString str = new PyString(TYPE, interned, true);
+        PyString str = new PyString(TYPE, interned);
         str.interned = true;
         return str;
     }
@@ -407,12 +390,16 @@ public class PyString extends PyBaseString implements BufferProtocol {
             }
             /* Map 16-bit characters to '\\uxxxx' */
             if (ch >= 256) {
-                v.append('\\');
-                v.append('u');
-                v.append(hexdigit[(ch >> 12) & 0xf]);
-                v.append(hexdigit[(ch >> 8) & 0xf]);
-                v.append(hexdigit[(ch >> 4) & 0xf]);
-                v.append(hexdigit[ch & 15]);
+                if (Character.isAlphabetic(ch)) {
+                    v.append((char) ch);
+                } else {
+                    v.append('\\');
+                    v.append('u');
+                    v.append(hexdigit[(ch >> 12) & 0xf]);
+                    v.append(hexdigit[(ch >> 8) & 0xf]);
+                    v.append(hexdigit[(ch >> 4) & 0xf]);
+                    v.append(hexdigit[ch & 15]);
+                }
             }
             /* Map special whitespace to '\t', \n', '\r' */
             else if (ch == '\t') {
@@ -433,7 +420,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
                 } else {
                     v.append("\r");
                 }
-            } else if (Character.isJavaIdentifierPart(ch)) {
+            } else if (Character.isAlphabetic(ch)) {
                 v.append((char) ch);
             } else if ((ch < ' ' || ch >= 127)) {
                 /* Map non-printable US ASCII to '\xNN' */
@@ -1033,7 +1020,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
         String otherStr = asU16BytesOrNull(other);
         if (otherStr != null) {
             // Yes it is: concatenate as strings, which are guaranteed byte-like.
-            return new PyString(getString().concat(otherStr), true);
+            return new PyString(getString().concat(otherStr));
         } else {
             // Allow PyObject._basic_add to pick up the pieces or raise informative error
             return null;
@@ -1248,7 +1235,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
         // It ought to be None, null, some kind of bytes with the buffer API.
         String stripChars = asU16BytesNullOrError(chars, "strip");
         // Strip specified characters or whitespace if stripChars == null
-        return new PyString(_strip(stripChars), true);
+        return new PyString(_strip(stripChars));
     }
 
     /**
@@ -1411,7 +1398,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
         // It ought to be None, null, some kind of bytes with the buffer API.
         String stripChars = asU16BytesNullOrError(chars, "lstrip");
         // Strip specified characters or whitespace if stripChars == null
-        return new PyString(_lstrip(stripChars), true);
+        return new PyString(_lstrip(stripChars));
     }
 
     /**
@@ -1495,7 +1482,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
         // It ought to be None, null, some kind of bytes with the buffer API.
         String stripChars = asU16BytesNullOrError(chars, "rstrip");
         // Strip specified characters or whitespace if stripChars == null
-        return new PyString(_rstrip(stripChars), true);
+        return new PyString(_rstrip(stripChars));
     }
 
     /**
@@ -2200,7 +2187,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
      */
     protected PyString fromSubstring(int begin, int end) {
         // Method is overridden in PyUnicode, so definitely a PyString
-        return new PyString(getString().substring(begin, end), true);
+        return new PyString(getString().substring(begin, end));
     }
 
     /**
@@ -3303,7 +3290,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
             }
             buf.append(((PyString) item).getString());
         }
-        return new PyString(buf.toString(), true); // Guaranteed to be byte-like
+        return new PyString(buf.toString());
     }
 
     final PyUnicode unicodeJoin(PyObject obj) {
