@@ -423,6 +423,18 @@ public class PyStringTest {
         assertEquals("ier", pyList.get(2));
     }
 
+    @Test
+    public void testFind() {
+        PyString toBeFound = new PyString(SMALL_O_UMLAUT);
+        assertEquals(3, pyString.find(toBeFound));
+    }
+
+    @Test
+    public void testFindPyUnicode() {
+        PyUnicode toBeFound = new PyUnicode(SMALL_O_UMLAUT);
+        assertEquals(3, pyString.find(toBeFound));
+    }
+
     private void assertPyTrue(PyObject value) {
         assertTrue(value instanceof PyBoolean);
         assertTrue(((PyBoolean) value).__nonzero__());

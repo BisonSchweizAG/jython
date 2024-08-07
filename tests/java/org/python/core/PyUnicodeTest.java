@@ -403,6 +403,18 @@ public class PyUnicodeTest {
         assertEquals("ier", pyList.get(2));
     }
 
+    @Test
+    public void testFind() {
+        PyUnicode toBeFound = new PyUnicode(SMALL_O_UMLAUT);
+        assertEquals(3, pyUnicode.find(toBeFound));
+    }
+
+    @Test
+    public void testFindPyString() {
+        PyString toBeFound = new PyString(SMALL_O_UMLAUT);
+        assertEquals(3, pyUnicode.find(toBeFound));
+    }
+
     private void assertPyTrue(PyObject value) {
         assertTrue(value instanceof PyBoolean);
         assertTrue(((PyBoolean) value).__nonzero__());

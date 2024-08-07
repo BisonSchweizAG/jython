@@ -2500,15 +2500,9 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(defaults = {"null", "null"}, doc = BuiltinDocs.str_find_doc)
     final int str_find(PyObject subObj, PyObject start, PyObject end) {
-        if (subObj instanceof PyUnicode) {
-            // Promote the problem to a Unicode one
-            // XXX Questionable: return is a Unicode character index not byte index
-            return ((PyUnicode) decode()).unicode_find(subObj, start, end);
-        } else {
-            // It ought to be a bytes-like object.
-            String sub = asU16BytesOrError(subObj);
-            return _find(sub, start, end);
-        }
+        // It ought to be a bytes-like object.
+        String sub = asU16BytesOrError(subObj);
+        return _find(sub, start, end);
     }
 
     /**
