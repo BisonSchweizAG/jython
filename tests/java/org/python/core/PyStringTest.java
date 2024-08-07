@@ -355,6 +355,74 @@ public class PyStringTest {
                         ((PyString) result).getString());
     }
 
+    @Test
+    public void testSplit() {
+        PySystemState.initialize();
+        PyList pyList = pyString.split(" ");
+        assertEquals(5, pyList.__len__());
+        assertEquals("sch\u00F6n", pyList.get(0));
+        assertEquals("\n", pyList.get(1));
+        assertEquals("und", pyList.get(2));
+        assertEquals("\n", pyList.get(3));
+        assertEquals("t\u00F6ier", pyList.get(4));
+    }
+
+    @Test
+    public void testSplitSep() {
+        PySystemState.initialize();
+        PyString sep = new PyString(SMALL_O_UMLAUT);
+        PyList pyList = pyString.split(sep);
+        assertEquals(3, pyList.__len__());
+        assertEquals("sch", pyList.get(0));
+        assertEquals("n \n und \n t", pyList.get(1));
+        assertEquals("ier", pyList.get(2));
+    }
+
+    @Test
+    public void testSplitSepPyUnicode() {
+        PySystemState.initialize();
+        PyUnicode sep = new PyUnicode(SMALL_O_UMLAUT);
+        PyList pyList = pyString.split(sep);
+        assertEquals(3, pyList.__len__());
+        assertEquals("sch", pyList.get(0));
+        assertEquals("n \n und \n t", pyList.get(1));
+        assertEquals("ier", pyList.get(2));
+    }
+
+    @Test
+    public void testRsplit() {
+        PySystemState.initialize();
+        PyList pyList = pyString.rsplit(" ");
+        assertEquals(5, pyList.__len__());
+        assertEquals("sch\u00F6n", pyList.get(0));
+        assertEquals("\n", pyList.get(1));
+        assertEquals("und", pyList.get(2));
+        assertEquals("\n", pyList.get(3));
+        assertEquals("t\u00F6ier", pyList.get(4));
+    }
+
+    @Test
+    public void testSRplitSep() {
+        PySystemState.initialize();
+        PyString sep = new PyString(SMALL_O_UMLAUT);
+        PyList pyList = pyString.rsplit(sep);
+        assertEquals(3, pyList.__len__());
+        assertEquals("sch", pyList.get(0));
+        assertEquals("n \n und \n t", pyList.get(1));
+        assertEquals("ier", pyList.get(2));
+    }
+
+    @Test
+    public void testRsplitSepPyUnicode() {
+        PySystemState.initialize();
+        PyUnicode sep = new PyUnicode(SMALL_O_UMLAUT);
+        PyList pyList = pyString.rsplit(sep);
+        assertEquals(3, pyList.__len__());
+        assertEquals("sch", pyList.get(0));
+        assertEquals("n \n und \n t", pyList.get(1));
+        assertEquals("ier", pyList.get(2));
+    }
+
     private void assertPyTrue(PyObject value) {
         assertTrue(value instanceof PyBoolean);
         assertTrue(((PyBoolean) value).__nonzero__());

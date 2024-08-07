@@ -1593,15 +1593,10 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(defaults = {"null", "-1"}, doc = BuiltinDocs.str_split_doc)
     final PyList str_split(PyObject sepObj, int maxsplit) {
-        if (sepObj instanceof PyUnicode) {
-            // Promote the problem to a Unicode one
-            return ((PyUnicode) decode()).unicode_split(sepObj, maxsplit);
-        } else {
-            // It ought to be None, null, some kind of bytes with the buffer API.
-            String sep = asU16BytesNullOrError(sepObj, "split");
-            // Split on specified string or whitespace if sep == null
-            return _split(sep, maxsplit);
-        }
+        // It ought to be None, null, some kind of bytes with the buffer API.
+        String sep = asU16BytesNullOrError(sepObj, "split");
+        // Split on specified string or whitespace if sep == null
+        return _split(sep, maxsplit);
     }
 
     /**
@@ -1843,15 +1838,10 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(defaults = {"null", "-1"}, doc = BuiltinDocs.str_split_doc)
     final PyList str_rsplit(PyObject sepObj, int maxsplit) {
-        if (sepObj instanceof PyUnicode) {
-            // Promote the problem to a Unicode one
-            return ((PyUnicode) decode()).unicode_rsplit(sepObj, maxsplit);
-        } else {
-            // It ought to be None, null, some kind of bytes with the buffer API.
-            String sep = asU16BytesNullOrError(sepObj, "rsplit");
-            // Split on specified string or whitespace if sep == null
-            return _rsplit(sep, maxsplit);
-        }
+        // It ought to be None, null, some kind of bytes with the buffer API.
+        String sep = asU16BytesNullOrError(sepObj, "rsplit");
+        // Split on specified string or whitespace if sep == null
+        return _rsplit(sep, maxsplit);
     }
 
     /**
