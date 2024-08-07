@@ -3296,13 +3296,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
         String sep = null;
         if (seqLen > 1) {
-            if (this instanceof PyUnicode) {
-                sep = getString();
-            } else {
-                sep = ((PyUnicode) decode()).getString();
-                // In case decode()'s codec mutated seq
-                seqLen = seq.__len__();
-            }
+            sep = getString();
         }
 
         // At least two items to join, or one that isn't exact Unicode
@@ -3318,12 +3312,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
                         "sequence item %d: expected string or Unicode," + " %.80s found", i,
                         item.getType().fastGetName()));
             }
-            if (!(item instanceof PyUnicode)) {
-                item = ((PyString) item).decode();
-                // In case decode()'s codec mutated seq
-                seqLen = seq.__len__();
-            }
-            itemString = ((PyUnicode) item).getString();
+            itemString = ((PyString) item).getString();
 
             if (i != 0) {
                 size += sepLen;

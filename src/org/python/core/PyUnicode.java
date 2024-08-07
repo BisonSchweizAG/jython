@@ -71,9 +71,7 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
     }
 
     public PyUnicode(PyType subtype, PyString pystring) {
-        this(subtype, //
-                pystring instanceof PyUnicode ? pystring.string : pystring.decode().toString(), //
-                pystring.isBasicPlane());
+        this(subtype, pystring.getString(), pystring.isBasicPlane());
     }
 
     public PyUnicode(char c) {
@@ -710,26 +708,12 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         ArgParser ap = new ArgParser("unicode", args, keywords,
                 new String[] {"string", "encoding", "errors"}, 0);
         PyObject S = ap.getPyObject(0, null);
-        String encoding = checkEncoding(ap.getString(1, null));
-        String errors = checkEncoding(ap.getString(2, null));
         if (new_.for_type == subtype) {
             if (S == null) {
                 return new PyUnicode("");
             }
-            if (S instanceof PyUnicode) {
-                return new PyUnicode(((PyUnicode) S).getString());
-            }
             if (S instanceof PyString) {
-                if (S.getType() != PyString.TYPE && encoding == null && errors == null) {
-                    return S.__unicode__();
-                }
-                PyObject decoded = codecs.decode((PyString) S, encoding, errors);
-                if (decoded instanceof PyUnicode) {
-                    return new PyUnicode(((PyUnicode) decoded).getString());
-                } else {
-                    throw Py.TypeError("decoder did not return a unicode object (type="
-                            + decoded.getType().fastGetName() + ")");
-                }
+                return new PyUnicode(((PyString) S).getString());
             }
             return S.__unicode__();
         } else {
