@@ -2600,14 +2600,9 @@ public class PyString extends PyBaseString implements BufferProtocol {
 
     @ExposedMethod(defaults = {"null", "null"}, doc = BuiltinDocs.str_rfind_doc)
     final int str_rfind(PyObject subObj, PyObject start, PyObject end) {
-        if (subObj instanceof PyUnicode) {
-            // Promote the problem to a Unicode one
-            return ((PyUnicode) decode()).unicode_rfind(subObj, start, end);
-        } else {
-            // It ought to be some kind of bytes with the buffer API.
-            String sub = asU16BytesOrError(subObj);
-            return _rfind(sub, start, end);
-        }
+        // It ought to be some kind of bytes with the buffer API.
+        String sub = asU16BytesOrError(subObj);
+        return _rfind(sub, start, end);
     }
 
     /**

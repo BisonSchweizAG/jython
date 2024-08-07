@@ -415,6 +415,18 @@ public class PyUnicodeTest {
         assertEquals(3, pyUnicode.find(toBeFound));
     }
 
+    @Test
+    public void testRfind() {
+        PyUnicode toBeFound = new PyUnicode(SMALL_O_UMLAUT);
+        assertEquals(15, pyUnicode.rfind(toBeFound));
+    }
+
+    @Test
+    public void testRfindPyString() {
+        PyString toBeFound = new PyString(SMALL_O_UMLAUT);
+        assertEquals(15, pyUnicode.rfind(toBeFound));
+    }
+
     private void assertPyTrue(PyObject value) {
         assertTrue(value instanceof PyBoolean);
         assertTrue(((PyBoolean) value).__nonzero__());
