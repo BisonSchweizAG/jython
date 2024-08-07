@@ -11,7 +11,7 @@ import org.python.core.PyString;
 import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
-public class UnicodeOutputTest {
+public class UnicodeHandlingTest {
 
     private static final String BEAUTIFUL = "sch\u00F6n";
 
