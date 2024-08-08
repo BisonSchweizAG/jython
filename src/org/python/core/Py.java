@@ -654,7 +654,11 @@ public final class Py extends PrePy {
     static PyString newString(String s, boolean promise) {
         int n = s.length();
         if (n > 1) {
-            return new PyString(s, promise);
+            if (PyString.charsFitWidth(s, 8)) {
+                return new PyString(s, promise);
+            } else {
+                return newUnicode(s);
+            }
         } else if (n == 1) {
             return makeCharacter(s.charAt(0));
         } else {
