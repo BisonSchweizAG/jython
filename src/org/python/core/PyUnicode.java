@@ -71,7 +71,9 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
     }
 
     public PyUnicode(PyType subtype, PyString pystring) {
-        this(subtype, pystring.getString(), pystring.isBasicPlane());
+        this(subtype, //
+                pystring instanceof PyUnicode ? pystring.string : pystring.decode().toString(), //
+                pystring.isBasicPlane());
     }
 
     public PyUnicode(char c) {
@@ -153,7 +155,7 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
      * @param isBasic true if it is known that only BMP characters are present.
      */
     private PyUnicode(PyType subtype, String string, boolean isBasic) {
-        super(subtype, "");
+        super(subtype, "", true);
         this.string = string;
         translator = isBasic ? BASIC : this.chooseIndexTranslator();
     }
@@ -708,12 +710,26 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         ArgParser ap = new ArgParser("unicode", args, keywords,
                 new String[] {"string", "encoding", "errors"}, 0);
         PyObject S = ap.getPyObject(0, null);
+        String encoding = checkEncoding(ap.getString(1, null));
+        String errors = checkEncoding(ap.getString(2, null));
         if (new_.for_type == subtype) {
             if (S == null) {
                 return new PyUnicode("");
             }
+            if (S instanceof PyUnicode) {
+                return new PyUnicode(((PyUnicode) S).getString());
+            }
             if (S instanceof PyString) {
-                return new PyUnicode(((PyString) S).getString());
+                if (S.getType() != PyString.TYPE && encoding == null && errors == null) {
+                    return S.__unicode__();
+                }
+                PyObject decoded = codecs.decode((PyString) S, encoding, errors);
+                if (decoded instanceof PyUnicode) {
+                    return new PyUnicode(((PyUnicode) decoded).getString());
+                } else {
+                    throw Py.TypeError("decoder did not return a unicode object (type="
+                            + decoded.getType().fastGetName() + ")");
+                }
             }
             return S.__unicode__();
         } else {
@@ -765,7 +781,7 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
 
     @ExposedMethod(doc = BuiltinDocs.unicode___str___doc)
     final PyString unicode___str__() {
-        return new PyString(encode_UnicodeEscape(getString(), false, false));
+        return new PyString(encode());
     }
 
     @Override
@@ -785,7 +801,7 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
 
     @ExposedMethod(doc = BuiltinDocs.unicode___repr___doc)
     final PyString unicode___repr__() {
-        return new PyString(encode_UnicodeEscape(getString(), true, true));
+        return new PyString("u" + encode_UnicodeEscape(getString(), true));
     }
 
     @ExposedMethod(doc = BuiltinDocs.unicode___getitem___doc)
@@ -1096,13 +1112,14 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         if (o instanceof PyUnicode) {
             return ((PyUnicode) o).getString();
         } else if (o instanceof PyString) {
-            return ((PyString) o).getString();
+            return ((PyString) o).decode().toString();
         } else if (o instanceof BufferProtocol) {
             // PyByteArray, PyMemoryView, Py2kBuffer ...
             // We ought to be able to call codecs.decode on o but see Issue #2164
             try (PyBuffer buf = ((BufferProtocol) o).getBuffer(PyBUF.FULL_RO)) {
+                PyString s = new PyString(buf);
                 // For any sensible codec, the return is unicode and toString() is getString().
-                return new PyString(buf).getString();
+                return s.decode().toString();
             }
         } else {
             // o is some type not allowed:
@@ -1126,13 +1143,13 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         if (o instanceof PyUnicode) {
             return ((PyUnicode) o).getString();
         } else if (o instanceof PyString) {
-            return ((PyString) o).getString();
+            return ((PyString) o).decode().toString();
         } else if (o instanceof Py2kBuffer) {
             // We ought to be able to call codecs.decode on o but see Issue #2164
             try (PyBuffer buf = ((BufferProtocol) o).getBuffer(PyBUF.FULL_RO)) {
                 PyString s = new PyString(buf);
                 // For any sensible codec, the return is unicode and toString() is getString().
-                return s.getString();
+                return s.decode().toString();
             }
         } else {
             // o is some type not allowed:
@@ -1192,12 +1209,17 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         if (o instanceof PyUnicode) {
             return (PyUnicode) o;
         } else if (o instanceof PyString) {
-            return new PyUnicode(((PyString) o).getString());
+            // For any sensible codec, the return here is unicode.
+            PyObject u = ((PyString) o).decode();
+            return (u instanceof PyUnicode) ? (PyUnicode) u : new PyUnicode(o.toString());
         } else if (o instanceof BufferProtocol) {
             // PyByteArray, PyMemoryView, Py2kBuffer ...
             // We ought to be able to call codecs.decode on o but see Issue #2164
             try (PyBuffer buf = ((BufferProtocol) o).getBuffer(PyBUF.FULL_RO)) {
-                return new PyUnicode(new PyString(buf).getString());
+                PyString s = new PyString(buf);
+                // For any sensible codec, the return is unicode and toString() is getString().
+                PyObject u = s.decode();
+                return (u instanceof PyUnicode) ? (PyUnicode) u : new PyUnicode(o.toString());
             }
         } else {
             // o is some type not allowed:
@@ -1381,7 +1403,8 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         } else if (o instanceof PyUnicode) {
             return (PyUnicode) o;
         } else if (o instanceof PyString) {
-            return new PyUnicode(((PyString) o).getString());
+            PyObject u = ((PyString) o).decode();
+            return (u instanceof PyUnicode) ? (PyUnicode) u : new PyUnicode(u.toString());
         } else if (o == Py.None) {
             return null;
         } else {

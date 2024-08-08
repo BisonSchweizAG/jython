@@ -26,7 +26,9 @@ public class SyspathArchive extends PyString {
     SyspathArchive(ZipFile zipFile, String path) {
         // As a string-like object (on sys.path) an FS-encoded bytes object is expected
         // Equivalent to Py.fileSystemEncode(path) with super instead of PyString
-        super(TYPE, PyString.charsFitWidth(path, 7) ? path : codecs.PyUnicode_EncodeUTF8(path, null));
+        super(TYPE,
+                PyString.charsFitWidth(path, 7) ? path : codecs.PyUnicode_EncodeUTF8(path, null),
+                true);
         this.zipFile = zipFile;
     }
 

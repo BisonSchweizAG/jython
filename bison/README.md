@@ -24,8 +24,7 @@
 - remove jline import from Py.java (to allow jline being excluded from ear)
 - replace `AccessControlException`
 - remove `getSecurityManager()`
-- treat `PyString` and `PyUnicode` more like Java `String`
- 
+
 # Artifactory publishing of a SNAPSHOT
 - `./gradlew clean publish`
 - copy `build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-SNAPSHOT.pom`
