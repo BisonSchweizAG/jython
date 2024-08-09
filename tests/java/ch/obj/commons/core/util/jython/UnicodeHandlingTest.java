@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.python.core.PyObject;
 import org.python.core.PyString;
@@ -16,7 +15,6 @@ public class UnicodeHandlingTest {
 
     private static final String BEAUTIFUL = "sch\u00F6n";
 
-    @Ignore
     @Test
     public void testStr() {
         PySystemState.initialize();
@@ -37,7 +35,6 @@ public class UnicodeHandlingTest {
         return b.toString();
     }
 
-    @Ignore
     @Test
     public void testAssign() {
         PySystemState.initialize();
@@ -51,7 +48,6 @@ public class UnicodeHandlingTest {
         }
     }
 
-    // Pflanzenbau
     private String assignScript() {
         StringBuilder b = new StringBuilder();
         b.append("result = 'initial'\n");
@@ -60,7 +56,6 @@ public class UnicodeHandlingTest {
         return b.toString();
     }
 
-    @Ignore
     @Test
     public void testReplace() {
         PySystemState.initialize();
@@ -74,7 +69,6 @@ public class UnicodeHandlingTest {
         }
     }
 
-    // FEN
     private String replaceScript() {
         StringBuilder b = new StringBuilder();
         b.append("umlauts = ['ä', 'Ä', 'ü', 'Ü', 'ö', 'Ö']\n");
