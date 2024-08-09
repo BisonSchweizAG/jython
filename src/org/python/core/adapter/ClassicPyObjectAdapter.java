@@ -66,7 +66,7 @@ public class ClassicPyObjectAdapter extends ExtensiblePyObjectAdapter {
 
             @Override
             public PyObject adapt(Object o) {
-                return new PyUnicode((String)o);
+                return Py.newString((String) o);
             }
 
         });
