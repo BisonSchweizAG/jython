@@ -35,6 +35,28 @@ public class PyTest {
     }
 
     @Test
+    public void testNewStringOrUnicodePrecedentUnicode() {
+        PyUnicode precedent = Py.newUnicode(RIGHT_SINGLE_QUOTATION_MARK);
+        PyString unicode = Py.newStringOrUnicode(precedent, "simple");
+        assertTrue("ASCII should still fit into a PyString", unicode instanceof PyUnicode);
+        assertEquals("simple", unicode.getString());
+    }
+
+    @Test
+    public void testNewStringOrUnicodeUmlaut() {
+        PyString umlaut = Py.newStringOrUnicode(BEAUTIFUL);
+        assertFalse("Umlaut should still fit into 8 bits of a PyString", umlaut instanceof PyUnicode);
+        assertEquals(BEAUTIFUL, umlaut.getString());
+    }
+
+    @Test
+    public void testNewStringOrUnicodeRealUnicode() {
+        PyString unicode = Py.newStringOrUnicode(JEANNE_DARC);
+        assertTrue(unicode instanceof PyUnicode);
+        assertEquals(JEANNE_DARC, unicode.getString());
+    }
+
+    @Test
     // used to convert the result of a pure Java method call into a PyObject
     public void testJava2Py() {
         PyObject pyObject = Py.java2py("abc");
@@ -43,8 +65,9 @@ public class PyTest {
         assertEquals("abc", ((PyString) pyObject).toString());
     }
 
+    // java2py: used to convert the result of a pure Java method call into a PyObject
+
     @Test
-    // used to convert the result of a pure Java method call into a PyObject
     public void testJava2PyUmlaut() {
         PyObject pyObject = Py.java2py(BEAUTIFUL);
         assertTrue(pyObject instanceof PyString);
@@ -53,7 +76,6 @@ public class PyTest {
     }
 
     @Test
-    // used to convert the result of a pure Java method call into a PyObject
     public void testJava2PyUnicode() {
         PyObject pyObject = Py.java2py(JEANNE_DARC);
         assertTrue(pyObject instanceof PyUnicode);
@@ -61,7 +83,6 @@ public class PyTest {
     }
 
     @Test
-    // used to convert the result of a pure Java method call into a PyObject
     public void testJava2PySingleChar() {
         PyObject pyObject = Py.java2py(Character.valueOf('a'));
         assertTrue(pyObject instanceof PyString);
@@ -70,7 +91,6 @@ public class PyTest {
     }
 
     @Test
-    // used to convert the result of a pure Java method call into a PyObject
     public void testJava2PySingleCharUmlaut() {
         PyObject pyObject = Py.java2py(Character.valueOf(SMALL_O_UMLAUT.charAt(0)));
         assertTrue(pyObject instanceof PyString);
@@ -79,7 +99,6 @@ public class PyTest {
     }
 
     @Test
-    // used to convert the result of a pure Java method call into a PyObject
     public void testJava2PySingleCharUnicode() {
         PyObject pyObject = Py.java2py(Character.valueOf(RIGHT_SINGLE_QUOTATION_MARK.charAt(0)));
         assertTrue(pyObject instanceof PyUnicode);

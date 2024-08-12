@@ -710,10 +710,10 @@ public final class Py extends PrePy {
      *         <code>s</code>.
      */
     public static PyString newStringOrUnicode(PyObject precedent, String s) {
-        if (!(precedent instanceof PyUnicode) && PyString.charsFitWidth(s, 7)) {
-            return Py.newBytes(s);
+        if (precedent instanceof PyUnicode) {
+            return newUnicode(s);
         } else {
-            return Py.newUnicode(s);
+            return newString(s);
         }
     }
 
