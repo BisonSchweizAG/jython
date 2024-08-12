@@ -16,7 +16,7 @@
 - `jakarta` migration
 - improvement of `string.py` for `java.lang.String` arguments
 - consistent calling/overwriting of protected final superclass methods
-- build with JDK 17
+- build with JDK 21
 - artifact name is `jython` (instead of `jython.slim`)
 - add an automatic module name `org.python.jython.bison`
 - newer gradle version
