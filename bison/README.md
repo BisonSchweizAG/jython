@@ -24,6 +24,7 @@
 - remove jline import from Py.java (to allow jline being excluded from ear)
 - replace `AccessControlException`
 - remove `getSecurityManager()`
+- PyString now can contain 8 bit Unicode characters (in both conversion directions)
 
 # Artifactory publishing of a SNAPSHOT
 - `./gradlew clean publish`
