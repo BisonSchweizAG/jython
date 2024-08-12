@@ -60,4 +60,30 @@ public class PyTest {
         assertEquals(JEANNE_DARC, ((PyUnicode) pyObject).toString());
     }
 
+    @Test
+    // used to convert the result of a pure Java method call into a PyObject
+    public void testJava2PySingleChar() {
+        PyObject pyObject = Py.java2py(Character.valueOf('a'));
+        assertTrue(pyObject instanceof PyString);
+        assertFalse("ASCII should still fit into a PyString", pyObject instanceof PyUnicode);
+        assertEquals("a", ((PyString) pyObject).toString());
+    }
+
+    @Test
+    // used to convert the result of a pure Java method call into a PyObject
+    public void testJava2PySingleCharUmlaut() {
+        PyObject pyObject = Py.java2py(Character.valueOf(SMALL_O_UMLAUT.charAt(0)));
+        assertTrue(pyObject instanceof PyString);
+        assertFalse("Umlaut should still fit into 8 bits of a PyString", pyObject instanceof PyUnicode);
+        assertEquals(SMALL_O_UMLAUT, ((PyString) pyObject).toString());
+    }
+
+    @Test
+    // used to convert the result of a pure Java method call into a PyObject
+    public void testJava2PySingleCharUnicode() {
+        PyObject pyObject = Py.java2py(Character.valueOf(RIGHT_SINGLE_QUOTATION_MARK.charAt(0)));
+        assertTrue(pyObject instanceof PyUnicode);
+        assertEquals(RIGHT_SINGLE_QUOTATION_MARK, ((PyUnicode) pyObject).toString());
+    }
+
 }

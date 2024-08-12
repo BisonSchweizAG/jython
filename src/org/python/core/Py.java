@@ -640,7 +640,7 @@ public final class Py extends PrePy {
      * @return a new or re-used {@code PyString}
      */
     public static PyString newString(char c) {
-        return makeCharacter(c);
+        return newString(String.valueOf(c));
     }
 
     /**
@@ -653,14 +653,12 @@ public final class Py extends PrePy {
      */
     static PyString newString(String s, boolean promise) {
         int n = s.length();
-        if (n > 1) {
+        if (n > 0) {
             if (PyString.charsFitWidth(s, 8)) {
                 return new PyString(s, promise);
             } else {
                 return newUnicode(s);
             }
-        } else if (n == 1) {
-            return makeCharacter(s.charAt(0));
         } else {
             return Py.EmptyString;
         }
@@ -2081,27 +2079,9 @@ public final class Py extends PrePy {
             throw Py.TypeError("None required for void return");
         }
     }
-
-    /** Table used by {@link #makeCharacter(char)} to intern single byte strings. */
-    private final static PyString[] bytes = new PyString[256];
-
-    static {
-        for (char j = 0; j < 256; j++) {
-            bytes[j] = new PyString(j);
-        }
-    }
-
-    public static final PyString makeCharacter(Character o) {
-        return makeCharacter(o.charValue());
-    }
-
+    
     public static final PyString makeCharacter(char c) {
-        if (c < 256) {
-            return bytes[c];
-        } else {
-            // This will throw IllegalArgumentException since non-byte value
-            return new PyString(c);
-        }
+        return Py.newString(c);
     }
 
     public static final PyUnicode makeUnicodeCharacter(int codepoint) {
