@@ -11,7 +11,6 @@ import org.python.core.PyLong;
 import org.python.core.PyObject;
 import org.python.core.PyProxy;
 import org.python.core.PyType;
-import org.python.core.PyUnicode;
 
 /**
  * Implements the algorithm originally used in {@link Py#java2py} to adapt objects.
@@ -66,7 +65,7 @@ public class ClassicPyObjectAdapter extends ExtensiblePyObjectAdapter {
 
             @Override
             public PyObject adapt(Object o) {
-                return new PyUnicode((String)o);
+                return Py.newString((String) o);
             }
 
         });
@@ -74,7 +73,7 @@ public class ClassicPyObjectAdapter extends ExtensiblePyObjectAdapter {
 
             @Override
             public PyObject adapt(Object o) {
-                return PyUnicode.from((Character)o);
+                return Py.newString(String.valueOf(((Character) o).charValue()));
             }
 
         });

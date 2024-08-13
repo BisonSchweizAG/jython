@@ -7,11 +7,16 @@
 - [overridden by Oomph settings in a bison eclipse:] Java -> Code Style -> Formatter: import `bison/formatting/Jython-like.xml`
 - [overridden by Oomph settings in a bison eclipse:] Java -> Editor -> Save Actions: format edited lines
 
+
+# Hint how to run unit tests from within Eclipse
+- add `exposed-2.7.x.jar` topmost to the run configuration of those unit tests which need initialization
+- at the moment this is the full `jython-2.7.x.jar`
+  
 # Differences to upstream
 - `jakarta` migration
 - improvement of `string.py` for `java.lang.String` arguments
 - consistent calling/overwriting of protected final superclass methods
-- build with JDK 17
+- build with JDK 21
 - artifact name is `jython` (instead of `jython.slim`)
 - add an automatic module name `org.python.jython.bison`
 - newer gradle version
@@ -19,6 +24,7 @@
 - remove jline import from Py.java (to allow jline being excluded from ear)
 - replace `AccessControlException`
 - remove `getSecurityManager()`
+- PyString now can contain 8 bit Unicode characters (in both conversion directions)
 
 # Artifactory publishing of a SNAPSHOT
 - `./gradlew clean publish`

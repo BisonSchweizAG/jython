@@ -813,7 +813,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
     @Override
     protected PyObject pyget(int i) {
         // Method is overridden in PyUnicode, so definitely a PyString
-        return Py.makeCharacter(string.charAt(i));
+        return Py.newString(string.charAt(i));
     }
 
     public int getInt(int i) {
