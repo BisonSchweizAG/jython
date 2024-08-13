@@ -718,7 +718,7 @@ public final class Py extends PrePy {
     }
 
     public static PyString newStringUTF8(String s) {
-        if (PyString.charsFitWidth(s, 7)) {
+        if (PyString.charsFitWidth(s, 8)) {
             // ascii of course is a subset of UTF-8
             return Py.newBytes(s);
         } else {
