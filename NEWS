@@ -11,6 +11,16 @@ For more details, three sources are available according to type:
  - [ FM-n ], please see https://github.com/jython/frozen-mirror.
 
 ==============================================================================
+Jython 2.7.5
+==============================================================================
+
+New Features
+
+Jython 2.7.5a1 Bugs fixed
+
+
+
+==============================================================================
 Jython 2.7.4
 ==============================================================================
 
@@ -29,9 +39,7 @@ New Features
       duplicated in its module, which can be a problem. It may be necessary to
       --add-modules ALL-DEFAULT to ensure JDK classes are resolved.
 
-Jython 2.7.4rc2 Bugs fixed
-
-
+Jython 2.7.4 is unchanged from 2.7.4rc1
 
 Jython 2.7.4rc1 Bugs fixed
     - [ GH-344 ] Updated ucnhash.dat to Unicode 15.1.
