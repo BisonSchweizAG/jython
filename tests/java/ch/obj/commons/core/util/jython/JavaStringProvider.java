@@ -17,6 +17,8 @@ public final class JavaStringProvider {
     private static final String START_OF_JEANNE_DARC = "Jeanne d" + RIGHT_SINGLE_QUOTATION_MARK + "A";
     private static final String END_OF_JEANNE_DARC = "d" + RIGHT_SINGLE_QUOTATION_MARK + "Arc";
 
+    private static final String BEAUTIFUL_JEANNE_DARC = BEAUTIFUL + "e" + JEANNE_DARC;
+
     /**
      * Provides a single small o umlaut
      */
@@ -79,6 +81,13 @@ public final class JavaStringProvider {
      */
     public static final String getEndOfJeanneDArc() {
         return END_OF_JEANNE_DARC;
+    }
+
+    /**
+     * Provides beautiful Jeanne d'Arc, a mixture of Umlaut and Unicode
+     */
+    public static final String getBeautifulJeanneDArc() {
+        return BEAUTIFUL_JEANNE_DARC;
     }
 
 }

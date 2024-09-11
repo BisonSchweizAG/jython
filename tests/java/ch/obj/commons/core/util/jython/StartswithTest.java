@@ -30,6 +30,23 @@ public class StartswithTest {
         }
     }
 
+    private String mixedUnicodeStartswithUmlaut() {
+        StringBuffer b = new StringBuffer();
+        b.append("from ch.obj.commons.core.util.jython import JavaStringProvider\n");
+        b.append("value = JavaStringProvider.getBeautifulJeanneDArc()\n");
+        b.append("start = JavaStringProvider.getBeautiful()\n");
+        b.append("result = value.startswith(start)\n");
+        return b.toString();
+    }
+
+    @Test
+    public void testMixedUnicodeStartswithUmlaut() {
+        try (PythonInterpreter interpreter = new PythonInterpreter()) {
+            interpreter.exec(mixedUnicodeStartswithUmlaut());
+            assertResultBoolean(true, interpreter);
+        }
+    }
+
     private String unicodeStartswithUnicode() {
         StringBuffer b = new StringBuffer();
         b.append("from ch.obj.commons.core.util.jython import JavaStringProvider\n");
