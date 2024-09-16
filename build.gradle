@@ -188,7 +188,7 @@ dependencies {
     implementation 'io.netty:netty-transport:4.1.73.Final'
 
     // Used implicitly in the Ant build, must be explicit here
-    implementation 'org.apache.ant:ant:1.10.14'
+    implementation 'org.apache.ant:ant:1.10.15'
 
     // Pin to 4.10 until dependency on hamcrest classes resolved.
     testImplementation 'junit:junit:4.10'
