@@ -1112,7 +1112,7 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         if (o instanceof PyUnicode) {
             return ((PyUnicode) o).getString();
         } else if (o instanceof PyString) {
-            return ((PyString) o).decode().toString();
+            return ((PyString) o).getString();
         } else if (o instanceof BufferProtocol) {
             // PyByteArray, PyMemoryView, Py2kBuffer ...
             // We ought to be able to call codecs.decode on o but see Issue #2164
@@ -1143,7 +1143,7 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         if (o instanceof PyUnicode) {
             return ((PyUnicode) o).getString();
         } else if (o instanceof PyString) {
-            return ((PyString) o).decode().toString();
+            return ((PyString) o).getString();
         } else if (o instanceof Py2kBuffer) {
             // We ought to be able to call codecs.decode on o but see Issue #2164
             try (PyBuffer buf = ((BufferProtocol) o).getBuffer(PyBUF.FULL_RO)) {

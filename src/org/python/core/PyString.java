@@ -4359,7 +4359,7 @@ public class PyString extends PyBaseString implements BufferProtocol {
      * @return this as a <code>unicode</code> using the default encoding.
      */
     private PyUnicode asUnicode() {
-        return new PyUnicode(this);
+        return new PyUnicode(this.getString());
     }
 
     /**
