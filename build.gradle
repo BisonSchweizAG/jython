@@ -59,9 +59,6 @@ group = 'org.python'
 
 // ---------------- Miscellaneous configuration --------------------------------
 
-/*
- * We support Java 8 onwards.
- */
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
