@@ -62,8 +62,10 @@ group = 'org.python'
 /*
  * We support Java 8 onwards.
  */
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 project.compileJava.options.debug = true
 
@@ -311,7 +313,7 @@ task generateVersionInfo(
         type: WriteProperties,
         description: 'Write the version information as properties') {
 
-    outputFile = file("${processResources.destinationDir}/org/python/version.properties")
+    destinationFile = file("${processResources.destinationDir}/org/python/version.properties")
     comment = ' Jython version information (from build.gradle)'
 
     // Create the properties when the task runs. But do it before the write!
@@ -655,7 +657,7 @@ jar {
         attributes( [ // Build-Info section
             'version': project.version,
             'build-compiler': 'modern',
-            'jdk-target-version': project.targetCompatibility,
+            'jdk-target-version': java.targetCompatibility,
             'debug': compileJava.options.debug,
             'informix': false,
             'oracle': false
