@@ -20,7 +20,7 @@
 - artifact name is `jython` (instead of `jython.slim`)
 - add an automatic module name `org.python.jython.bison`
 - newer gradle version
-- newer external libraries (except: guava is older because of gradle variants)
+- newer external libraries
 - remove jline import from Py.java (to allow jline being excluded from ear)
 - replace `AccessControlException`
 - remove `getSecurityManager()`
