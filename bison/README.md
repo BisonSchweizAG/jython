@@ -1,5 +1,5 @@
 # Setup Eclipse Workspace
-- set JDK 21 as Default
+- set JDK 8 as Default (note that `build.gradle` runs fine with JDK 21, but uses source and target compatibility 1.8)
 - import existing eclipse project
 - switch Text File Encoding to UTF-8
 - run the `antlr-gen` (Ant) launch configuration (run with JDK 11)
