@@ -1,8 +1,8 @@
 # Setup Eclipse Workspace
-- set JDK 8 as Default (note that `build.gradle` runs fine with JDK 21, but uses source and target compatibility 1.8)
+- set JDK 21 as default
 - import existing eclipse project
 - switch Text File Encoding to UTF-8
-- run the `antlr-gen` (Ant) launch configuration (run with JDK 11)
+- run the `antlr-gen` (Ant) launch configuration
 - [overridden by Oomph settings in a bison eclipse:] Java -> Compiler -> Errors/Warnings -> Incomplete 'switch' cases on enum: Warning (instead of Error)
 - [overridden by Oomph settings in a bison eclipse:] Java -> Code Style -> Formatter: import `bison/formatting/Jython-like.xml`
 - [overridden by Oomph settings in a bison eclipse:] Java -> Editor -> Save Actions: format edited lines
@@ -16,7 +16,7 @@
 - `jakarta` migration
 - improvement of `string.py` for `java.lang.String` arguments
 - consistent calling/overwriting of protected final superclass methods
-- build with JDK 21
+- build with JDK 21 - source and target compatibility are `JavaVersion.VERSION_21`
 - artifact name is `jython` (instead of `jython.slim`)
 - add an automatic module name `org.python.jython.bison`
 - newer gradle version
