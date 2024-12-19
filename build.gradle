@@ -163,7 +163,7 @@ dependencies {
     implementation 'org.ow2.asm:asm-commons:9.7'
     implementation 'org.ow2.asm:asm-util:9.7'
 
-    implementation 'com.google.guava:guava:33.3.1-jre'
+    implementation 'com.google.guava:guava:33.4.0-jre'
 
     implementation 'com.ibm.icu:icu4j:75.1'
 
