@@ -260,7 +260,10 @@ task expose (group: 'Custom', dependsOn: compileJava) {
     // Allow Gradle to infer the need to regenreate the outputs
     inputs.files(fileTree("${project.ext.unexposedDir}/org/python"))
     outputs.dir(project.ext.exposedDir)
-
+    
+    def exposedDir = project.ext.exposedDir
+    def unexposedDir = project.ext.unexposedDir
+    
     doLast {
         /*
          * Define an Ant task called 'expose' in the project's AntBuilder.
@@ -274,8 +277,8 @@ task expose (group: 'Custom', dependsOn: compileJava) {
 
         // Use the Gradle-conventional directory structure (not the legacy one).
         ant.expose(
-            srcdir: file(project.ext.unexposedDir),
-            destdir: mkdir(file(project.ext.exposedDir)),
+            srcdir: file(unexposedDir),
+            destdir: mkdir(file(exposedDir)),
             includesfile: file('CoreExposed.includes')
         )
     }
@@ -312,6 +315,9 @@ task generateVersionInfo(
 
     destinationFile = file("${processResources.destinationDir}/org/python/version.properties")
     comment = ' Jython version information (from build.gradle)'
+    
+    def projectVersion = project.version
+    def buildDate = project.ext.buildDate
 
     // Create the properties when the task runs. But do it before the write!
     doFirst {
@@ -345,7 +351,7 @@ task generateVersionInfo(
          */
         // <major>.<minor>(.<micro>)(<release><serial>)?(+|-<snapshot>)?
         def versionRegex = /(\d+)\.(\d+)(\.(\d+))?((a|b|rc)(\d+))?(\+|-(\w+))?/
-        def versionMatcher = project.version =~ versionRegex
+        def versionMatcher = projectVersion =~ versionRegex
         if (versionMatcher.count != 1) {
             throw new IllegalArgumentException(
                     "Cannot parse project version string '${project.version}'")
@@ -413,10 +419,10 @@ task generateVersionInfo(
         }
 
         // Rebuild the version with the snapshot suffix, even if not given originally.
-        project.version = release + snapshotSuffix
-        println "This build is for v${project.version}."
+        def actualProjectVersion = release + snapshotSuffix
+        println "This build is for v${actualProjectVersion}."
 
-        property('jython.version', project.version)
+        property('jython.version', actualProjectVersion)
         property('jython.major_version', major)
         property('jython.minor_version', minor)
         property('jython.micro_version', micro)
@@ -429,10 +435,10 @@ task generateVersionInfo(
          */
         property('jython.build.time',
                 (new SimpleDateFormat('HH:mm:ss'))
-                .format(project.ext.buildDate))
+                .format(buildDate))
         property('jython.build.date',
                 (new SimpleDateFormat('MMM d yyyy'))
-                .format(project.ext.buildDate))
+                .format(buildDate))
     }
 }
 
@@ -465,6 +471,10 @@ ext {
     ]
 }
 
+interface Injected {
+    @Inject FileSystemOperations getFs() 
+}
+
 /*
  * Copy the Python standard library. We take this from a distribution of
  * CPython, but take only the files specified in CPythonLib.includes.
@@ -475,6 +485,8 @@ ext {
 task mergePythonLib(
         type: Copy,
         description: 'Merge lib-python and Jython Lib') {
+
+    def injected = project.objects.newInstance(Injected)
 
     // There might be a way using a collection of File rather than actual copy.
     into pythonLibDir
@@ -500,7 +512,7 @@ task mergePythonLib(
             }
         }
         // Copy the subset as specified by the list
-        project.copy {
+        injected.fs.copy {
             into pythonLibDir
             duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             from libPython
@@ -579,6 +591,9 @@ task pycompile(
     inputs.dir project.ext.buildLibDir
     outputs.dir project.ext.compiledLibDir
 
+	def inputsDir = project.ext.buildLibDir
+	def outputsDir = project.ext.compiledLibDir
+	
     doFirst {
         /*
          * Define an Ant task called 'jycompile' in the project's AntBuilder.
@@ -614,8 +629,8 @@ task pycompile(
         def exclusions = ['test/**', 'lib2to3/tests/**',
             'lib2to3/tests/data/myfixes/**']
         ant.jycompile(
-            srcdir: project.ext.buildLibDir,
-            destdir: project.ext.compiledLibDir,
+            srcdir: inputsDir,
+            destdir: outputsDir,
             excludes: exclusions.join(',')    // Yes, it's that way round :o
         )
     }
