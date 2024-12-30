@@ -25,7 +25,6 @@ public class GCTestHelper {
         private final Cleanable cleanable;
 
         public NotSoNastyFinalizer() {
-            Cleaner cleaner = PyCleaner.INSTANCE.get();
             Runnable cleaningFunction = () -> {
                 org.python.modules.gc.notifyPreFinalization();
                 try {
@@ -34,7 +33,7 @@ public class GCTestHelper {
                 }
                 org.python.modules.gc.notifyPostFinalization();
             };
-            cleanable = cleaner.register(this, cleaningFunction);
+            cleanable = PyCleaner.INSTANCE.get().register(this, cleaningFunction);
         }
 
         @Override
