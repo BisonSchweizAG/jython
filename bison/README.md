@@ -25,6 +25,7 @@
 - replace `AccessControlException`
 - remove `getSecurityManager()`
 - PyString now can contain 8 bit Unicode characters (in both conversion directions)
+- `Object.finalize()` is now replaced with the `Cleanable` interface
 
 # Artifactory publishing of a SNAPSHOT
 - `./gradlew clean publish`
@@ -48,4 +49,4 @@
 # TODO
 - MANIFEST.MF does not contain -SNAPHSOT if it is a SNAPSHOT
 - test jline on Ubuntu
-- replace `finalize()`
+- prepare for gradle 9 and 10
