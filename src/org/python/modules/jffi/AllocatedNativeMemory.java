@@ -1,7 +1,10 @@
 
 package org.python.modules.jffi;
 
+import java.lang.ref.Cleaner.Cleanable;
+
 import org.python.core.Py;
+import org.python.core.PyCleaner;
 
 class AllocatedNativeMemory extends BoundedNativeMemory implements AllocatedDirectMemory {
     private volatile boolean released = false;
@@ -9,6 +12,8 @@ class AllocatedNativeMemory extends BoundedNativeMemory implements AllocatedDire
 
     /** The real memory address */
     private final long storage;
+
+    private final Cleanable cleanable;
 
     /**
      * Allocates native memory
@@ -40,6 +45,7 @@ class AllocatedNativeMemory extends BoundedNativeMemory implements AllocatedDire
     private AllocatedNativeMemory(long address, int size, int align) {
         super(((address - 1) & ~(align - 1)) + align, size);
         this.storage = address;
+        this.cleanable = PyCleaner.INSTANCE.get().register(this, this::doFinalize);
     }
 
     public void free() {
@@ -53,15 +59,15 @@ class AllocatedNativeMemory extends BoundedNativeMemory implements AllocatedDire
         this.autorelease = release;
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        try {
-            if (!released && autorelease) {
-                IO.freeMemory(storage);
-                released = true;
-            }
-        } finally {
-            super.finalize();
+    private void doFinalize() {
+        if (!released && autorelease) {
+            IO.freeMemory(storage);
+            released = true;
         }
+    }
+
+    @Override
+    public void close() {
+        cleanable.clean();
     }
 }
