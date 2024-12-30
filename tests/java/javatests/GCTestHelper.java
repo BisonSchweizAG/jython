@@ -1,6 +1,5 @@
 package javatests;
 
-import java.lang.ref.Cleaner;
 import java.lang.ref.Cleaner.Cleanable;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class GCTestHelper {
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() {
             cleanable.clean();
         }
     }
