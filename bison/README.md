@@ -47,6 +47,4 @@
 - prepare for the next version by increasing the patch version in `build.gradle`
 
 # TODO
-- MANIFEST.MF does not contain -SNAPHSOT if it is a SNAPSHOT
-- test jline on Ubuntu
-- prepare for gradle 9 and 10
+- try to fix compilation warnings
