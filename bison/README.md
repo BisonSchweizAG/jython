@@ -27,9 +27,12 @@
 - PyString now can contain 8 bit Unicode characters (in both conversion directions)
 - `Object.finalize()` is now replaced with the `Cleanable` interface
 
-# Artifactory publishing of a SNAPSHOT
+# Artifactory publishing of a SNAPSHOT (Note: maven snapshot publishing currently not perfect)
 - `./gradlew clean publish`
-- copy `build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-SNAPSHOT.pom`
+- copy `build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x-SNAPSHOT.pom`
+- rename `/build2/libs/jython-2.7.x.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT.jar`
+- rename `/build2/libs/jython-2.7.x-sources.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT-sources.jar`
+- rename `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar`
 - deploy `jython-2.7.x-SNAPSHOT.pom`
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT.jar` (adjust the `Group ID` to `org.python`)
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT-sources.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `sources`)
