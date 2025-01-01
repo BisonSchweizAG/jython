@@ -21,7 +21,7 @@ public class NewExposerTest extends InterpTestCase implements Opcodes {
                      ne.getInternalName());
         assertEquals("org.python.expose.generate.NewExposerTest$Instantiable$exposed___new__",
                      ne.getClassName());
-        Class descriptor = ne.load(new BytecodeLoader.Loader());
+        Class<?> descriptor = ne.load(new BytecodeLoader.Loader());
         PyNewWrapper instance = (PyNewWrapper)descriptor.getDeclaredConstructor().newInstance();
         instance.setWrappedType(PyType.fromClass(Instantiable.class));
         assertSame("__new__", instance.__getattr__("__name__").toString());
@@ -30,6 +30,7 @@ public class NewExposerTest extends InterpTestCase implements Opcodes {
 
     @ExposedType()
     public static class Instantiable extends PyObject {
+        private static final long serialVersionUID = 1L;
 
         public static PyObject creator(PyNewWrapper new_,
                                        boolean init,
