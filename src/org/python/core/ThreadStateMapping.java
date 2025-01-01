@@ -1,7 +1,8 @@
 package org.python.core;
 
-import com.google.common.collect.MapMaker;
 import java.util.Map;
+
+import com.google.common.collect.MapMaker;
 
 /**
  * A ThreadState augments a standard java.lang.Thread to support Python semantics. The ThreadStateMapping utility class
@@ -103,7 +104,7 @@ class ThreadStateMapping {
         i = 0;
         for (Map.Entry<Thread, ThreadState> entry: entries) {
             if (entry.getValue().frame != null) {
-                elements[i++] = Py.newInteger(entry.getKey().getId());
+                elements[i++] = Py.newInteger(entry.getKey().threadId());
                 elements[i++] = entry.getValue().frame;
             }
         }

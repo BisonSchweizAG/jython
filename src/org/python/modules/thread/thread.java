@@ -8,8 +8,8 @@ import org.python.core.PyException;
 import org.python.core.PyInteger;
 import org.python.core.PyObject;
 import org.python.core.PyString;
-import org.python.core.PyType;
 import org.python.core.PyTuple;
+import org.python.core.PyType;
 
 public class thread implements ClassDictInit {
 
@@ -82,7 +82,7 @@ public class thread implements ClassDictInit {
     }
 
     public static long get_ident() {
-        return Thread.currentThread().getId();
+        return Thread.currentThread().threadId();
     }
 
     public static long stack_size(PyObject[] args) {
