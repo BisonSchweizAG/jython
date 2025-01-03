@@ -7,13 +7,14 @@
  */
 package com.ziclix.python.sql.pipe.db;
 
+import java.lang.reflect.Constructor;
+
+import org.python.core.Py;
+
 import com.ziclix.python.sql.DataHandler;
 import com.ziclix.python.sql.PyConnection;
 import com.ziclix.python.sql.PyCursor;
 import com.ziclix.python.sql.zxJDBC;
-import org.python.core.Py;
-
-import java.lang.reflect.Constructor;
 
 /**
  * Abstract class to assist in generating cursors.
@@ -60,6 +61,7 @@ public abstract class BaseDB {
      * desired.  This allows additional functionality without losing any previous work or requiring any
      * complicated inheritance dependencies.
      */
+    @SuppressWarnings("unchecked")
     protected PyCursor cursor() {
 
         PyCursor cursor = this.connection.cursor(true);

@@ -1,14 +1,14 @@
 // Copyright (c) Corporation for National Research Initiatives
 package org.python.core;
 
-import org.python.expose.ExposedMethod;
-import org.python.expose.ExposedNew;
-import org.python.expose.ExposedType;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import org.python.expose.ExposedMethod;
+import org.python.expose.ExposedNew;
+import org.python.expose.ExposedType;
 
 /**
  * The builtin xrange type.
@@ -204,7 +204,7 @@ public class PyXRange extends PySequence {
             return (new JavaIterator(range_iter())).iterator();
         }
         if (c.isAssignableFrom(Collection.class)) {
-            List<Object> list = new ArrayList();
+            List<Object> list = new ArrayList<>();
             for (Object obj : new JavaIterator(range_iter())) {
                 list.add(obj);
             }

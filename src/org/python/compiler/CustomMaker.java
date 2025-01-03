@@ -1,13 +1,13 @@
 package org.python.compiler;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.python.core.BytecodeLoader;
 import org.python.core.Py;
 import org.python.core.PyObject;
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Arrays;
 
 
 public class CustomMaker extends JavaMaker {
@@ -35,7 +35,7 @@ public class CustomMaker extends JavaMaker {
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             build(bytes); // Side effect of writing to bytes
             saveBytes(bytes);
-            List<Class<?>> secondary = new LinkedList(Arrays.asList(interfaces));
+            List<Class<?>> secondary = new LinkedList<>(Arrays.asList(interfaces));
             List<Class<?>> referents = null;
             if (superclass != null) {
                 secondary.add(0, superclass);

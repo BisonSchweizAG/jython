@@ -1,15 +1,9 @@
 // Copyright (c) Corporation for National Research Initiatives
 package org.python.core;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import org.python.expose.ExposedMethod;
-import org.python.expose.ExposedNew;
-import org.python.expose.ExposedType;
-import org.python.expose.MethodType;
-import org.python.util.Generic;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,9 +12,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
-import java.lang.reflect.Array;
 import java.util.Map;
+
+import org.python.expose.ExposedMethod;
+import org.python.expose.ExposedNew;
+import org.python.expose.ExposedType;
+import org.python.expose.MethodType;
+import org.python.util.Generic;
 
 @ExposedType(name = "list", base = PyObject.class, doc = BuiltinDocs.list_doc)
 public class PyList extends PySequenceList {
@@ -43,6 +41,7 @@ public class PyList extends PySequenceList {
         list = Generic.list();
     }
 
+    @SuppressWarnings("unchecked")
     private PyList(List<?> list, boolean convert) {
         super(TYPE);
         if (!convert) {
