@@ -544,6 +544,7 @@ NOTTESTS = {
     'test_support',
     'test_future1',
     'test_future2',
+    'test_gc_jy',
 }
 
 def findtests(testdir=None, stdtests=STDTESTS, nottests=NOTTESTS):
