@@ -27,6 +27,24 @@
 - PyString now can contain 8 bit Unicode characters (in both conversion directions)
 - `Object.finalize()` is now replaced with the `Cleanable` interface
 
+# Running regrtest
+- run the following commands in a shell with JDK 21
+- `ant clean`
+- `ant`
+- `./dist/bin/jython -m test.regrtest -e`
+
+## `master` on JDK 21 Results
+```
+379 tests OK.
+6 tests skipped:
+    test_codecmaps_hk test_curses test_smtpnet test_subprocess
+    test_urllib2net test_urllibnet
+3 tests failed:
+    test_httplib test_os test_posix
+3 fails unexpected:
+    test_httplib test_os test_posix
+```
+
 # Artifactory publishing of a SNAPSHOT (Note: maven snapshot publishing currently not perfect)
 - `./gradlew clean publish`
 - copy `build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x-SNAPSHOT.pom`
