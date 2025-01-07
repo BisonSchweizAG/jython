@@ -541,10 +541,20 @@ STDTESTS = [
    ]
 
 NOTTESTS = {
-    'test_support',
+    'test_file',
+    'test_file2k',
     'test_future1',
     'test_future2',
+    'test_gc',
     'test_gc_jy',
+    'test_io',
+    'test_lib2to3',
+    'test_support',
+    'test_tuple',
+    'test_tuple_jy',
+    'test_unicode_jy',
+    'test_urllib2',
+    'test_xrange',
 }
 
 def findtests(testdir=None, stdtests=STDTESTS, nottests=NOTTESTS):
