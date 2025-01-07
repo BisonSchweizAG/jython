@@ -27,6 +27,44 @@
 - PyString now can contain 8 bit Unicode characters (in both conversion directions)
 - `Object.finalize()` is now replaced with the `Cleanable` interface
 
+# Running regrtest
+- run the following commands in a shell with JDK 21
+- `ant clean`
+- `ant`
+- `./dist/bin/jython -m test.regrtest -e`
+
+## `master` on JDK 21 Results
+```
+379 tests OK.
+6 tests skipped:
+    test_codecmaps_hk test_curses test_smtpnet test_subprocess
+    test_urllib2net test_urllibnet
+3 tests failed:
+    test_httplib test_os test_posix
+3 fails unexpected:
+    test_httplib test_os test_posix
+```
+
+## `2.7.bison` Tip Results
+```
+353 tests OK.
+6 tests skipped:
+    test_codecmaps_hk test_curses test_smtpnet test_subprocess
+    test_urllib2net test_urllibnet
+19 tests failed:
+    test___all__ test_codecencodings_tw test_codecs test_fileio
+    test_finalizers test_generators test_httplib test_iter
+    test_jy_internals test_module test_os test_posix
+    test_resurrection_attr_preserve test_scope test_set_jy test_string
+    test_unicode test_xpickle test_zlib
+19 fails unexpected:
+    test___all__ test_codecencodings_tw test_codecs test_fileio
+    test_finalizers test_generators test_httplib test_iter
+    test_jy_internals test_module test_os test_posix
+    test_resurrection_attr_preserve test_scope test_set_jy test_string
+    test_unicode test_xpickle test_zlib
+```
+
 # Artifactory publishing of a SNAPSHOT (Note: maven snapshot publishing currently not perfect)
 - `./gradlew clean publish`
 - copy `build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x-SNAPSHOT.pom`
