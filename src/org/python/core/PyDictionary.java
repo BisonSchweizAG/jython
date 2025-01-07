@@ -4,20 +4,15 @@
  */
 package org.python.core;
 
-import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-import org.python.core.AbstractDict.ValuesIter;
-import org.python.core.AbstractDict.KeysIter;
-import org.python.core.AbstractDict.ItemsIter;
 import org.python.expose.ExposedClassMethod;
 import org.python.expose.ExposedMethod;
 import org.python.expose.ExposedNew;
@@ -476,6 +471,7 @@ public class PyDictionary extends AbstractDict implements ConcurrentMap, Travers
         updateCommon(args, keywords, "update");
     }
 
+    @SuppressWarnings("unchecked")
     public void updateCommon(PyObject[] args, String[] keywords, String methName) {
         int nargs = args.length - keywords.length;
         if (nargs > 1) {

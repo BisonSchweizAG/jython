@@ -233,6 +233,9 @@ generateGrammarSource {
 compileJava {
     // Divert compiled classes to intermediate location pre-exposure.
     destinationDirectory = file(unexposedDir)
+    options.compilerArgs = ['-Xlint:deprecation']
+//    when activating unchecked, please make sure that only PythonParser warnings remain
+//    options.compilerArgs = ['-Xlint:deprecation', '-Xlint:unchecked']
 }
 
 // ---------------- Expose Task ------------------------------------------------
@@ -842,6 +845,7 @@ compileTestJava {
     dependsOn expose
 	dependsOn pycompile
     options.debug = project.compileJava.options.debug
+    options.compilerArgs = ['-Xlint:deprecation', '-Xlint:unchecked']
 }
 
 test {

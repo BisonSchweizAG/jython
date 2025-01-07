@@ -2,9 +2,9 @@
 package org.python.compiler;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,9 +18,8 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-
-import org.python.core.imp;
 import org.python.compiler.ProxyCodeHelpers.AnnotationDescr;
+import org.python.core.imp;
 
 public class ClassFile
 {
@@ -62,6 +61,7 @@ public class ClassFile
             av.visitEnum(fieldName, ProxyCodeHelpers.mapType(fieldValueClass), fieldValue.toString());
         } else if (fieldValue instanceof List) {
             AnnotationVisitor arrayVisitor = av.visitArray(fieldName);
+            @SuppressWarnings("unchecked")
             List<Object> fieldList = (List<Object>)fieldValue;
             for (Object arrayField: fieldList) {
                 visitAnnotation(arrayVisitor, null, arrayField);

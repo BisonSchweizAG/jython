@@ -1,15 +1,21 @@
 package org.python.modules.jffi;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.V1_5;
+import static org.python.modules.jffi.CodegenUtils.c;
+import static org.python.modules.jffi.CodegenUtils.ci;
+import static org.python.modules.jffi.CodegenUtils.p;
+import static org.python.modules.jffi.CodegenUtils.sig;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.python.modules.jffi.CodegenUtils.*;
-import static org.objectweb.asm.Opcodes.*;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
 
 /**
  * 
@@ -63,6 +69,7 @@ final class AsmClassBuilder {
                 p(parentClass), new String[0]);
     }
     
+    @SuppressWarnings("unchecked")
     Class<? extends Invoker> build() {
         // Create the constructor to set the 'library' & functions fields
         SkinnyMethodAdapter init = new SkinnyMethodAdapter(classVisitor, ACC_PUBLIC, "<init>",

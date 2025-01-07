@@ -1,8 +1,14 @@
 /* Copyright (c)2013 Jython Developers */
 package org.python.modules._io;
 
-import static org.junit.Assert.*;
-import static org.junit.matchers.JUnitMatchers.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.junit.matchers.JUnitMatchers.both;
+import static org.junit.matchers.JUnitMatchers.containsString;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,6 +72,7 @@ public class _ioTest {
      * Test raising a Python _io.UnsupportedOperation from Java code directly.
      */
     @Test
+    @SuppressWarnings("deprecation") // necessary for containsString()
     public void javaRaiseUnsupportedOperation() {
 
         // Built-in modules seem not to initialise until we actually use an interpreter

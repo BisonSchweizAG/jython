@@ -7,17 +7,18 @@
  */
 package com.ziclix.python.sql.pipe.db;
 
-import com.ziclix.python.sql.PyConnection;
-import com.ziclix.python.sql.pipe.Sink;
-import com.ziclix.python.sql.zxJDBC;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.python.core.Py;
 import org.python.core.PyDictionary;
 import org.python.core.PyList;
 import org.python.core.PyObject;
 import org.python.core.PyString;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.ziclix.python.sql.PyConnection;
+import com.ziclix.python.sql.zxJDBC;
+import com.ziclix.python.sql.pipe.Sink;
 
 /**
  * A database consumer.  All data transferred will be inserted into the appropriate table.
@@ -66,6 +67,7 @@ public class DBSink extends BaseDB implements Sink {
      * @param bindings    the optional bindings for the destination, this allows morphing of types during the copy
      * @param batchsize   the optional batchsize for the inserts
      */
+    @SuppressWarnings("unchecked")
     public DBSink(PyConnection connection, Class dataHandler, String tableName, PyObject exclude, PyObject bindings, int batchsize) {
 
         super(connection, dataHandler, tableName);

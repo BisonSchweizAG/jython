@@ -3,15 +3,16 @@
  */
 package org.python.modules.jffi;
 
-import com.kenai.jffi.CallingConvention;
-import org.python.core.PyObject;
-
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
+
+import org.python.core.PyObject;
+
+import com.kenai.jffi.CallingConvention;
 
 /**
  *
@@ -40,6 +41,7 @@ class JITCompiler {
     private static final class HandleRef extends WeakReference<JITHandle> {
         JITSignature signature;
 
+        @SuppressWarnings("unchecked")
         public HandleRef(JITHandle handle, JITSignature signature, ReferenceQueue refqueue) {
             super(handle, refqueue);
             this.signature = signature;

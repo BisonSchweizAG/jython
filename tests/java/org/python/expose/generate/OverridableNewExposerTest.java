@@ -22,7 +22,7 @@ public class OverridableNewExposerTest extends InterpTestCase implements PyTypes
                                 "creator",
                                 Type.getMethodDescriptor(VOID, new Type[] {APYOBJ, ASTRING}),
                                 new String[] {});
-        Class descriptor = ne.load(new BytecodeLoader.Loader());
+        Class<?> descriptor = ne.load(new BytecodeLoader.Loader());
         instance = (PyNewWrapper)descriptor.getDeclaredConstructor().newInstance();
         type = PyType.fromClass(Instantiable.class);
         instance.setWrappedType(type);
@@ -65,6 +65,7 @@ public class OverridableNewExposerTest extends InterpTestCase implements PyTypes
 
     @ExposedType()
     public static class Instantiable extends PyObject {
+        private static final long serialVersionUID = 1L;
 
         public Instantiable(PyType forType) {
             this.forType = forType;
