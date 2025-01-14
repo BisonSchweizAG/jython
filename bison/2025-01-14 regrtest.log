@@ -1,0 +1,532 @@
+➜  jython git:(2.7.bison) ✗ ./dist/bin/jython -m test.regrtest -e
+== 2.7.5a1-DEV (heads/2.7.bison-dirty:30bb173b3, Jan 14 2025, 08:41:28)
+== [OpenJDK 64-Bit Server VM (Eclipse Adoptium)]
+== platform: java21.0.5
+== encodings: stdin=UTF-8, stdout=UTF-8, FS=utf-8
+== locale: default=('en_CH', 'UTF-8'), actual=(None, None)
+test_grammar
+test_opcodes
+test_dict
+test_builtin
+test_exceptions
+test_types
+test_unittest
+test_doctest
+test_doctest2
+test_MimeWriter
+test_SimpleHTTPServer
+test_SimpleXMLRPCServer
+127.0.0.1 - - [14/Jan/2025 08:42:02] "POST /RPC2 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Jan/2025 08:42:02] "POST /RPC2 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Jan/2025 08:42:02] "POST /RPC2 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Jan/2025 08:42:02] "POST /RPC2 HTTP/1.1" 200 -
+test_StringIO
+test_StringIO_jy
+test___all__
+test test___all__ failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test___all__.py", line 107, in test_all
+    self.check_all(modname)
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test___all__.py", line 107, in test_all
+    self.check_all(modname)
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test___all__.py", line 42, in check_all
+    self.fail("__all__ failure in {}: {}: {}".format(
+AssertionError: __all__ failure in modjy: ImportError: No module named servlet
+
+test___future__
+test_abc
+test_abstract_numbers
+test_aifc
+test_anydbm
+test_argparse
+test_array
+test_array_jy
+test_ast
+test_ast_jy
+test_atexit
+test_augassign
+test_base64
+test_bastion
+test_bigaddrspace
+test_bigmem
+test_binascii
+test_binascii_jy
+test_binhex
+test_binop
+test_bisect
+test_bool
+test_buffer
+test_bufio
+test_builtin_jy
+test_bytecodetools_jy
+test_bytes
+test_bytes_jy
+test_bz2
+test_calendar
+test_calendar_jy
+test_call
+test_cfgparser
+test_cgi
+test_charmapcodec
+test_chdir
+test_class
+test_class_jy
+test_classdecorators
+test_classpathimporter
+test_cmath
+test_cmath_jy
+test_cmd
+test_cmd_line
+test_cmd_line_script
+test_cmp_jy
+test_code
+test_codeccallbacks
+test_codecencodings_tw
+test test_codecencodings_tw failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_multibytecodec_support.py", line 74, in test_xmlcharrefreplace
+    self.assertEqual(
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/encodings/_java.py", line 89, in encode
+    _process_encode_errors(self.encoding, input, result, error_function, input_buffer, builder)
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/encodings/_java.py", line 245, in _process_encode_errors
+    raise TypeError()
+TypeError
+
+test_codecmaps_hk
+test_codecmaps_hk skipped -- Use of the `urlfetch' resource not enabled
+test_codecs
+test test_codecs failed -- multiple errors occurred; run in verbose mode for details
+test_codecs_jy
+test_codeop
+test_codeop_jy
+test_coding
+test_coerce_jy
+test_coercion
+test_collections
+test_collections_jy
+test_colorsys
+test_compare
+test_compile
+test_compile_jy
+test_complex
+test_complex_args
+test_complex_jy
+test_concat_jy
+test_contains
+test_contextlib
+test_cookie
+test_cookielib
+test_copy
+test_copy_reg
+test_cpickle
+test_cpickle_jy
+test_crypt
+test_csv
+test_csv_jy
+test_curses
+test_curses skipped -- Use of the `curses' resource not enabled
+test_datetime
+test_datetime_jy
+test_decimal
+test_decimal_jy
+test_decorators
+test_decorators_jy
+test_defaultdict
+test_defaultdict_jy
+test_deque
+test_deque_jy
+test_descr_jy
+test_descrtut
+test_dict2java
+test_dict_jy
+test_dictcomps
+test_dictproxy_jy
+test_dictviews
+test_difflib
+test_dircache
+test_dumbdbm
+test_dummy_thread
+test_email
+test_email_jy
+test_email_renamed
+test_ensurepip
+test_enumerate
+test_enumerate_jy
+test_eof_jy
+test_errno
+test_evalorder
+test_exception_variations
+test_exceptions_jy
+test_extcall
+test_file_eintr
+test_file_jy
+test_file_newlines
+test_filecmp
+test_fileinput
+test_fileio
+test test_fileio failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_fileio.py", line 45, in testWeakRefs
+    self.assertRaises(ReferenceError, getattr, p, 'tell')
+AssertionError: ReferenceError not raised
+
+test_fileno
+test_finalizers
+test test_finalizers failed -- multiple errors occurred; run in verbose mode for details
+test_float
+test_float_jy
+test_fnmatch
+test_format
+test_format_jy
+test_fpformat
+test_fractions
+test_func_jy
+test_func_syntax_jy
+test_funcattrs
+test_functools
+test_functools_jy
+test_future
+test_future3
+test_future4
+test_future5
+test_future_builtins
+test_generators
+**********************************************************************
+File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_generators.py", line ?, in test.test_generators.__test__.coroutine
+Failed example:
+    del g; extra_collect()
+Expected:
+    exiting
+Got nothing
+**********************************************************************
+File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_generators.py", line ?, in test.test_generators.__test__.coroutine
+Failed example:
+    sys.stderr.getvalue().startswith(
+        "Exception RuntimeError"
+    )
+Expected:
+    True
+Got:
+    False
+**********************************************************************
+1 items had failures:
+   2 of  94 in test.test_generators.__test__.coroutine
+***Test Failed*** 2 failures.
+test test_generators failed -- 2 of 262 doctests failed
+test_generators_jy
+test_genericpath
+test_genexps
+test_genexps_jy
+test_getargs
+test_getopt
+test_gettext
+test_glob
+test_global
+test_grammar_jy
+test_grp
+test_gzip
+test_hash
+test_hashlib
+test_hashlib_jy
+test_heapq
+test_hmac
+test_htmllib
+test_htmlparser
+test_httplib
+test test_httplib failed -- multiple errors occurred; run in verbose mode for details
+test_imaplib
+test_imp
+test_import
+ -- test_import left behind file 'longlist$py.class'
+ -- test_import left behind file '$test_1_tmpspam$py.class'
+test_import_jy
+2025-01-14 08:45:23.095 java[2008:46795] +[IMKClient subclass]: chose IMKClient_Modern
+2025-01-14 08:45:23.095 java[2008:46795] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+test_import_pep328
+test_importhooks
+test_importlib
+test_index
+test_inspect
+test_inspect_jy
+test_int
+test_int_jy
+test_int_literal
+test_io_jy
+test_isatty
+test_isinstance
+test_iter
+test test_iter failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_iter.py", line 809, in test_unpack_iter
+    self.assertEqual(C.count, 0)
+AssertionError: 1 != 0
+
+test_iter_jy
+test_itertools
+test_java_integration
+test_java_list_delegate
+test_java_subclasses
+test_java_visibility
+test_javashell
+test_jbasic
+2025-01-14 08:46:05.937 java[1551:37563] +[IMKClient subclass]: chose IMKClient_Modern
+2025-01-14 08:46:05.937 java[1551:37563] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+test_joverload
+test_jser
+test_jser2
+test_json
+test_jy_internals
+test test_jy_internals failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_jy_internals.py", line 82, in test_class_to_test_weakness
+    self.assertEqual(start_size, len(survivors(battersea)))
+AssertionError: 3 != 6
+
+test_jython_initializer
+test_large_method_bytecode_jy
+test_linecache
+test_list
+test_list_jy
+test_listcomp_jy
+test_logging_jy
+test_long
+test_long_future
+test_long_int_args
+test_long_jy
+test_macpath
+test_mailbox
+test_marshal
+test_math
+test_math_jy
+test_md5
+test_memoryio
+test_memoryview
+test_metaclass
+test_mhlib
+test_mimetools
+test_mimetypes
+test_minidom
+test_module
+test test_module failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_module.py", line 81, in test_clear_dict_in_ref_cycle
+    self.assertEqual(destroyed, [1])
+AssertionError: Lists differ: [] != [1]
+
+Second list contains 1 additional elements.
+First extra element 0:
+1
+
+- []
++ [1]
+?  +
+
+
+test_multibytecodec_support
+test_multifile
+test_mutants
+test_mutex
+test_new
+test_normalization
+test_ntpath
+test_old_mailbox
+test_operator
+test_operator_jy
+test_optparse
+test_os
+test test_os failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_os.py", line 609, in test_closerange
+    self.assertEqual(os.closerange(fd, fd + i-1), None)
+TypeError: an integer or Java/Jython file descriptor is required
+
+test_os_jy
+test_pbcvm
+test_pdb
+ -- test_pdb left behind file 'bar$py.class'
+test_pep247
+test_pep263
+test_pep263_jy
+test_pep292
+test_pep352
+test_pickle
+test_pickletools
+test_pkg
+test_pkgimport
+test_pkgutil
+test_platform
+test_popen
+test_popen2
+test_posix
+test test_posix failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_posix.py", line 212, in test_fstat
+    self.assertTrue(posix.fstat(fp.fileno()))
+OSError: [Errno 9] Bad file descriptor
+
+test_posixpath
+test_pow
+test_pprint
+test_print
+test_profilehooks
+test_property
+test_pstats
+test_pulldom
+test_pwd
+test_py_compile
+test_pythoninterpreter_jy
+test_queue
+test_quopri
+test_random
+test_re
+test_re_jy
+test_repr
+test_resurrection_attr_preserve
+test test_resurrection_attr_preserve failed -- multiple errors occurred; run in verbose mode for details
+test_rfc822
+test_richcmp
+test_rlcompleter
+test_robotparser
+test_runpy
+test_sax_jy
+test_scope
+test test_scope failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_scope.py", line 453, in testLeaks
+    self.assertEqual(Foo.count, 0)
+AssertionError: 100 != 0
+
+test_select
+test_select_new
+test_seq_jy
+test_set
+test_set_jy
+test test_set_jy failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_set_jy.py", line 62, in test_accessing_items_added_in_java
+    v.nextInt()
+AttributeError: 'str' object has no attribute 'nextInt'
+
+test_setcomps
+test_sets
+test_sgmllib
+test_sha
+test_shadowstr_jy
+test_shelve
+test_shlex
+test_shutil
+test_signal
+test_site
+test_site_jy
+test_slice
+test_slots_jy
+test_smtpnet
+test_smtpnet skipped -- Use of the `network' resource not enabled
+test_socket
+test_socket_jy
+test_socketserver_jython
+test_softspace
+test_sort
+test_sort_jy
+test_ssl_jy
+test_str
+test_str2unicode
+test_str_jy
+test_strftime
+test_string
+test test_string failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/string_tests.py", line 1466, in test_translate
+    self.checkequal('xyzxyz', 'xyzabcdef', 'translate', buftype(table), 'def')
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_string.py", line 13, in checkequal
+    realresult = getattr(string, methodname)(object, *args)
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/string.py", line 568, in translate
+    return ('%s'%s).translate('%s'%table, deletions)
+ValueError: translation table must be 256 characters long
+
+test_stringmap
+test_strptime
+test_strptime_jy
+test_strtod
+test_struct_jy
+test_structseq
+test_subclasses
+test_subclasses_jy
+test_subprocess
+test_subprocess skipped -- Use of the `subprocess' resource not enabled
+test_syntax
+test_sys
+test_sys_jy
+test_sysconfig
+test_tempfile
+test_textwrap
+test_thread
+test_thread_jy
+test_thread_local
+test_threaded_import
+test_threadedtempfile
+test_threading
+test_threading_jy
+test_threading_local
+test_threading_local_jy
+test_time
+test_timeit
+test_tokenize
+test_trace
+test_trace_threaded
+test_traceback
+test_traceback_jy
+test_typechecks
+test_unary
+test_undocumented_details
+test_unicode
+test_unicodedata
+test_univnewlines
+test_univnewlines2k
+test_unpack
+test_urllib
+test_urllib2net
+test_urllib2net skipped -- Use of the `network' resource not enabled
+test_urllibnet
+test_urllibnet skipped -- Use of the `network' resource not enabled
+test_urlparse
+test_userdict
+test_userlist
+test_userstring
+test_uu
+test_uuid
+test_warnings
+test_weakref
+test_weakref_jy
+test_weakset
+test_whichdb
+test_with
+test_wsgiref
+test_xdrlib
+test_xml_etree
+/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_xml_etree.py:1: FutureWarning: This search is broken in 1.3 and earlier, and will be fixed in a future version.  If you rely on the current behaviour, change it to './tag'
+  # xml.etree test.  This file contains enough tests to make sure that
+test_xml_etree_c
+/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_xml_etree_c.py:1: FutureWarning: This search is broken in 1.3 and earlier, and will be fixed in a future version.  If you rely on the current behaviour, change it to './tag'
+  # xml.etree test for cElementTree
+test_xml_sax_jy
+test_xmllib
+test_xpickle
+test_xpickle -- skipping backwards compat tests.
+Use 'regrtest.py -u xpickle' to run them.
+test_zipimport_jy
+test_zipimport_support
+test_zlib
+/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_zlib.py:114: RuntimeWarning: PyTableCode.call caught a Throwable that is not an Exception:
+java.lang.OutOfMemoryError: Java heap space
+Jython internals might be in a bad state now that can cause deadlocks later on.
+See http://bugs.jython.org/issue2536 for details.
+  data = ''.join([binascii.a2b_hex(fmt % random.getrandbits(8 * _1M))
+test test_zlib failed -- multiple errors occurred; run in verbose mode for details
+test_zlib_jy
+355 tests OK.
+6 tests skipped:
+    test_codecmaps_hk test_curses test_smtpnet test_subprocess
+    test_urllib2net test_urllibnet
+17 tests failed:
+    test___all__ test_codecencodings_tw test_codecs test_fileio
+    test_finalizers test_generators test_httplib test_iter
+    test_jy_internals test_module test_os test_posix
+    test_resurrection_attr_preserve test_scope test_set_jy test_string
+    test_zlib
+17 fails unexpected:
+    test___all__ test_codecencodings_tw test_codecs test_fileio
+    test_finalizers test_generators test_httplib test_iter
+    test_jy_internals test_module test_os test_posix
+    test_resurrection_attr_preserve test_scope test_set_jy test_string
+    test_zlib
+➜  jython git:(2.7.bison) ✗         
