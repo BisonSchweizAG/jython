@@ -1,5 +1,5 @@
-➜  jython git:(2.7.bison) ✗ ./dist/bin/jython -m test.regrtest -e
-== 2.7.5a1-DEV (heads/2.7.bison-dirty:30bb173b3, Jan 14 2025, 08:41:28)
+➜  jython git:(bugfix/regrtests) ./dist/bin/jython -m test.regrtest -e
+== 2.7.5a1-DEV (heads/bugfix/regrtests:056a681dc, Jan 30 2025, 21:25:19)
 == [OpenJDK 64-Bit Server VM (Eclipse Adoptium)]
 == platform: java21.0.5
 == encodings: stdin=UTF-8, stdout=UTF-8, FS=utf-8
@@ -16,22 +16,13 @@ test_doctest2
 test_MimeWriter
 test_SimpleHTTPServer
 test_SimpleXMLRPCServer
-127.0.0.1 - - [14/Jan/2025 08:42:02] "POST /RPC2 HTTP/1.1" 200 -
-127.0.0.1 - - [14/Jan/2025 08:42:02] "POST /RPC2 HTTP/1.1" 200 -
-127.0.0.1 - - [14/Jan/2025 08:42:02] "POST /RPC2 HTTP/1.1" 200 -
-127.0.0.1 - - [14/Jan/2025 08:42:02] "POST /RPC2 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Jan/2025 21:26:20] "POST /RPC2 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Jan/2025 21:26:20] "POST /RPC2 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Jan/2025 21:26:20] "POST /RPC2 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Jan/2025 21:26:20] "POST /RPC2 HTTP/1.1" 200 -
 test_StringIO
 test_StringIO_jy
 test___all__
-test test___all__ failed -- Traceback (most recent call last):
-  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test___all__.py", line 107, in test_all
-    self.check_all(modname)
-  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test___all__.py", line 107, in test_all
-    self.check_all(modname)
-  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test___all__.py", line 42, in check_all
-    self.fail("__all__ failure in {}: {}: {}".format(
-AssertionError: __all__ failure in modjy: ImportError: No module named servlet
-
 test___future__
 test_abc
 test_abstract_numbers
@@ -230,6 +221,7 @@ test_hmac
 test_htmllib
 test_htmlparser
 test_httplib
+io.netty.channel.ChannelInitializer WARNING Failed to initialize a channel. Closing: [id: 0x30e5fc3a, L:/127.0.0.1:49611 - R:/127.0.0.1:49613]
 test test_httplib failed -- multiple errors occurred; run in verbose mode for details
 test_imaplib
 test_imp
@@ -237,8 +229,8 @@ test_import
  -- test_import left behind file 'longlist$py.class'
  -- test_import left behind file '$test_1_tmpspam$py.class'
 test_import_jy
-2025-01-14 08:45:23.095 java[2008:46795] +[IMKClient subclass]: chose IMKClient_Modern
-2025-01-14 08:45:23.095 java[2008:46795] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+2025-01-30 21:29:25.736 java[8482:87837] +[IMKClient subclass]: chose IMKClient_Modern
+2025-01-30 21:29:25.736 java[8482:87837] +[IMKInputSession subclass]: chose IMKInputSession_Modern
 test_import_pep328
 test_importhooks
 test_importlib
@@ -265,8 +257,8 @@ test_java_subclasses
 test_java_visibility
 test_javashell
 test_jbasic
-2025-01-14 08:46:05.937 java[1551:37563] +[IMKClient subclass]: chose IMKClient_Modern
-2025-01-14 08:46:05.937 java[1551:37563] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+2025-01-30 21:30:08.502 java[8182:81740] +[IMKClient subclass]: chose IMKClient_Modern
+2025-01-30 21:30:08.502 java[8182:81740] +[IMKInputSession subclass]: chose IMKInputSession_Modern
 test_joverload
 test_jser
 test_jser2
@@ -414,6 +406,11 @@ test_smtpnet
 test_smtpnet skipped -- Use of the `network' resource not enabled
 test_socket
 test_socket_jy
+test test_socket_jy failed -- Traceback (most recent call last):
+  File "/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_socket_jy.py", line 87, in test_connect_ex_workout
+    self.assertEqual(result[-1], errno.EISCONN)
+AssertionError: 57 != 56
+
 test_socketserver_jython
 test_softspace
 test_sort
@@ -506,11 +503,6 @@ Use 'regrtest.py -u xpickle' to run them.
 test_zipimport_jy
 test_zipimport_support
 test_zlib
-/Users/oti/stuff/gitrepo/BisonSchweizAG/jython/dist/Lib/test/test_zlib.py:114: RuntimeWarning: PyTableCode.call caught a Throwable that is not an Exception:
-java.lang.OutOfMemoryError: Java heap space
-Jython internals might be in a bad state now that can cause deadlocks later on.
-See http://bugs.jython.org/issue2536 for details.
-  data = ''.join([binascii.a2b_hex(fmt % random.getrandbits(8 * _1M))
 test test_zlib failed -- multiple errors occurred; run in verbose mode for details
 test_zlib_jy
 355 tests OK.
@@ -518,15 +510,13 @@ test_zlib_jy
     test_codecmaps_hk test_curses test_smtpnet test_subprocess
     test_urllib2net test_urllibnet
 17 tests failed:
-    test___all__ test_codecencodings_tw test_codecs test_fileio
-    test_finalizers test_generators test_httplib test_iter
-    test_jy_internals test_module test_os test_posix
-    test_resurrection_attr_preserve test_scope test_set_jy test_string
-    test_zlib
+    test_codecencodings_tw test_codecs test_fileio test_finalizers
+    test_generators test_httplib test_iter test_jy_internals
+    test_module test_os test_posix test_resurrection_attr_preserve
+    test_scope test_set_jy test_socket_jy test_string test_zlib
 17 fails unexpected:
-    test___all__ test_codecencodings_tw test_codecs test_fileio
-    test_finalizers test_generators test_httplib test_iter
-    test_jy_internals test_module test_os test_posix
-    test_resurrection_attr_preserve test_scope test_set_jy test_string
-    test_zlib
-➜  jython git:(2.7.bison) ✗         
+    test_codecencodings_tw test_codecs test_fileio test_finalizers
+    test_generators test_httplib test_iter test_jy_internals
+    test_module test_os test_posix test_resurrection_attr_preserve
+    test_scope test_set_jy test_socket_jy test_string test_zlib
+➜  jython git:(bugfix/regrtests) 
