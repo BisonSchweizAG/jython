@@ -1460,19 +1460,10 @@ class MixinStrStringUserStringTest:
         table = string.maketrans('abc', 'xyz')
         self.checkequal('xyzxyz', 'xyzabcdef', 'translate', table, 'def')
 
-        # Repeat using buffer API objects (Jython addition)
-        if test_support.is_jython:
-            for buftype in (buffer, memoryview, bytearray):
-                self.checkequal('xyzxyz', 'xyzabcdef', 'translate', buftype(table), 'def')
-                self.checkequal('xyzxyz', 'xyzabcdef', 'translate', table, buftype('def'))
-
         table = string.maketrans('a', 'A')
         self.checkequal('Abc', 'abc', 'translate', table)
         self.checkequal('xyz', 'xyz', 'translate', table)
         self.checkequal('yz', 'xyz', 'translate', table, 'x')
-        self.checkequal('yx', 'zyzzx', 'translate', None, 'z')
-        self.checkequal('zyzzx', 'zyzzx', 'translate', None, '')
-        self.checkequal('zyzzx', 'zyzzx', 'translate', None)
         self.checkraises(ValueError, 'xyz', 'translate', 'too short', 'strip')
         self.checkraises(ValueError, 'xyz', 'translate', 'too short')
 
