@@ -33,6 +33,10 @@
 - `ant`
 - `./dist/bin/jython -m test.regrtest -e`
 
+## Running a single regrtest
+To execute - for example - `test_string.py`, the command line is as follows:
+- `./dist/bin/jython -m test.test_string`
+
 ## `master` on JDK 21 Results
 ```
 379 tests OK.
