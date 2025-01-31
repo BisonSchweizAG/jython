@@ -206,7 +206,7 @@ class PosixTester(unittest.TestCase):
                 os.close(fd)
 
     def test_fstat(self):
-        if hasattr(posix, 'fstat'):
+        if hasattr(posix, 'fstat__'):
             fp = open(test_support.TESTFN)
             try:
                 self.assertTrue(posix.fstat(fp.fileno()))
