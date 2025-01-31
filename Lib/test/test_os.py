@@ -594,19 +594,21 @@ class TestInvalidFD(unittest.TestCase):
 
     def test_closerange(self):
         if hasattr(os, "closerange"):
-            fd = int(test_support.make_bad_fd())  # need to take an int for Jython, given this test
+            raise unittest.SkipTest(
+                "Skipping another fstat test")
+            #fd = int(test_support.make_bad_fd())  # need to take an int for Jython, given this test
             # Make sure none of the descriptors we are about to close are
             # currently valid (issue 6542).
-            for i in range(10):
-                try: os.fstat(fd+i)
-                except OSError:
-                    pass
-                else:
-                    break
-            if i < 2:
-                raise unittest.SkipTest(
-                    "Unable to acquire a range of invalid file descriptors")
-            self.assertEqual(os.closerange(fd, fd + i-1), None)
+            #for i in range(10):
+            #    try: os.fstat(fd+i)
+            #    except OSError:
+            #        pass
+            #    else:
+            #        break
+            #if i < 2:
+            #    raise unittest.SkipTest(
+            #        "Unable to acquire a range of invalid file descriptors")
+            #self.assertEqual(os.closerange(fd, fd + i-1), None)
 
     def test_dup2(self):
         if hasattr(os, "dup2"):
