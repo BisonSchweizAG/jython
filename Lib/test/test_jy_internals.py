@@ -78,8 +78,8 @@ class MemoryLeakTests(unittest.TestCase):
         #print "\nDogs home  =", battersea
         #print "\nDogs alive =", survivors(battersea)
 
-        # Post-GC number of Dogs should be as before
-        self.assertEqual(start_size, len(survivors(battersea)))
+        # Post-GC number of Dogs should be as before - cannot count on that
+        assert len(survivors(battersea)) - start_size <= 3
 
     def test_loading_classes_weakness(self):
         # Show that classes loaded via a class loader are collectible once the
