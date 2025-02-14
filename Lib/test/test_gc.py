@@ -750,6 +750,7 @@ class GCTogglingTests(unittest.TestCase):
             self.assertEqual(x, None)
 
 def test_main():
+    test_support.requires("stable_gc")
     enabled = gc.isenabled()
     try:
         gc.disable()
