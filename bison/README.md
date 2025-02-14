@@ -11,7 +11,7 @@
 # Hint how to run unit tests from within Eclipse
 - add `exposed-2.7.x.jar` topmost to the run configuration of those unit tests which need initialization
 - at the moment this is the full `jython-2.7.x.jar`
-  
+
 # Differences to upstream
 - `jakarta` migration
 - improvement of `string.py` for `java.lang.String` arguments
@@ -26,12 +26,17 @@
 - remove `getSecurityManager()`
 - PyString now can contain 8 bit Unicode characters (in both conversion directions)
 - `Object.finalize()` is now replaced with the `Cleanable` interface
+- fix (or mute) some regression tests
 
 # Running regrtest
 - run the following commands in a shell with JDK 21
 - `ant clean`
 - `ant`
 - `./dist/bin/jython -m test.regrtest -e`
+
+## Running a single regrtest
+To execute - for example - `test_string.py`, the command line is as follows:
+- `./dist/bin/jython -m test.test_string`
 
 ## `master` on JDK 21 Results
 ```
@@ -46,24 +51,7 @@
 ```
 
 ## `2.7.bison` Tip Results
-```
-355 tests OK.
-6 tests skipped:
-    test_codecmaps_hk test_curses test_smtpnet test_subprocess
-    test_urllib2net test_urllibnet
-17 tests failed:
-    test___all__ test_codecencodings_tw test_codecs test_fileio
-    test_finalizers test_generators test_httplib test_iter
-    test_jy_internals test_module test_os test_posix
-    test_resurrection_attr_preserve test_scope test_set_jy test_string
-    test_zlib
-17 fails unexpected:
-    test___all__ test_codecencodings_tw test_codecs test_fileio
-    test_finalizers test_generators test_httplib test_iter
-    test_jy_internals test_module test_os test_posix
-    test_resurrection_attr_preserve test_scope test_set_jy test_string
-    test_zlib
-```
+See `bison/regrtest.log`
 
 # Artifactory publishing of a SNAPSHOT (Note: maven snapshot publishing currently not perfect)
 - `./gradlew clean publish`

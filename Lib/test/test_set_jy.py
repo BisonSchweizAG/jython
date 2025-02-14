@@ -55,7 +55,7 @@ class SetInJavaTestCase(unittest.TestCase):
         s = PySetInJavaTest.createPySetContainingJavaObjects()
         for v in s:
             self.assert_(v in s)
-            if isinstance(v, unicode):
+            if isinstance(v, str):
                 self.assertEquals("value", v)
             else:
                 # Should be a java.util.Random; ensure we can call it
