@@ -60,6 +60,7 @@ class AllocatedNativeMemory extends BoundedNativeMemory implements AllocatedDire
     }
 
     private void doFinalize() {
+        System.err.println("+++ AllocatedNativeMemory::doFinalize");
         if (!released && autorelease) {
             IO.freeMemory(storage);
             released = true;

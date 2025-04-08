@@ -776,6 +776,7 @@ public class gc {
         }
 
         private void doFinalize() {
+            System.err.println("+++ gc::doFinalize");
             notifyPreFinalization();
             if ((gcFlags & VERBOSE_COLLECT) != 0) {
                 writeDebug("gc", "Sentinel finalizer called...");

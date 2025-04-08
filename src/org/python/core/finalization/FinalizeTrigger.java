@@ -201,6 +201,7 @@ public class FinalizeTrigger implements AutoCloseable {
     }
 
     private final void doFinalize() {
+        System.err.println("+++ FinalizeTrigger::doFinalize");
         flags |= FINALIZED_FLAG;
         gc.notifyPreFinalization();
         if (gc.delayedFinalizationEnabled() && toFinalize != null) {

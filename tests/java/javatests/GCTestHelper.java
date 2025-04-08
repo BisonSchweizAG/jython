@@ -25,6 +25,7 @@ public class GCTestHelper {
 
         public NotSoNastyFinalizer() {
             Runnable cleaningFunction = () -> {
+                System.err.println("+++ GCTestHelper::cleaningFunction");
                 org.python.modules.gc.notifyPreFinalization();
                 try {
                     Thread.sleep(2000);
