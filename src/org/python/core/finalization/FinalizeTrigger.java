@@ -79,6 +79,7 @@ public class FinalizeTrigger implements AutoCloseable {
         runFinalizer(toFinalize, false);
     }
 
+    // +++ the types of finalization del
     public static void runFinalizer(PyObject toFinalize, boolean runBuiltinOnly) {
         if (!runBuiltinOnly) {
             if (toFinalize instanceof FinalizablePyObjectDerived) {
@@ -131,12 +132,12 @@ public class FinalizeTrigger implements AutoCloseable {
         this.toFinalize = toFinalize;
         System.out.println("+++ FinalizeTrigger: register cleaning function");
         // this.cleanable = PyCleaner.INSTANCE.get().register(toFinalize, cleaningFunction(flags, toFinalize));
-        this.cleanable = PyCleaner.INSTANCE.get().register(toFinalize, simpleCleaningFunction());
+        this.cleanable = PyCleaner.INSTANCE.get().register(toFinalize, simpleCleaningFunction(toFinalize));
     }
 
-    private static Runnable simpleCleaningFunction() {
+    private static Runnable simpleCleaningFunction(PyObject toFinalize) {
         return () -> {
-            System.out.println("--- FinalizeTrigger: simpleCleaningFunction");
+            System.out.println("--- FinalizeTrigger: simpleCleaningFunction for " + toFinalize);
         };
     }
 
