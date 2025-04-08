@@ -914,6 +914,7 @@ public class gc {
         static DelayedFinalizationProcess defaultInstance =
                 new DelayedFinalizationProcess();
 
+        @SuppressWarnings("static-access")
         private static void performFinalization(PyObject del) {
             if ((gcFlags & VERBOSE_DELAYED) != 0) {
                 writeDebug("gc", "delayed finalize of "+del);
@@ -921,7 +922,7 @@ public class gc {
             FinalizeTrigger ft = (FinalizeTrigger)
                     JyAttribute.getAttr(del, JyAttribute.FINALIZE_TRIGGER_ATTR);
             if (ft != null) {
-                ft.performFinalization();
+                ft.performFinalization((byte) gcFlags, del);
             } else if ((gcFlags & VERBOSE_DELAYED) != 0) {
                 writeDebug("gc", "no FinalizeTrigger");
             }

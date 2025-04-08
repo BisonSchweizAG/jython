@@ -5,6 +5,9 @@ from test import test_support
 import sys
 import unittest
 
+from java.lang import Thread
+from java.lang import System
+
 class GrammarTest(unittest.TestCase):
     def test_triple_quote_len(self):
         s1 = r"""
@@ -48,6 +51,9 @@ __test__ = dict(pep263=pep263)
 def test_main(verbose=None):
     test_support.run_unittest(GrammarTest)
     test_support.run_doctest(sys.modules[__name__], verbose)
+    for i in range(1, 10):
+		System.gc()
+		Thread.sleep(100);
 
 if __name__ == '__main__':
     test_main(verbose=True)

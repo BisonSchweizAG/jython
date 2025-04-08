@@ -129,91 +129,97 @@ public class FinalizeTrigger implements AutoCloseable {
 
     protected FinalizeTrigger(PyObject toFinalize) {
         this.toFinalize = toFinalize;
-        System.out.println("+++ FinalizeTrigger: register doFinalize");
-        this.cleanable = PyCleaner.INSTANCE.get().register(this, this::doFinalize);
+        System.out.println("+++ FinalizeTrigger: register cleaning function");
+        this.cleanable = PyCleaner.INSTANCE.get().register(toFinalize, cleaningFunction(flags, toFinalize));
     }
 
-    protected boolean isCyclic() {
+    private static Runnable cleaningFunction(byte finalizingFlags, PyObject objectToFinalize) {
+        return () -> {
+            System.out.println("--- FinalizeTrigger::cleaningFunction");
+            // +++++ finalizingFlags |= FINALIZED_FLAG;
+            gc.notifyPreFinalization();
+            if (gc.delayedFinalizationEnabled() && objectToFinalize != null) {
+                if ((gc.getJythonGCFlags() & gc.VERBOSE_FINALIZE) != 0) {
+                    gc.writeDebug("gc", "delayed finalization for " + objectToFinalize);
+                }
+                gc.registerForDelayedFinalization(objectToFinalize);
+            } else {
+                performFinalization(finalizingFlags, objectToFinalize);
+            }
+            gc.notifyPostFinalization();
+
+        };
+    }
+
+    protected static boolean isCyclic(byte finalizingFlags, PyObject objectToFinalize) {
         gc.CycleMarkAttr cm = (gc.CycleMarkAttr)
-                JyAttribute.getAttr(toFinalize, JyAttribute.GC_CYCLE_MARK_ATTR);
+        JyAttribute.getAttr(objectToFinalize, JyAttribute.GC_CYCLE_MARK_ATTR);
         if (cm != null && cm.isCyclic()) {
             return true;
         } else {
-            gc.markCyclicObjects(toFinalize, (flags & NOT_FINALIZABLE_FLAG) == 0);
+            gc.markCyclicObjects(objectToFinalize, (finalizingFlags & NOT_FINALIZABLE_FLAG) == 0);
             cm = (gc.CycleMarkAttr)
-                    JyAttribute.getAttr(toFinalize, JyAttribute.GC_CYCLE_MARK_ATTR);
+            JyAttribute.getAttr(objectToFinalize, JyAttribute.GC_CYCLE_MARK_ATTR);
             return cm != null && cm.isCyclic();
         }
     }
 
-    protected boolean isUncollectable() {
+    protected static boolean isUncollectable(byte finalizingFlags, PyObject objectToFinalize) {
         gc.CycleMarkAttr cm = (gc.CycleMarkAttr)
-                JyAttribute.getAttr(toFinalize, JyAttribute.GC_CYCLE_MARK_ATTR);
+        JyAttribute.getAttr(objectToFinalize, JyAttribute.GC_CYCLE_MARK_ATTR);
         if (cm != null && cm.isUncollectable()) {
             return true;
         } else {
-            gc.markCyclicObjects(toFinalize, (flags & NOT_FINALIZABLE_FLAG) == 0);
+            gc.markCyclicObjects(objectToFinalize, (finalizingFlags & NOT_FINALIZABLE_FLAG) == 0);
             cm = (gc.CycleMarkAttr)
-                    JyAttribute.getAttr(toFinalize, JyAttribute.GC_CYCLE_MARK_ATTR);
+            JyAttribute.getAttr(objectToFinalize, JyAttribute.GC_CYCLE_MARK_ATTR);
             return cm != null && cm.isUncollectable();
         }
     }
 
-    public void performFinalization() {
-        if (toFinalize != null) {
+    public static void performFinalization(byte finalizingFlags, PyObject objectToFinalize) {
+        if (objectToFinalize != null) {
             byte saveGarbage = 0;
             if ((gc.getJythonGCFlags() & gc.DONT_FINALIZE_CYCLIC_GARBAGE) != 0) {
-                if (isUncollectable()) {
+                if (isUncollectable(finalizingFlags, objectToFinalize)) {
                     saveGarbage = 1;
-                } else if (!isCyclic()) {
+                } else if (!isCyclic(finalizingFlags, objectToFinalize)) {
                     saveGarbage = -1;
-                    runFinalizer(toFinalize, (flags & ONLY_BUILTIN_FLAG) != 0);
+                    runFinalizer(objectToFinalize, (finalizingFlags & ONLY_BUILTIN_FLAG) != 0);
                 }
             } else {
-                if ((flags & NOT_FINALIZABLE_FLAG) == 0) {
-                    runFinalizer(toFinalize, (flags & ONLY_BUILTIN_FLAG) != 0);
+                if ((finalizingFlags & NOT_FINALIZABLE_FLAG) == 0) {
+                    runFinalizer(objectToFinalize, (finalizingFlags & ONLY_BUILTIN_FLAG) != 0);
                 }
             }
             if ((gc.getJythonGCFlags() & gc.VERBOSE_FINALIZE) != 0) {
-                gc.writeDebug("gc", "finalization of "+toFinalize);
+                gc.writeDebug("gc", "finalization of " + objectToFinalize);
             }
             if (saveGarbage == 1 || (saveGarbage == 0 &&
-                    (gc.get_debug() & gc.DEBUG_SAVEALL) != 0 && isCyclic())) {
-                if ((flags & NOT_FINALIZABLE_FLAG) == 0) {
+                            (gc.get_debug() & gc.DEBUG_SAVEALL) != 0 && isCyclic(finalizingFlags, objectToFinalize))) {
+                if ((finalizingFlags & NOT_FINALIZABLE_FLAG) == 0) {
                     //Finalizable objects in gc.garbage get a special FinalizeTrigger
                     //that only runs the builtin finalizer. This is needed because
                     //from Python the user can't call the builtin-part of the
                     //finalizer by hand.
-                    appendFinalizeTriggerForBuiltin(toFinalize);
+                    appendFinalizeTriggerForBuiltin(objectToFinalize);
                 }
-                gc.garbage.add(toFinalize);
+                gc.garbage.add(objectToFinalize);
                 if ((gc.getJythonGCFlags() & gc.VERBOSE_FINALIZE) != 0) {
-                    gc.writeDebug("gc", toFinalize+" added to garbage.");
+                    gc.writeDebug("gc", objectToFinalize + " added to garbage.");
                 }
             }
         }
-        if ((flags & NOTIFY_GC_FLAG) != 0) {
+        if ((finalizingFlags & NOTIFY_GC_FLAG) != 0) {
             if ((gc.getJythonGCFlags() & gc.VERBOSE_FINALIZE) != 0) {
-                gc.writeDebug("gc", "notify finalization of "+toFinalize);
+                gc.writeDebug("gc", "notify finalization of " + objectToFinalize);
             }
-            gc.notifyFinalize(toFinalize);
-            flags &= ~NOTIFY_GC_FLAG;
+            gc.notifyFinalize(objectToFinalize);
+            finalizingFlags &= ~NOTIFY_GC_FLAG;
         }
     }
 
     private final void doFinalize() {
-        System.out.println("+++ FinalizeTrigger::doFinalize");
-        flags |= FINALIZED_FLAG;
-        gc.notifyPreFinalization();
-        if (gc.delayedFinalizationEnabled() && toFinalize != null) {
-            if ((gc.getJythonGCFlags() & gc.VERBOSE_FINALIZE) != 0) {
-                gc.writeDebug("gc", "delayed finalization for "+toFinalize);
-            }
-            gc.registerForDelayedFinalization(toFinalize);
-        } else {
-            performFinalization();
-        }
-        gc.notifyPostFinalization();
     }
 
     public boolean isFinalized() {
