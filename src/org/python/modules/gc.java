@@ -771,12 +771,13 @@ public class gc {
         private final Cleanable cleanable;
 
         public GCSentinel(Thread notifyOnFinalize) {
+            System.out.println("+++ gc: register doFinalize");
             waiting = notifyOnFinalize;
             cleanable = PyCleaner.INSTANCE.get().register(this, this::doFinalize);
         }
 
         private void doFinalize() {
-            System.err.println("+++ gc::doFinalize");
+            System.out.println("+++ gc::doFinalize");
             notifyPreFinalization();
             if ((gcFlags & VERBOSE_COLLECT) != 0) {
                 writeDebug("gc", "Sentinel finalizer called...");

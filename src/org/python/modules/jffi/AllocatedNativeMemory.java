@@ -45,6 +45,7 @@ class AllocatedNativeMemory extends BoundedNativeMemory implements AllocatedDire
     private AllocatedNativeMemory(long address, int size, int align) {
         super(((address - 1) & ~(align - 1)) + align, size);
         this.storage = address;
+        System.out.println("+++ AllocatedNativeMemory: register doFinalize");
         this.cleanable = PyCleaner.INSTANCE.get().register(this, this::doFinalize);
     }
 
@@ -60,7 +61,7 @@ class AllocatedNativeMemory extends BoundedNativeMemory implements AllocatedDire
     }
 
     private void doFinalize() {
-        System.err.println("+++ AllocatedNativeMemory::doFinalize");
+        System.out.println("+++ AllocatedNativeMemory::doFinalize");
         if (!released && autorelease) {
             IO.freeMemory(storage);
             released = true;

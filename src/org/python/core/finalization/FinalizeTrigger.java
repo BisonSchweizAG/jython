@@ -129,6 +129,7 @@ public class FinalizeTrigger implements AutoCloseable {
 
     protected FinalizeTrigger(PyObject toFinalize) {
         this.toFinalize = toFinalize;
+        System.out.println("FinalizeTrigger: register doFinalize");
         this.cleanable = PyCleaner.INSTANCE.get().register(this, this::doFinalize);
     }
 
@@ -201,7 +202,7 @@ public class FinalizeTrigger implements AutoCloseable {
     }
 
     private final void doFinalize() {
-        System.err.println("+++ FinalizeTrigger::doFinalize");
+        System.out.println("+++ FinalizeTrigger::doFinalize");
         flags |= FINALIZED_FLAG;
         gc.notifyPreFinalization();
         if (gc.delayedFinalizationEnabled() && toFinalize != null) {
