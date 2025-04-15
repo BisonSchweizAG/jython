@@ -1166,7 +1166,6 @@ class GCTests_Misc(unittest.TestCase):
 
 
 def test_main():
-    test_support.requires("stable_gc")
     tests = (
         GCTests_Jy_CyclicGarbage,
         GCTests_Jy_preprocess_and_postprocess,

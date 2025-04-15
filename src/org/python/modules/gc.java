@@ -1,31 +1,29 @@
 package org.python.modules;
 
-import java.lang.ref.Cleaner.Cleanable;
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.python.core.JyAttribute;
 import org.python.core.Py;
-import org.python.core.PyCleaner;
 import org.python.core.PyException;
-import org.python.core.PyInstance;
 import org.python.core.PyList;
 import org.python.core.PyObject;
+import org.python.core.PyInstance;
 import org.python.core.PyString;
 import org.python.core.Traverseproc;
 import org.python.core.TraverseprocDerived;
-import org.python.core.Untraversable;
 import org.python.core.Visitproc;
+import org.python.core.Untraversable;
 import org.python.core.finalization.FinalizeTrigger;
 import org.python.modules._weakref.GlobalRef;
 import org.python.modules._weakref.ReferenceBackend;
@@ -766,16 +764,15 @@ public class gc {
         }
     }
 
-    private static class GCSentinel implements AutoCloseable {
-        private final Thread waiting;
-        private final Cleanable cleanable;
+    private static class GCSentinel {
+        Thread waiting;
 
         public GCSentinel(Thread notifyOnFinalize) {
             waiting = notifyOnFinalize;
-            cleanable = PyCleaner.INSTANCE.get().register(this, this::doFinalize);
         }
 
-        private void doFinalize() {
+        @Override
+        protected void finalize() throws Throwable {
             notifyPreFinalization();
             if ((gcFlags & VERBOSE_COLLECT) != 0) {
                 writeDebug("gc", "Sentinel finalizer called...");
@@ -796,11 +793,6 @@ public class gc {
                 writeDebug("gc", "Sentinel finalizer done");
             }
             notifyPostFinalization();
-        }
-
-        @Override
-        public void close() {
-            cleanable.clean();
         }
     }
 
@@ -2299,58 +2291,56 @@ public class gc {
     */
 
     private static List<WeakReferenceGC> collectSyncViaSentinel(int[] stat, Set<WeakReferenceGC> cyclic) {
-        try (GCSentinel gcSentinel = new GCSentinel(Thread.currentThread())) {
-            WeakReference<GCSentinel> sentRef = new WeakReference<>(gcSentinel, gcTrash);
-            Reference<? extends Object> trash;
-            System.gc();
-            List<WeakReferenceGC> collectBuffer = null;
-            if (needsCollectBuffer()) {
-                collectBuffer = new ArrayList<>();
-            }
-            long removeTime;
-            try {
-                while (true) {
-                    removeTime = System.currentTimeMillis() - lastRemoveTimeStamp;
-                    if (removeTime > maxWaitTime) {
-                        maxWaitTime = removeTime;
-                    }
-                    lastRemoveTimeStamp = System.currentTimeMillis();
-                    trash = gcTrash.remove(Math.max(gcRecallTime, maxWaitTime * defaultWaitFactor));
-                    if (trash != null) {
-                        if (trash instanceof WeakReferenceGC) {
-                            synchronized (monitoredObjects) {
-                                monitoredObjects.remove(trash);
-                            }
-                            /*
-                             * We avoid counting Jython-specific objects in order to obtain CPython-comparable results.
-                             */
-                            if (cyclic.contains(trash) && !((WeakReferenceGC) trash).cls.contains("Java")) {
-                                ++stat[0];
-                                if (collectBuffer != null) {
-                                    collectBuffer.add((WeakReferenceGC) trash);
-                                }
-                                if ((gcFlags & VERBOSE_COLLECT) != 0) {
-                                    writeDebug("gc", "Collected cyclic object: " + trash);
-                                }
-                            }
-                            if (((WeakReferenceGC) trash).hasFinalizer) {
-                                ++finalizeWaitCount;
-                                if ((gcFlags & VERBOSE_FINALIZE) != 0) {
-                                    writeDebug("gc", "Collected finalizable object: " + trash);
-                                    writeDebug("gc", "New finalizeWaitCount: " + finalizeWaitCount);
-                                }
-                            }
-                        } else if (trash == sentRef && (gcFlags & VERBOSE_COLLECT) != 0) {
-                            writeDebug("gc", "Sentinel collected.");
-                        }
-                    } else {
-                        System.gc();
-                    }
-                }
-            } catch (InterruptedException iex) {
-            }
-            return collectBuffer;
+        WeakReference<GCSentinel> sentRef =
+                new WeakReference<>(new GCSentinel(Thread.currentThread()), gcTrash);
+        Reference<? extends Object> trash;
+        System.gc();
+        List<WeakReferenceGC> collectBuffer = null;
+        if (needsCollectBuffer()) {
+            collectBuffer = new ArrayList<>();
         }
+        long removeTime;
+        try {
+            while(true) {
+                removeTime = System.currentTimeMillis()-lastRemoveTimeStamp;
+                if (removeTime > maxWaitTime) {
+                    maxWaitTime = removeTime;
+                }
+                lastRemoveTimeStamp = System.currentTimeMillis();
+                trash = gcTrash.remove(Math.max(gcRecallTime, maxWaitTime*defaultWaitFactor));
+                if (trash != null) {
+                    if (trash instanceof WeakReferenceGC) {
+                        synchronized(monitoredObjects) {
+                            monitoredObjects.remove(trash);
+                        }
+                        /* We avoid counting Jython-specific objects in order to
+                         * obtain CPython-comparable results.
+                         */
+                        if (cyclic.contains(trash) && !((WeakReferenceGC) trash).cls.contains("Java")) {
+                            ++stat[0];
+                            if (collectBuffer != null) {
+                                collectBuffer.add((WeakReferenceGC) trash);
+                            }
+                            if ((gcFlags & VERBOSE_COLLECT) != 0) {
+                                writeDebug("gc", "Collected cyclic object: "+trash);
+                            }
+                        }
+                        if (((WeakReferenceGC) trash).hasFinalizer) {
+                            ++finalizeWaitCount;
+                            if ((gcFlags & VERBOSE_FINALIZE) != 0) {
+                                writeDebug("gc", "Collected finalizable object: "+trash);
+                                writeDebug("gc", "New finalizeWaitCount: "+finalizeWaitCount);
+                            }
+                        }
+                    } else if (trash == sentRef && (gcFlags & VERBOSE_COLLECT) != 0) {
+                        writeDebug("gc", "Sentinel collected.");
+                    }
+                } else {
+                    System.gc();
+                }
+            }
+        } catch (InterruptedException iex) {}
+        return collectBuffer;
     }
 
     private static void waitForFinalizers() {

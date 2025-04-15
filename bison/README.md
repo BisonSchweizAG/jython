@@ -25,7 +25,6 @@
 - replace `AccessControlException`
 - remove `getSecurityManager()`
 - PyString now can contain 8 bit Unicode characters (in both conversion directions)
-- `Object.finalize()` is now replaced with the `Cleanable` interface
 - fix (or mute) some regression tests
 
 # Running regrtest
@@ -77,3 +76,4 @@ See `bison/regrtest.log`
 
 # TODO
 - try to fix compilation warnings
+- replace `finalize()`

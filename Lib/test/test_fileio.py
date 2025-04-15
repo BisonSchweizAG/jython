@@ -42,7 +42,7 @@ class AutoFileTests(unittest.TestCase):
         self.f.close()
         self.f = None
         gc_collect()
-        #self.assertRaises(ReferenceError, getattr, p, 'tell')
+        self.assertRaises(ReferenceError, getattr, p, 'tell')
 
     def testSeekTell(self):
         self.f.write(bytes(range(20)))

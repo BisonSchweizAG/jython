@@ -78,7 +78,7 @@ a = A()"""
         exec(s, m.__dict__)
         del m
         gc_collect()
-        #self.assertEqual(destroyed, [1])
+        self.assertEqual(destroyed, [1])
 
 def test_main():
     run_unittest(ModuleTests)

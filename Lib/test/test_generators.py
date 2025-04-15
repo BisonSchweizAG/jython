@@ -1649,7 +1649,7 @@ And finalization. But we have to force the timing of GC here, since we are runni
 >>> g = f()
 >>> g.next()
 >>> del g; extra_collect()
-
+exiting
 
 
 Now let's try some ill-behaved generators:
@@ -1677,7 +1677,7 @@ Our ill-behaved code should be invoked during GC:
 >>> sys.stderr.getvalue().startswith(
 ...     "Exception RuntimeError"
 ... )
-False
+True
 >>> sys.stderr = old
 
 

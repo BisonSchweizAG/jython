@@ -1,9 +1,6 @@
 package org.python.core.finalization;
 
-import java.lang.ref.Cleaner.Cleanable;
-
 import org.python.core.JyAttribute;
-import org.python.core.PyCleaner;
 import org.python.core.PyObject;
 import org.python.modules.gc;
 
@@ -11,7 +8,7 @@ import org.python.modules.gc;
  * To use finalizers on {@code PyObject}s, read the documentation of
  * {@link org.python.core.finalization.FinalizablePyObject}.
  */
-public class FinalizeTrigger implements AutoCloseable {
+public class FinalizeTrigger {
     /**
      * This flag tells the finalize trigger to call
      * {@link gc#notifyFinalize(PyObject)} after it called the finalizer.
@@ -44,8 +41,6 @@ public class FinalizeTrigger implements AutoCloseable {
      * JyNI needs it to support garbage collection.
      */
     public static FinalizeTriggerFactory factory;
-
-    private final Cleanable cleanable;
 
     public static FinalizeTrigger makeTrigger(PyObject toFinalize) {
         if (factory != null) {
@@ -129,7 +124,6 @@ public class FinalizeTrigger implements AutoCloseable {
 
     protected FinalizeTrigger(PyObject toFinalize) {
         this.toFinalize = toFinalize;
-        this.cleanable = PyCleaner.INSTANCE.get().register(this, this::doFinalize);
     }
 
     protected boolean isCyclic() {
@@ -200,7 +194,8 @@ public class FinalizeTrigger implements AutoCloseable {
         }
     }
 
-    private final void doFinalize() {
+    @Override
+    protected void finalize() throws Throwable {
         flags |= FINALIZED_FLAG;
         gc.notifyPreFinalization();
         if (gc.delayedFinalizationEnabled() && toFinalize != null) {
@@ -216,10 +211,5 @@ public class FinalizeTrigger implements AutoCloseable {
 
     public boolean isFinalized() {
         return (flags & FINALIZED_FLAG) != 0;
-    }
-
-    @Override
-    public void close() {
-        cleanable.clean();
     }
 }

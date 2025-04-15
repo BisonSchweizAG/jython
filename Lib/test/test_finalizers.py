@@ -419,7 +419,6 @@ class TestFinalizers(unittest.TestCase):
 
 
 def test_main():
-    test_support.requires("finalizers")
     test_support.run_unittest(TestFinalizers)
 
 if __name__ == '__main__':
