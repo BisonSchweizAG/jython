@@ -52,8 +52,8 @@ class GCTests(unittest.TestCase):
         savedId = id(rd)
         rd = None
         runGC() #needed for Jython etc, even though no cyclic trash appears
-        #self.assertEqual(id(SelfResurrectionDummy.resurrected), savedId)
-        #del SelfResurrectionDummy.resurrected
+        self.assertEqual(id(SelfResurrectionDummy.resurrected), savedId)
+        del SelfResurrectionDummy.resurrected
 
     def test_id_after_resurrection(self):
         l = ["ab"]
@@ -63,8 +63,8 @@ class GCTests(unittest.TestCase):
         l = None
         rd = None
         runGC() #needed for Jython etc, even though no cyclic trash appears
-        #self.assertEqual(id(ResurrectionDummy.resurrected), savedId)
-        #del ResurrectionDummy.resurrected
+        self.assertEqual(id(ResurrectionDummy.resurrected), savedId)
+        del ResurrectionDummy.resurrected
 
 #todo: Check these test regarding to CPython behavior 
 #     def test_weakref_consistency_after_self_resurrection(self):

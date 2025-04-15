@@ -806,16 +806,16 @@ class TestCase(unittest.TestCase):
         self.assertEqual(C.count, 1)
         del x
         extra_collect()
-        #self.assertEqual(C.count, 0)
+        self.assertEqual(C.count, 0)
         l = [C(), C(), C()]
-        self.assertEqual(C.count, 1 + 3)
+        self.assertEqual(C.count, 3)
         try:
             a, b = iter(l)
         except ValueError:
             pass
         del l
         extra_collect()
-        #self.assertEqual(C.count, 0)
+        self.assertEqual(C.count, 0)
 
 
     # Make sure StopIteration is a "sink state".
