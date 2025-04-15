@@ -11,7 +11,7 @@
 	<classpathentry kind="lib" path="extlibs/ant-1.10.15.jar"/>
 	<classpathentry kind="lib" path="extlibs/jakartaee-api-10.0.0.jar"/>
 	<classpathentry kind="lib" path="extlibs/java-sizeof-0.0.5.jar"/>
-	<classpathentry kind="lib" path="extlibs/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="extlibs/junit-4.13.2.jar"/>
 	<classpathentry kind="lib" path="extlibs/antlr-complete-3.5.3.jar"/>
 	<classpathentry kind="lib" path="extlibs/asm-9.7.jar"/>
 	<classpathentry kind="lib" path="extlibs/asm-commons-9.7.jar"/>
