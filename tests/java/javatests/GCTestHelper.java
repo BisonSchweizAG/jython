@@ -1,18 +1,24 @@
 package javatests;
 
-import java.lang.ref.Cleaner.Cleanable;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.python.core.Py;
-import org.python.core.PyCleaner;
-import org.python.core.PyFloat;
-import org.python.core.PyInteger;
-import org.python.core.PyList;
-import org.python.core.PyObject;
-import org.python.core.PyString;
+import org.python.core.*;
+import java.util.*;
 
 public class GCTestHelper {
+
+	/**
+     * NastyFinalizer is a non-PyObject class with a time-consuming
+     * finalizer that does not notify Jython-gc. This would cause
+     * some tests in test_gc_jy.py to fail.
+     */
+    public static class NastyFinalizer {
+
+        public void finalize() {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ie) {
+            }
+        }
+    }
 
     /**
      * In contrast to NastyFinalizer, this class - still equally
@@ -20,24 +26,15 @@ public class GCTestHelper {
      * and {@code gc.notifyPostFinalization()} and thus lets all
      * tests work as expected.
      */
-    public static class NotSoNastyFinalizer implements AutoCloseable {
-        private final Cleanable cleanable;
+    public static class NotSoNastyFinalizer {
 
-        public NotSoNastyFinalizer() {
-            Runnable cleaningFunction = () -> {
-                org.python.modules.gc.notifyPreFinalization();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException ie) {
-                }
-                org.python.modules.gc.notifyPostFinalization();
-            };
-            cleanable = PyCleaner.INSTANCE.get().register(this, cleaningFunction);
-        }
-
-        @Override
-        public void close() {
-            cleanable.clean();
+        public void finalize() {
+            org.python.modules.gc.notifyPreFinalization();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ie) {
+            }
+            org.python.modules.gc.notifyPostFinalization();
         }
     }
 
