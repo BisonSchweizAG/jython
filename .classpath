@@ -16,7 +16,7 @@
 	<classpathentry kind="lib" path="extlibs/asm-9.7.jar"/>
 	<classpathentry kind="lib" path="extlibs/asm-commons-9.7.jar"/>
 	<classpathentry kind="lib" path="extlibs/asm-util-9.7.jar"/>
-	<classpathentry kind="lib" path="extlibs/commons-compress-1.26.2.jar"/>
+	<classpathentry kind="lib" path="extlibs/commons-compress-1.27.1.jar"/>
 	<classpathentry kind="lib" path="extlibs/guava-33.4.0-jre.jar"/>
 	<classpathentry kind="lib" path="extlibs/jffi-1.3.13.jar"/>
 	<classpathentry kind="lib" path="extlibs/jline-2.14.6.jar"/>
