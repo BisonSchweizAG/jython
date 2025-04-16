@@ -257,7 +257,7 @@ informix.jar = ../support/jdbc-4.10.12.jar
                 <file name="bcpkix-jdk18on-1.80.jar" />
                 <file name="bcprov-jdk18on-1.80.jar" />
                 <file name="commons-compress-1.27.1.jar"/>
-                <file name="commons-io-2.18.0.jar"/>
+                <file name="commons-io-2.19.0.jar"/>
                 <file name="failureaccess-1.0.1.jar" />
                 <file name="guava-33.4.8-jre.jar" />
                 <file name="icu4j-77.1.jar" />
@@ -858,7 +858,7 @@ The text for an official release would continue like ...
             <rule pattern="org.bouncycastle.**" result="org.python.bouncycastle.@1"/>
             <zipfileset src="extlibs/commons-compress-1.27.1.jar" excludes="META-INF/versions/9/module-info.class"/>
             <rule pattern="org.apache.commons.compress.**" result="org.python.apache.commons.compress.@1"/>
-            <zipfileset src="extlibs/commons-io-2.18.0.jar" excludes="META-INF/versions/9/module-info.class"/>
+            <zipfileset src="extlibs/commons-io-2.19.0.jar" excludes="META-INF/versions/9/module-info.class"/>
             <rule pattern="org.apache.commons.io.**" result="org.python.apache.commons.io.@1"/>
             <zipfileset src="extlibs/failureaccess-1.0.1.jar"/>
             <zipfileset src="extlibs/guava-33.4.8-jre.jar" excludes="META-INF/**"/>

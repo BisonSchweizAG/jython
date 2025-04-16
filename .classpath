@@ -26,6 +26,6 @@
 	<classpathentry kind="lib" path="extlibs/icu4j-77.1.jar"/>
 	<classpathentry kind="lib" path="extlibs/bcprov-jdk18on-1.80.jar"/>
 	<classpathentry kind="lib" path="extlibs/bcpkix-jdk18on-1.80.jar"/>
-	<classpathentry kind="lib" path="extlibs/commons-io-2.18.0.jar"/>
+	<classpathentry kind="lib" path="extlibs/commons-io-2.19.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
