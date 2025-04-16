@@ -23,7 +23,7 @@
 	<classpathentry kind="lib" path="extlibs/jnr-constants-0.10.4.jar"/>
 	<classpathentry kind="lib" path="extlibs/jnr-posix-3.1.19.jar"/>
 	<classpathentry kind="lib" path="extlibs/jnr-ffi-2.2.16.jar"/>
-	<classpathentry kind="lib" path="extlibs/icu4j-76.1.jar"/>
+	<classpathentry kind="lib" path="extlibs/icu4j-77.1.jar"/>
 	<classpathentry kind="lib" path="extlibs/bcprov-jdk18on-1.80.jar"/>
 	<classpathentry kind="lib" path="extlibs/bcpkix-jdk18on-1.80.jar"/>
 	<classpathentry kind="lib" path="extlibs/commons-io-2.18.0.jar"/>
