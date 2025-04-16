@@ -39,14 +39,10 @@ To execute - for example - `test_string.py`, the command line is as follows:
 
 ## `master` on JDK 21 Results
 ```
-379 tests OK.
+383 tests OK.
 6 tests skipped:
     test_codecmaps_hk test_curses test_smtpnet test_subprocess
     test_urllib2net test_urllibnet
-3 tests failed:
-    test_httplib test_os test_posix
-3 fails unexpected:
-    test_httplib test_os test_posix
 ```
 
 ## `2.7.bison` Tip Results
