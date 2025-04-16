@@ -27,5 +27,11 @@
 	<classpathentry kind="lib" path="extlibs/bcprov-jdk18on-1.80.jar"/>
 	<classpathentry kind="lib" path="extlibs/bcpkix-jdk18on-1.80.jar"/>
 	<classpathentry kind="lib" path="extlibs/commons-io-2.19.0.jar"/>
+	<classpathentry kind="lib" path="extlibs/netty-buffer-4.1.119.Final.jar"/>
+	<classpathentry kind="lib" path="extlibs/netty-codec-4.1.119.Final.jar"/>
+	<classpathentry kind="lib" path="extlibs/netty-common-4.1.119.Final.jar"/>
+	<classpathentry kind="lib" path="extlibs/netty-handler-4.1.119.Final.jar"/>
+	<classpathentry kind="lib" path="extlibs/netty-resolver-4.1.119.Final.jar"/>
+	<classpathentry kind="lib" path="extlibs/netty-transport-4.1.119.Final.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
