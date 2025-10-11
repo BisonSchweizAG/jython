@@ -1627,11 +1627,15 @@ public class PySystemState extends PyObject
      *             the program will exit.
      */
     public static void exit(PyObject status) {
-        if (isInteractive()) {
-            throw new PyException(Py.SystemExit, status);
-        } else {
+        if (preventExit(status)) {
             throw Py.SyntaxError("exit() not allowed in embedded mode");
+        } else {
+            throw new PyException(Py.SystemExit, status);
         }
+    }
+
+    private static boolean preventExit(PyObject exitStatus) {
+        return !isInteractive() && (Py.None.equals(exitStatus) || exitStatus instanceof PyInteger);
     }
 
     /**
