@@ -1,7 +1,5 @@
-package ch.obj.commons.core.util.jython;
+package org.python.core;
 
-import org.python.core.PyException;
-import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
 import junit.framework.TestCase;
