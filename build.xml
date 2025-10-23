@@ -1,6 +1,6 @@
 <!--
     Original Copyright 2000 Dj Walker-Morgan
-    Further development (c)2orac019 Jython Developers
+    Further development (c) 2019 Jython Developers
     Licensed to the PSF under a Contributor Agreement.
 -->
 <project name="jython" default="developer-build" basedir=".">
