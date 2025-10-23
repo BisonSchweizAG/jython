@@ -139,7 +139,7 @@ dependencies {
      * choose the latest required.
      */
 
-    implementation 'jakarta.platform:jakarta.jakartaee-api:10.0.0'
+    implementation 'jakarta.platform:jakarta.jakartaee-api:11.0.0'
 
     /*
      * These seem to be unnecessary while the proprietary database support is
