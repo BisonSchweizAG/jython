@@ -178,7 +178,7 @@ dependencies {
     implementation 'jline:jline:2.14.6'
 
     implementation 'io.netty:netty-buffer:4.2.7.Final'
-    implementation 'io.netty:netty-codec:4.2.7.Final'
+    implementation 'io.netty:netty-codec-base:4.2.7.Final'
     implementation 'io.netty:netty-common:4.2.7.Final'
     implementation 'io.netty:netty-handler:4.2.7.Final'
     implementation 'io.netty:netty-resolver:4.2.7.Final'
