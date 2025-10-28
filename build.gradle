@@ -35,6 +35,10 @@ sourceSets {
       srcDirs = ['grammar']
       exclude 'Base.g' // Not used (and produces errors)
     }
+    // including this stops grammars from being generated
+//    java {
+//      srcDirs = ['src', antlrSrcDir]
+//    }
   }
 }
 
