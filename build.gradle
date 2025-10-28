@@ -8,6 +8,14 @@ repositories {
   mavenCentral()
 }
 
+
+buildDir = file('build2')
+ext {
+    antlrSrcDir = "$buildDir/gensrc/"
+    antlrGenDir = "$antlrSrcDir/org/python/antlr"
+}
+
+
 java {
   sourceCompatibility = JavaVersion.VERSION_21
   withSourcesJar()
@@ -20,7 +28,17 @@ dependencies {
   implementation(libs.guava)
 }
 
-tasks.named("generateGrammarSource").configure {
-    // Set the target package for generated code
-    packageName = "org.python.antlr"
+
+sourceSets {
+  main {
+    antlr {
+      srcDirs = ['grammar']
+      exclude 'Base.g' // Not used (and produces errors)
+    }
+  }
+}
+
+
+generateGrammarSource {
+  outputDirectory = file(antlrGenDir)
 }
