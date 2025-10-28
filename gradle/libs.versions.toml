@@ -1,0 +1,7 @@
+[versions]
+rev_antlr = "3.5.3"
+rev_guava = "33.5.0-jre"
+
+[libraries]
+antlr = { module = "org.antlr:antlr", version.ref = "rev_antlr" }
+guava = { module = "com.google.guava:guava", version.ref = "rev_guava" }
