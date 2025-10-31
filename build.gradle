@@ -25,24 +25,57 @@ java {
 
 dependencies {
   antlr libs.antlr
+
+  compileOnly(libs.informix)
+  compileOnly(libs.oracle)
+
+  implementation(libs.ant)
+  implementation(libs.asm)
+  implementation(libs.asm.commons)
+  implementation(libs.asm.util)
+  implementation(libs.bcpkix.jdk18on)
+  implementation(libs.bcprov.jdk18on)
+  implementation(libs.commons.compress)
+  implementation(libs.commons.io)
   implementation(libs.guava)
+  implementation(libs.icu4j)
+  implementation(libs.jakartaee.api)
+  implementation(libs.java.sizeof)
+  implementation(libs.jffi)
+  implementation(libs.jline)
+  implementation(libs.jnr.constants)
+  implementation(libs.jnr.ffi)
+  implementation(libs.jnr.netdb)
+  implementation(libs.jnr.posix)
+  implementation(libs.netty.buffer)
+  implementation(libs.netty.codec.base)
+  implementation(libs.netty.common)
+  implementation(libs.netty.handler)
+  implementation(libs.netty.resolver)
+  implementation(libs.netty.transport)
+
+  testImplementation(libs.junit)
 }
 
 
 sourceSets {
-  main {
+  main{
     antlr {
       srcDirs = ['grammar']
       exclude 'Base.g' // Not used (and produces errors)
     }
-    // including this stops grammars from being generated
-//    java {
-//      srcDirs = ['src', antlrSrcDir]
-//    }
+    java {
+      srcDirs = ['src', antlrSrcDir]
+    }
   }
 }
 
 
 generateGrammarSource {
   outputDirectory = file(antlrGenDir)
+}
+
+
+tasks.withType(JavaCompile).configureEach {
+  dependsOn generateGrammarSource
 }
