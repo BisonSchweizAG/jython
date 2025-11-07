@@ -79,3 +79,31 @@ generateGrammarSource {
 tasks.withType(JavaCompile).configureEach {
   dependsOn generateGrammarSource
 }
+
+
+
+
+
+// tasks for 2.7.bison:
+//➜  jython git:(2.7.bison) ./gradlew build --dry-run
+//Starting a Gradle Daemon (subsequent builds will be faster)
+//:generateGrammarSource SKIPPED
+//:compileJava SKIPPED
+//:expose SKIPPED
+//:mergeExposed SKIPPED
+//:mergePythonLib SKIPPED
+//:copyLib SKIPPED
+//:generateVersionInfo SKIPPED
+//:processResources SKIPPED
+//:classes SKIPPED
+//:pycompile SKIPPED
+//:jar SKIPPED
+//:assemble SKIPPED
+//:generateTestGrammarSource SKIPPED
+//:compileTestJava SKIPPED
+//:copyTestLib SKIPPED
+//:processTestResources SKIPPED
+//:testClasses SKIPPED
+//:test SKIPPED
+//:check SKIPPED
+//:build SKIPPED
