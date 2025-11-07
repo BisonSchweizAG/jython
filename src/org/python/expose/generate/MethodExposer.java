@@ -55,6 +55,8 @@ public abstract class MethodExposer extends Exposer {
     }
 
     /**
+     * GetNames
+     * 
      * @return the names this method will be exposed as. Must be at least length 1.
      */
     public String[] getNames() {
@@ -222,6 +224,9 @@ public abstract class MethodExposer extends Exposer {
         endMethod(ARETURN);
     }
 
+    /**
+     * LoadSelfAndThreadState
+     */
     protected void loadSelfAndThreadState() {
         // Push self on the stack so we can call it
         get("self", PYOBJ);
@@ -230,14 +235,23 @@ public abstract class MethodExposer extends Exposer {
         loadThreadState();
     }
 
+    /**
+     * LoadThreadState
+     */
     protected void loadThreadState() {
         if (needsThreadState(args)) {
             mv.visitVarInsn(ALOAD, 1);
         }
     }
 
+    /**
+     * CheckSelf
+     */
     protected abstract void checkSelf();
 
+    /**
+     * makeCall
+     */
     protected abstract void makeCall();
 
     private void pushDefault(String def, Type arg) {

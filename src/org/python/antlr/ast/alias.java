@@ -17,32 +17,74 @@ import org.python.expose.ExposedNew;
 import org.python.expose.ExposedSet;
 import org.python.expose.ExposedType;
 
+/**
+ * alias
+ */
 @ExposedType(name = "_ast.alias", base = AST.class)
 public class alias extends PythonTree {
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(alias.class);
     private String name;
+
+    /**
+     * GetInternalName
+     * 
+     * @return s
+     */
     public String getInternalName() {
         return name;
     }
+
+    /**
+     * GetName
+     * 
+     * @return o
+     */
     @ExposedGet(name = "name")
     public PyObject getName() {
         if (name == null) return Py.None;
         return new PyString(name);
     }
+
+    /**
+     * SetName
+     * 
+     * @param name
+     *            name
+     */
     @ExposedSet(name = "name")
     public void setName(PyObject name) {
         this.name = AstAdapters.py2identifier(name);
     }
 
     private String asname;
+
+    /**
+     * GetInternalAsname
+     * 
+     * @return s
+     */
     public String getInternalAsname() {
         return asname;
     }
+
+    /**
+     * GetAsname
+     * 
+     * @return o
+     */
     @ExposedGet(name = "asname")
     public PyObject getAsname() {
         if (asname == null) return Py.None;
         return new PyString(asname);
     }
+
+    /**
+     * SetAsname
+     * 
+     * @param asname
+     *            asname
+     */
     @ExposedSet(name = "asname")
     public void setAsname(PyObject asname) {
         this.asname = AstAdapters.py2identifier(asname);
@@ -51,19 +93,50 @@ public class alias extends PythonTree {
 
     private final static PyString[] fields =
     new PyString[] {new PyString("name"), new PyString("asname")};
+
+    /**
+     * Get_fields
+     * 
+     * @return fields
+     */
     @ExposedGet(name = "_fields")
     public PyString[] get_fields() { return fields; }
 
     private final static PyString[] attributes = new PyString[0];
+
+    /**
+     * Get_attributes
+     * 
+     * @return attributes
+     */
     @ExposedGet(name = "_attributes")
     public PyString[] get_attributes() { return attributes; }
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public alias(PyType subType) {
         super(subType);
     }
+
+    /**
+     * Default constructor
+     */
     public alias() {
         this(TYPE);
     }
+
+    /**
+     * alias___init__
+     * 
+     * @param args
+     *            args
+     * @param keywords
+     *            keywords
+     */
     @ExposedNew
     @ExposedMethod
     public void alias___init__(PyObject[] args, String[] keywords) {
@@ -73,23 +146,63 @@ public class alias extends PythonTree {
         setAsname(ap.getPyObject(1, Py.None));
     }
 
+    /**
+     * Constructor
+     * 
+     * @param name
+     *            name
+     * @param asname
+     *            asname
+     */
     public alias(PyObject name, PyObject asname) {
         setName(name);
         setAsname(asname);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param token
+     *            token
+     * @param name
+     *            name
+     * @param asname
+     *            asname
+     */
     public alias(Token token, String name, String asname) {
         super(token);
         this.name = name;
         this.asname = asname;
     }
 
+    /**
+     * Constructor
+     * 
+     * @param ttype
+     *            ttype
+     * @param token
+     *            token
+     * @param name
+     *            name
+     * @param asname
+     *            asname
+     */
     public alias(Integer ttype, Token token, String name, String asname) {
         super(ttype, token);
         this.name = name;
         this.asname = asname;
     }
 
+    /**
+     * Constructor
+     * 
+     * @param tree
+     *            tree
+     * @param name
+     *            name
+     * @param asname
+     *            asname
+     */
     public alias(PythonTree tree, String name, String asname) {
         super(tree);
         this.name = name;
@@ -121,6 +234,7 @@ public class alias extends PythonTree {
     public void traverse(VisitorIF<?> visitor) throws Exception {
     }
 
+    /** __dict__ */
     public PyObject __dict__;
 
     @Override
@@ -143,19 +257,47 @@ public class alias extends PythonTree {
     // Support for indexer below
 
     private java.util.List<Name> nameNodes;
+
+    /**
+     * GetInternalNameNodes
+     * 
+     * @return list
+     */
     public java.util.List<Name> getInternalNameNodes() {
         return nameNodes;
     }
+
     private Name asnameNode;
+
+    /**
+     * GetIinternalAsnameNode
+     * 
+     * @return name
+     */
     public Name getInternalAsnameNode() {
         return asnameNode;
     }
-    // [import] name [as asname]
+
+    /**
+     * [import] name [as asname]
+     * 
+     * @param name
+     *            name
+     * @param asname
+     *            asname
+     */
     public alias(Name name, Name asname) {
         this(java.util.Arrays.asList(new Name[]{name}), asname);
     }
 
-    // [import] ...foo.bar.baz [as asname]
+    /**
+     * [import] ...foo.bar.baz [as asname]
+     * 
+     * @param nameNodes
+     *            nameNodes
+     * @param asname
+     *            aname
+     */
     public alias(java.util.List<Name> nameNodes, Name asname) {
         this.nameNodes = nameNodes;
         this.name = dottedNameListToString(nameNodes);
@@ -164,5 +306,6 @@ public class alias extends PythonTree {
             this.asname = asname.getInternalId();
         }
     }
+
     // End indexer support
 }

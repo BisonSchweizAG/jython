@@ -10,6 +10,10 @@ import java.nio.ByteBuffer;
  */
 public abstract class BufferedIOBase extends IOBase {
 
+    /** Default constructor */
+    BufferedIOBase() {
+    }
+
     /**
      * Read and return up to size bytes, contained in a ByteBuffer.
      *

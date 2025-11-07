@@ -5,8 +5,21 @@ import org.python.core.Py;
 import org.python.core.PyObject;
 
 
+/**
+ * _threading
+ */
 public class _threading implements ClassDictInit {
 
+    /** Default constructor */
+    _threading() {
+    }
+
+    /**
+     * ClassDictInit
+     * 
+     * @param dict
+     *            dict
+     */
     public static void classDictInit(PyObject dict) {
         dict.__setitem__("__name__", Py.newString("_threading"));
         dict.__setitem__("Lock", Lock.TYPE);

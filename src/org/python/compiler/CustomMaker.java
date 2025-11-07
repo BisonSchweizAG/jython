@@ -9,9 +9,27 @@ import org.python.core.BytecodeLoader;
 import org.python.core.Py;
 import org.python.core.PyObject;
 
-
+/**
+ * CustomMaker
+ */
 public class CustomMaker extends JavaMaker {
 
+    /**
+     * Constructor
+     * 
+     * @param superclass
+     *            superclass
+     * @param interfaces
+     *            interfaces
+     * @param pythonClass
+     *            pythonClass
+     * @param pythonModule
+     *            pythonModule
+     * @param myClass
+     *            myClass
+     * @param methods
+     *            methods
+     */
     public CustomMaker(Class<?> superclass,
                      Class<?>[] interfaces,
                      String pythonClass,
@@ -21,15 +39,27 @@ public class CustomMaker extends JavaMaker {
         super(superclass, interfaces, pythonClass, pythonModule, myClass, methods);
     }
 
-    // Override to save bytes
+    /**
+     * SaveBytes<br>
+     * Override to save bytes
+     * 
+     * @param bytes
+     *            bytes
+     */
     public void saveBytes(ByteArrayOutputStream bytes) {
     }
 
-    // By default makeClass will have the same behavior as MakeProxies calling JavaMaker,
-    // other than the debug behavior of saving the classfile (as controlled by
-    // Options.ProxyDebugDirectory; users of CustomMaker simply need to save it themselves).
-    //
-    // Override this method to get custom classes built from any desired source.
+    /**
+     * MakeClass
+     * <p>
+     * By default makeClass will have the same behavior as MakeProxies calling JavaMaker, other than the debug behavior
+     * of saving the classfile (as controlled by Options.ProxyDebugDirectory; users of CustomMaker simply need to save
+     * it themselves).
+     * <p>
+     * Override this method to get custom classes built from any desired source.
+     * 
+     * @return class
+     */
     public Class<?> makeClass() {
         try {
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();

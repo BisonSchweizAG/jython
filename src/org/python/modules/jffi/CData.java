@@ -9,8 +9,12 @@ import org.python.core.Visitproc;
 import org.python.expose.ExposedMethod;
 import org.python.expose.ExposedType;
 
+/**
+ * CData
+ */
 @ExposedType(name = "jffi.CData", base = PyObject.class)
 public abstract class CData extends PyObject implements Traverseproc {
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(CData.class);
     
     private final CType ctype;
@@ -28,9 +32,11 @@ public abstract class CData extends PyObject implements Traverseproc {
     }
 
     /**
-     * Wraps up this object in a pointer that can be passed to native code.
-     * The byref() return value cannot be used as anything other than a parameter.
+     * Wraps up this object in a pointer that can be passed to native code. The byref() return value cannot be used as
+     * anything other than a parameter.
      *
+     * @param offset
+     *            offset
      * @return A ByReference instance pointing to this object's native memory.
      */
     @ExposedMethod(names= { "byref" })
@@ -38,7 +44,14 @@ public abstract class CData extends PyObject implements Traverseproc {
         return new ByReference(ctype, (DirectMemory) getReferenceMemory().slice(offset.asInt()));
     }
 
-    @ExposedMethod(names= { "pointer" })
+    /**
+     * Pointer
+     * 
+     * @param pytype
+     *            pytype
+     * @return o
+     */
+    @ExposedMethod(names = { "pointer" })
     public PyObject pointer(PyObject pytype) {
         if (!(pytype instanceof PyType)) {
             throw Py.TypeError("expected type");
@@ -47,6 +60,11 @@ public abstract class CData extends PyObject implements Traverseproc {
         return new PointerCData((PyType) pytype, CType.typeOf(pytype), getReferenceMemory(), getMemoryOp());
     }
 
+    /**
+     * Adress
+     * 
+     * @return o
+     */
     @ExposedMethod(names = { "address" })
     public PyObject address() {
         return Py.newInteger(getReferenceMemory().getAddress());
@@ -85,6 +103,11 @@ public abstract class CData extends PyObject implements Traverseproc {
         return allocateReferenceMemory();
     }
 
+    /**
+     * AllocateReferenceMemory
+     * 
+     * @return direct memory
+     */
     protected DirectMemory allocateReferenceMemory() {
         DirectMemory m = AllocatedNativeMemory.allocate(getCType().size(), false);
         initReferenceMemory(m);
@@ -92,14 +115,32 @@ public abstract class CData extends PyObject implements Traverseproc {
         return m;
     }
 
+    /**
+     * GetContentMemory
+     * 
+     * @return memory
+     */
     public Memory getContentMemory() {
         return getReferenceMemory();
     }
 
+    /**
+     * InitRefereneMemory
+     * 
+     * @param m
+     *            m
+     */
     protected abstract void initReferenceMemory(Memory m);
 
-    
-
+    /**
+     * FindInDll
+     * 
+     * @param lib
+     *            lib
+     * @param name
+     *            name
+     * @return direct memory
+     */
     protected static final DirectMemory findInDll(PyObject lib, PyObject name) {
         if (!(lib instanceof DynamicLibrary)) {
             throw Py.TypeError("expected library, not " + lib.getType().fastGetName());

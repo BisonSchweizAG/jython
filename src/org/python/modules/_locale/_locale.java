@@ -3,6 +3,8 @@
 
 package org.python.modules._locale;
 
+import static org.python.core.RegistryKey.PYTHON_LOCALE_CONTROL;
+
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,8 +21,6 @@ import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.core.PyStringMap;
 import org.python.core.PySystemState;
-
-import static org.python.core.RegistryKey.PYTHON_LOCALE_CONTROL;
 
 /**
  * Java native implementation of underlying locale functions, fitting the interface defined or
@@ -68,11 +68,23 @@ public class _locale implements ClassDictInit {
      */
     public static PyObject Error;
 
+    /** Default constructor */
+    _locale() {
+    }
+
+    /**
+     * LocaleException
+     * 
+     * @param message
+     *            message
+     * @return exc
+     */
     public static PyException LocaleException(String message) {
         return new PyException(Error, message);
     }
 
     // @formatter:off
+    /** __doc__ */
     public static final PyString __doc__ = new PyString(
         "The _locale module exposes locale functions in the underlying "
         + "operating system or platform in a consistent way, for use by "
@@ -108,7 +120,9 @@ public class _locale implements ClassDictInit {
         + "+-------------------+-----------------------------------------+\n");
     // @formatter:on
 
+    /** LOCALE_CONTROL_SETTABLE */
     public static final String LOCALE_CONTROL_SETTABLE = "settable";
+    /** LOCALE_CONTROL_JYTHON2_LEGACY */
     public static final String LOCALE_CONTROL_JYTHON2_LEGACY = "jython2_legacy";
 
     // These values are the same as glibc locale/bits/locale.h
@@ -134,18 +148,27 @@ public class _locale implements ClassDictInit {
     @SuppressWarnings("unused")
     private static final int __LC_IDENTIFICATION = 12;
 
+    /** LC_CTYPE */
     public static final PyInteger LC_CTYPE = new PyInteger(__LC_CTYPE);
+    /** LC_NUMERIC */
     public static final PyInteger LC_NUMERIC = new PyInteger(__LC_NUMERIC);
+    /** LC_TIME */
     public static final PyInteger LC_TIME = new PyInteger(__LC_TIME);
+    /** LC_COLLATE */
     public static final PyInteger LC_COLLATE = new PyInteger(__LC_COLLATE);
+    /** LC_MONETARY */
     public static final PyInteger LC_MONETARY = new PyInteger(__LC_MONETARY);
+    /** LC_MESSAGES */
     public static final PyInteger LC_MESSAGES = new PyInteger(__LC_MESSAGES);
+    /** LC_ALL */
     public static final PyInteger LC_ALL = new PyInteger(__LC_ALL);
     // Remaining constants not used by locale.py so are not exposed here
 
-    // 127 chosen as consistent with hardcoded default in locale.py for C locale
+    /** 127 chosen as consistent with hardcoded default in locale.py for C locale */
     public static final int CHAR_MAX = 127;
+    /** CHAR_MAX_PY_INT */
     public static final PyInteger CHAR_MAX_PY_INT = new PyInteger(127);
+    /** C_LOCALE_PY_STRING */
     public static final PyString C_LOCALE_PY_STRING = new PyString("C");
     private static final Set<Locale> AVAILABLE_LOCALES;
 
@@ -162,6 +185,12 @@ public class _locale implements ClassDictInit {
         AVAILABLE_LOCALES = Collections.unmodifiableSet(set);
     }
 
+    /**
+     * initClassExceptions
+     * 
+     * @param exceptions
+     *            exceptions
+     */
     @SuppressWarnings("serial")
     public static void initClassExceptions(PyObject exceptions) {
         PyObject baseException = exceptions.__finditem__("BaseException");
@@ -173,8 +202,12 @@ public class _locale implements ClassDictInit {
         });
     }
 
-    // This is used when the module is first initialized, or when simulating re-initialization from
-    // tests
+    /**
+     * This is used when the module is first initialized, or when simulating re-initialization from tests
+     * 
+     * @param dict
+     *            dict
+     */
     public static void classDictInit(PyObject dict) {
         dict.__setitem__("Error", Error);
         try {
@@ -200,8 +233,14 @@ public class _locale implements ClassDictInit {
     }
 
     /**
-     * Put {@code key} mapping to {@code value} into {@code result}, converting to {@code PyString}s
-     * as needed
+     * Put {@code key} mapping to {@code value} into {@code result}, converting to {@code PyString}s as needed
+     * 
+     * @param result
+     *            result
+     * @param key
+     *            key
+     * @param value
+     *            value
      */
     protected static void putConvEntry(PyDictionary result, String key, String value) {
         try {
@@ -212,8 +251,14 @@ public class _locale implements ClassDictInit {
     }
 
     /**
-     * Put {@code key} mapping to {@code value} into {@code result}, converting to {@code PyString}s
-     * as needed
+     * Put {@code key} mapping to {@code value} into {@code result}, converting to {@code PyString}s as needed
+     * 
+     * @param result
+     *            result
+     * @param key
+     *            key
+     * @param value
+     *            value
      */
     protected static void putConvEntry(PyDictionary result, String key, char value) {
         try {
@@ -224,8 +269,14 @@ public class _locale implements ClassDictInit {
     }
 
     /**
-     * Put {@code key} mapping to {@code value} into {@code result}, converting {@code key} to
-     * {@code PyString}.
+     * Put {@code key} mapping to {@code value} into {@code result}, converting {@code key} to {@code PyString}.
+     * 
+     * @param result
+     *            result
+     * @param key
+     *            key
+     * @param value
+     *            value
      */
     protected static void putConvEntry(PyDictionary result, String key, PyObject value) {
         try {
@@ -235,6 +286,7 @@ public class _locale implements ClassDictInit {
         }
     }
 
+    /** __doc___localeconv */
     public static PyString __doc___localeconv =
             new PyString("Database of local conventions, mapped from Java.\n"
                     + "Note that Java locale information is relatively unicode-rich, "
@@ -243,28 +295,52 @@ public class _locale implements ClassDictInit {
                     + "used.\n"//
                     + "C locale emulation matches CPython C locale emulation.");
 
+    /**
+     * Localeconv
+     * 
+     * @return dict
+     */
     public static PyDictionary localeconv() {
         return currentLocale.localeconv();
     }
 
+    /** __doc___strcoll */
     public static PyString __doc___strcoll =
             new PyString("Compare Java (unicode) strings using the Java collator for the "
                     + "current locale, and the encoding normalization provided by strxfrm\n."
                     + "In the 'C' locale, this simply calls str.__cmp__() ");
 
+    /**
+     * Strcoll
+     * 
+     * @param str1
+     *            str1
+     * @param str2
+     *            str2
+     * @return i
+     */
     public static int strcoll(PyString str1, PyString str2) {
         return currentLocale.strcoll(str1, str2);
     }
 
+    /** __doc___strxfrm */
     public static PyString __doc___strxfrm =
             new PyString("Normalize a string to unicode, for common comparison, using the "
                     + "locale encoding.\n"
                     + "In the 'C' locale, this is a no-op, returning the parameter.");
 
+    /**
+     * Strxfrm
+     * 
+     * @param str1
+     *            str1
+     * @return s
+     */
     public static PyString strxfrm(PyString str1) {
         return currentLocale.strxfrm(str1);
     }
 
+    /** __doc___setlocale */
     public static PyString __doc___setlocale =
             new PyString("Sets the locale given a category and normalized locale string.\n"
                     + "Only category LC_ALL is supported. Other categories such as "
@@ -280,15 +356,27 @@ public class _locale implements ClassDictInit {
                     + "Normalization would usually be done by the enclosing locale module.\n"
                     + "This function treats a missing encoding as using UTF-8.\n");
 
+    /**
+     * Setlocale
+     * 
+     * @param category
+     *            category
+     * @return s
+     */
     public static PyString setlocale(PyInteger category) {
         return currentLocale.getLocaleString();
     }
 
     /**
-     * Java Locale loading behaviour is quite forgiving, or uninformative, depending on your
-     * perspective. It will return a dummy locale for any language tag that fits the syntax, or make
-     * various attempts to approximate a locale. This solution instead follows the stricter Python
-     * behaviour of requiring a particular locale to be installed.
+     * Java Locale loading behaviour is quite forgiving, or uninformative, depending on your perspective. It will return
+     * a dummy locale for any language tag that fits the syntax, or make various attempts to approximate a locale. This
+     * solution instead follows the stricter Python behaviour of requiring a particular locale to be installed.
+     * 
+     * @param category
+     *            category
+     * @param locale
+     *            locale
+     * @return s
      */
     public static PyString setlocale(PyInteger category, PyString locale) {
         Py.writeDebug("_locale", "setlocale(category,locale==" + locale + ")");
@@ -363,8 +451,10 @@ public class _locale implements ClassDictInit {
     }
 
     /**
-     * Current {@code DateSymbolLocale} used by the Python interpreter. This object will no longer
-     * reflect the current state after subsequent calls to {@code setlocale}.
+     * Current {@code DateSymbolLocale} used by the Python interpreter. This object will no longer reflect the current
+     * state after subsequent calls to {@code setlocale}.
+     * 
+     * @return date
      */
     public static DateSymbolLocale getDateSymbolLocale() {
         if (currentLocale == null) {

@@ -11,7 +11,12 @@ package org.python.indexer.ast;
  */
 public class DefaultNodeVisitor implements NNodeVisitor {
 
+    /** traverseIntoNodes */
     protected boolean traverseIntoNodes = true;
+
+    /** Default constructor */
+    public DefaultNodeVisitor() {
+    }
 
     /**
      * Once this is called, all {@code visit} methods will return {@code false}.

@@ -60,8 +60,14 @@ public class ProxyCodeHelpers {
     }
 
     /**
-     * Retrieves <code>name</code> from the PyObject in <code>proxy</code> if it's defined in
-     * Python.  This is a specialized helper function for internal PyProxy use.
+     * Retrieves <code>name</code> from the PyObject in <code>proxy</code> if it's defined in Python. This is a
+     * specialized helper function for internal PyProxy use.
+     * 
+     * @param proxy
+     *            proxy
+     * @param name
+     *            name
+     * @return o
      */
     public static PyObject findPython(PyProxy proxy, String name) {
         PyObject o = proxy._getPyInstance();

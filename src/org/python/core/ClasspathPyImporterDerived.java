@@ -2,9 +2,13 @@
 package org.python.core;
 
 import java.io.Serializable;
-import org.python.core.finalization.FinalizeTrigger;
-import org.python.core.finalization.FinalizablePyObjectDerived;
 
+import org.python.core.finalization.FinalizablePyObjectDerived;
+import org.python.core.finalization.FinalizeTrigger;
+
+/**
+ * ClasspathPyImporterDerived
+ */
 public class ClasspathPyImporterDerived extends ClasspathPyImporter implements Slotted,FinalizablePyObjectDerived,TraverseprocDerived {
 
     public PyObject getSlot(int index) {
@@ -46,6 +50,12 @@ public class ClasspathPyImporterDerived extends ClasspathPyImporter implements S
 
     /* end of TraverseprocDerived implementation */
 
+    /**
+     * Constructor
+     * 
+     * @param subtype
+     *            subtype
+     */
     public ClasspathPyImporterDerived(PyType subtype) {
         super(subtype);
         slots=new PyObject[subtype.getNumSlots()];
@@ -54,6 +64,15 @@ public class ClasspathPyImporterDerived extends ClasspathPyImporter implements S
         }
     }
 
+    /**
+     * TraverseDictIfAny
+     * 
+     * @param visit
+     *            visit
+     * @param arg
+     *            arg
+     * @return i
+     */
     public int traverseDictIfAny(Visitproc visit,Object arg) {
         return 0;
     }

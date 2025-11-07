@@ -18,30 +18,72 @@ import org.python.expose.ExposedNew;
 import org.python.expose.ExposedSet;
 import org.python.expose.ExposedType;
 
+/**
+ * Assert
+ */
 @ExposedType(name = "_ast.Assert", base = stmt.class)
 public class Assert extends stmt {
-public static final PyType TYPE = PyType.fromClass(Assert.class);
+    /** TYPE */
+    public static final PyType TYPE = PyType.fromClass(Assert.class);
     private expr test;
+
+    /**
+     * GetInternalTest
+     * 
+     * @return expr
+     */
     public expr getInternalTest() {
         return test;
     }
+
+    /**
+     * GetTest
+     * 
+     * @return o
+     */
     @ExposedGet(name = "test")
     public PyObject getTest() {
         return test;
     }
+
+    /**
+     * setTest
+     * 
+     * @param test
+     *            test
+     */
     @ExposedSet(name = "test")
     public void setTest(PyObject test) {
         this.test = AstAdapters.py2expr(test);
     }
 
     private expr msg;
+
+    /**
+     * GetInternalMsg
+     * 
+     * @return expr
+     */
     public expr getInternalMsg() {
         return msg;
     }
+
+    /**
+     * GetMsg
+     * 
+     * @return o
+     */
     @ExposedGet(name = "msg")
     public PyObject getMsg() {
         return msg;
     }
+
+    /**
+     * SetMsg
+     * 
+     * @param msg
+     *            msg
+     */
     @ExposedSet(name = "msg")
     public void setMsg(PyObject msg) {
         this.msg = AstAdapters.py2expr(msg);
@@ -50,20 +92,41 @@ public static final PyType TYPE = PyType.fromClass(Assert.class);
 
     private final static PyString[] fields =
     new PyString[] {new PyString("test"), new PyString("msg")};
+
     @ExposedGet(name = "_fields")
     public PyString[] get_fields() { return fields; }
 
     private final static PyString[] attributes =
     new PyString[] {new PyString("lineno"), new PyString("col_offset")};
+
     @ExposedGet(name = "_attributes")
     public PyString[] get_attributes() { return attributes; }
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public Assert(PyType subType) {
         super(subType);
     }
+
+    /**
+     * Default constructor
+     */
     public Assert() {
         this(TYPE);
     }
+
+    /**
+     * Assert___init__
+     * 
+     * @param args
+     *            args
+     * @param keywords
+     *            keywords
+     */
     @ExposedNew
     @ExposedMethod
     public void Assert___init__(PyObject[] args, String[] keywords) {
@@ -83,11 +146,29 @@ public static final PyType TYPE = PyType.fromClass(Assert.class);
 
     }
 
+    /**
+     * Constructor
+     * 
+     * @param test
+     *            test
+     * @param msg
+     *            msg
+     */
     public Assert(PyObject test, PyObject msg) {
         setTest(test);
         setMsg(msg);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param token
+     *            token
+     * @param test
+     *            test
+     * @param msg
+     *            msg
+     */
     public Assert(Token token, expr test, expr msg) {
         super(token);
         this.test = test;
@@ -96,6 +177,18 @@ public static final PyType TYPE = PyType.fromClass(Assert.class);
         addChild(msg);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param ttype
+     *            ttype
+     * @param token
+     *            token
+     * @param test
+     *            test
+     * @param msg
+     *            msg
+     */
     public Assert(Integer ttype, Token token, expr test, expr msg) {
         super(ttype, token);
         this.test = test;
@@ -104,6 +197,16 @@ public static final PyType TYPE = PyType.fromClass(Assert.class);
         addChild(msg);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param tree
+     *            tree
+     * @param test
+     *            test
+     * @param msg
+     *            msg
+     */
     public Assert(PythonTree tree, expr test, expr msg) {
         super(tree);
         this.test = test;
@@ -140,6 +243,7 @@ public static final PyType TYPE = PyType.fromClass(Assert.class);
             msg.accept(visitor);
     }
 
+    /** __dict__ */
     public PyObject __dict__;
 
     @Override
@@ -168,6 +272,12 @@ public static final PyType TYPE = PyType.fromClass(Assert.class);
         return getLine();
     }
 
+    /**
+     * SetLineno
+     * 
+     * @param num
+     *            num
+     */
     @ExposedSet(name = "lineno")
     public void setLineno(int num) {
         lineno = num;
@@ -182,6 +292,12 @@ public static final PyType TYPE = PyType.fromClass(Assert.class);
         return getCharPositionInLine();
     }
 
+    /**
+     * SetCol_offset
+     * 
+     * @param num
+     *            num
+     */
     @ExposedSet(name = "col_offset")
     public void setCol_offset(int num) {
         col_offset = num;

@@ -98,12 +98,14 @@ public abstract class BaseNIOBuffer extends Base1DBuffer {
     }
 
     /**
-     * Copy all items in this buffer into a <code>ByteBuffer</code>, starting at its current
-     * position.
+     * Copy all items in this buffer into a <code>ByteBuffer</code>, starting at its current position.
      *
-     * @param dest destination buffer
+     * @param dest
+     *            destination buffer
      * @throws BufferOverflowException
+     *             bufferOverflowException
      * @throws ReadOnlyBufferException
+     *             readOnlyBufferException
      */
     // XXX Should this become part of the PyBUffer interface?
     public void copyTo(ByteBuffer dest) throws BufferOverflowException, ReadOnlyBufferException {
@@ -112,18 +114,25 @@ public abstract class BaseNIOBuffer extends Base1DBuffer {
     }
 
     /**
-     * Copy a specified number of items from a particular location in this buffer into a
-     * <code>ByteBuffer</code>, starting at its current position. .
-     *
-     * @param srcIndex index of the first item to copy
-     * @param dest destination buffer
-     * @param count number of items to copy
+     * Copy a specified number of items from a particular location in this buffer into a <code>ByteBuffer</code>,
+     * starting at its current position.<br>
+     * XXX Should this become part of the PyBuffer interface?
+     * 
+     * @param srcIndex
+     *            index of the first item to copy
+     * @param dest
+     *            destination buffer
+     * @param count
+     *            number of items to copy
      * @throws BufferOverflowException
+     *             bufferOverflowException
      * @throws ReadOnlyBufferException
+     *             readOnlyBufferException
      * @throws IndexOutOfBoundsException
+     *             indexOutOfBoundsException
      */
-    // XXX Should this become part of the PyBuffer interface?
-    protected void copyTo(int srcIndex, ByteBuffer dest, int count) throws BufferOverflowException,
+    protected void copyTo(int srcIndex, ByteBuffer dest, int count)
+                    throws BufferOverflowException,
             ReadOnlyBufferException, IndexOutOfBoundsException {
 
         if (count > 0) {

@@ -3,6 +3,12 @@ package org.python.antlr.ast;
 
 import org.python.antlr.PythonTree;
 
+/**
+ * VisitorBase
+ * 
+ * @param <R>
+ *            R
+ */
 public abstract class VisitorBase<R> implements VisitorIF<R> {
     public R visitModule(Module node) throws Exception {
         R ret = unhandled_node(node);
@@ -328,6 +334,24 @@ public abstract class VisitorBase<R> implements VisitorIF<R> {
         return ret;
     }
 
+    /**
+     * Unhandled
+     * 
+     * @param node
+     *            node
+     * @return R
+     * @throws Exception
+     *             exception
+     */
     abstract protected R unhandled_node(PythonTree node) throws Exception;
+
+    /**
+     * Traverse
+     * 
+     * @param node
+     *            node
+     * @throws Exception
+     *             exception
+     */
     abstract public void traverse(PythonTree node) throws Exception;
 }

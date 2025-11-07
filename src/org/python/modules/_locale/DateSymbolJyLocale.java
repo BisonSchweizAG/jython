@@ -14,9 +14,17 @@ import java.util.Locale;
  */
 public class DateSymbolJyLocale implements DateSymbolLocale {
 
+    /** locale */
     protected final Locale locale;
+    /** dfSymbols */
     protected final DateFormatSymbols dfSymbols;
 
+    /**
+     * Constructor
+     * 
+     * @param locale
+     *            locale
+     */
     public DateSymbolJyLocale(Locale locale) {
         super();
         this.locale = locale;

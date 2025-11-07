@@ -4,6 +4,8 @@
  */
 package org.python.antlr;
 
+import java.util.List;
+
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.RecognitionException;
@@ -11,14 +13,20 @@ import org.antlr.runtime.Token;
 import org.python.antlr.ast.Name;
 import org.python.antlr.base.mod;
 
-import java.util.List;
-
 /**
  * Parser used by the indexer.
  */
 public class AnalyzingParser extends BaseParser {
 
+    /**
+     * AnalyzerTreeAdaptor
+     */
     public static class AnalyzerTreeAdaptor extends PythonTreeAdaptor {
+
+        /** Default constructor */
+        AnalyzerTreeAdaptor() {
+        }
+
         /**
          * Make sure a parenthesized {@link Name} expr has its start/stop bounds
          * set to the bounds of the identifier.
@@ -37,11 +45,26 @@ public class AnalyzingParser extends BaseParser {
         }
     }
 
+    /**
+     * Constructor
+     * 
+     * @param stream
+     *            stream
+     * @param filename
+     *            filename
+     * @param encoding
+     *            encoding
+     */
     public AnalyzingParser(CharStream stream, String filename, String encoding) {
         super(stream, filename, encoding);
         errorHandler = new RecordingErrorHandler();
     }
 
+    /**
+     * GetRecognitionErrors
+     * 
+     * @return l
+     */
     public List<RecognitionException> getRecognitionErrors() {
         return ((RecordingErrorHandler)errorHandler).errs;
     }
@@ -53,6 +76,12 @@ public class AnalyzingParser extends BaseParser {
         return parser;
     }
 
+    /**
+     * Main
+     * 
+     * @param args
+     *            args
+     */
     public static void main(String[] args) {
         CharStream in = null;
         try {

@@ -31,7 +31,12 @@ public abstract class ConsoleInputStream extends FilterInputStream {
      * end-of-line. The end-of-line to add is specified as a String in the constructor.
      */
     public enum EOLPolicy {
-        LEAVE, ADD, REPLACE
+        /** LEAVE */
+        LEAVE,
+        /** ADD */
+        ADD,
+        /** REPLACE */
+        REPLACE
     };
 
     /** The {@link EOLPolicy} specified in the constructor. */

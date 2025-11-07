@@ -1,6 +1,10 @@
 // Copyright (c) Corporation for National Research Initiatives
 package org.python.compiler;
 
+import static org.python.util.CodegenUtils.ci;
+import static org.python.util.CodegenUtils.p;
+import static org.python.util.CodegenUtils.sig;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +14,10 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.objectweb.asm.Label;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.commons.Method;
 import org.python.antlr.ParseException;
 import org.python.antlr.PythonTree;
 import org.python.antlr.Visitor;
@@ -78,7 +86,6 @@ import org.python.antlr.base.stmt;
 import org.python.core.CompilerFlags;
 import org.python.core.ContextGuard;
 import org.python.core.ContextManager;
-import org.python.core.imp;
 import org.python.core.Py;
 import org.python.core.PyCode;
 import org.python.core.PyComplex;
@@ -97,12 +104,11 @@ import org.python.core.PyString;
 import org.python.core.PyTuple;
 import org.python.core.PyUnicode;
 import org.python.core.ThreadState;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.commons.Method;
-import static org.python.util.CodegenUtils.*;
+import org.python.core.imp;
 
+/**
+ * CodeCompiler
+ */
 public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
 
     private static final Object Exit = Integer.valueOf(1);
@@ -136,6 +142,14 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
     private int yield_count = 0;
     private Stack<String> stack = new Stack<String>();
 
+    /**
+     * Constructor
+     * 
+     * @param module
+     *            module
+     * @param print_results
+     *            print_results
+     */
     public CodeCompiler(Module module, boolean print_results) {
         this.module = module;
         this.print_results = print_results;
@@ -145,18 +159,44 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         exceptionHandlers = new Stack<ExceptionHandler>();
     }
 
+    /**
+     * GetNone
+     * 
+     * @throws IOException
+     *             ioException
+     */
     public void getNone() throws IOException {
         code.getstatic(p(Py.class), "None", ci(PyObject.class));
     }
 
+    /**
+     * LoadFrame
+     * 
+     * @throws Exception
+     *             exception
+     */
     public void loadFrame() throws Exception {
         code.aload(1);
     }
 
+    /**
+     * LoadThreadState
+     * 
+     * @throws Exception
+     *             exception
+     */
     public void loadThreadState() throws Exception {
         code.aload(2);
     }
 
+    /**
+     * SetLastI
+     * 
+     * @param idx
+     *            idx
+     * @throws Exception
+     *             exception
+     */
     public void setLastI(int idx) throws Exception {
         loadFrame();
         code.iconst(idx);
@@ -167,12 +207,27 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         code.getfield(p(PyFrame.class), "f_back", ci(PyFrame.class));
     }
 
+    /**
+     * StoreTop
+     * 
+     * @return i
+     * @throws Exception
+     *             exception
+     */
     public int storeTop() throws Exception {
         int tmp = code.getLocal(p(PyObject.class));
         code.astore(tmp);
         return tmp;
     }
 
+    /**
+     * SetLine
+     * 
+     * @param line
+     *            line
+     * @throws Exception
+     *             exception
+     */
     public void setline(int line) throws Exception {
         if (module.linenumbers) {
             code.setline(line);
@@ -182,10 +237,26 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         }
     }
 
+    /**
+     * SetLine
+     * 
+     * @param node
+     *            node
+     * @throws Exception
+     *             exception
+     */
     public void setline(PythonTree node) throws Exception {
         setline(node.getLineno());
     }
 
+    /**
+     * Set
+     * 
+     * @param node
+     *            node
+     * @throws Exception
+     *             exception
+     */
     public void set(PythonTree node) throws Exception {
         int tmp = storeTop();
         set(node, tmp);
@@ -194,6 +265,16 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         code.freeLocal(tmp);
     }
 
+    /**
+     * Set
+     * 
+     * @param node
+     *            node
+     * @param tmp
+     *            tmp
+     * @throws Exception
+     *             exception
+     */
     public void set(PythonTree node, int tmp) throws Exception {
         temporary = tmp;
         visit(node);
@@ -375,6 +456,16 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return visitReturn(new Return(node, node.getInternalBody()), true);
     }
 
+    /**
+     * LoadArray
+     * 
+     * @param code
+     *            code
+     * @param nodes
+     *            nodes
+     * @throws Exception
+     *             exception
+     */
     public void loadArray(Code code, java.util.List<? extends PythonTree> nodes) throws Exception {
         final int n;
 
@@ -400,6 +491,15 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         }
     }
 
+    /**
+     * MakeArray
+     * 
+     * @param nodes
+     *            nodes
+     * @return i
+     * @throws Exception
+     *             exception
+     */
     public int makeArray(java.util.List<? extends PythonTree> nodes) throws Exception {
         final int n;
 
@@ -430,7 +530,12 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return array;
     }
 
-    // nulls out an array of references
+    /**
+     * nulls out an array of references
+     * 
+     * @param array
+     *            array
+     */
     public void freeArray(int array) {
         code.aload(array);
         code.aconst_null();
@@ -438,12 +543,25 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         code.freeLocal(array);
     }
 
+    /**
+     * FreeArrayRef
+     * 
+     * @param array
+     *            array
+     */
     public void freeArrayRef(int array) {
         code.aconst_null();
         code.astore(array);
         code.freeLocal(array);
     }
 
+    /**
+     * GetDocStr
+     * 
+     * @param suite
+     *            suite
+     * @return str
+     */
     public Str getDocStr(java.util.List<stmt> suite) {
         if (suite.size() > 0) {
             stmt stmt = suite.get(0);
@@ -454,6 +572,15 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return null;
     }
 
+    /**
+     * MakeClosure
+     * 
+     * @param scope
+     *            scope
+     * @return success
+     * @throws Exception
+     *             exception
+     */
     public boolean makeClosure(ScopeInfo scope) throws Exception {
         if (scope == null || scope.freevars == null) {
             return false;
@@ -860,6 +987,17 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return visitReturn(node, false);
     }
 
+    /**
+     * VisitReturn
+     * 
+     * @param node
+     *            node
+     * @param inEval
+     *            inEval
+     * @return o
+     * @throws Exception
+     *             exception
+     */
     public Object visitReturn(Return node, boolean inEval) throws Exception {
         setline(node);
         if (!inEval && !fast_locals) {
@@ -1104,6 +1242,19 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return null;
     }
 
+    /**
+     * DoTest
+     * 
+     * @param end_of_if
+     *            end_of_if
+     * @param node
+     *            node
+     * @param index
+     *            index
+     * @return o
+     * @throws Exception
+     *             exception
+     */
     public Object doTest(Label end_of_if, If node, int index) throws Exception {
         Label end_of_suite = new Label();
 
@@ -1163,6 +1314,11 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return null;
     }
 
+    /**
+     * BeginLoop
+     * 
+     * @return i
+     */
     public int beginLoop() {
         continueLabels.push(new Label());
         breakLabels.push(new Label());
@@ -1171,6 +1327,12 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return savebcf;
     }
 
+    /**
+     * FinishLoop
+     * 
+     * @param savebcf
+     *            savaebcf
+     */
     public void finishLoop(int savebcf) {
         continueLabels.pop();
         breakLabels.pop();
@@ -1270,6 +1432,20 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return null;
     }
 
+    /**
+     * ExceptionTest
+     * 
+     * @param exc
+     *            exc
+     * @param end_of_exceptions
+     *            end_of_exceptions
+     * @param node
+     *            node
+     * @param index
+     *            index
+     * @throws Exception
+     *             exception
+     */
     public void exceptionTest(int exc, Label end_of_exceptions, TryExcept node, int index)
             throws Exception {
         for (int i = 0; i < node.getInternalHandlers().size(); i++) {
@@ -1459,6 +1635,15 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return suite(node.getInternalBody());
     }
 
+    /**
+     * Suite
+     * 
+     * @param stmts
+     *            stmts
+     * @return o
+     * @throws Exception
+     *             exception
+     */
     public Object suite(java.util.List<stmt> stmts) throws Exception {
         for (stmt s : stmts) {
             Object exit = visit(s);
@@ -1532,6 +1717,14 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return null;
     }
 
+    /**
+     * VisitCmpop
+     * 
+     * @param op
+     *            op
+     * @throws Exception
+     *             exception
+     */
     public void visitCmpop(cmpopType op) throws Exception {
         String name = null;
         switch (op) {
@@ -1731,6 +1924,17 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return strings;
     }
 
+    /**
+     * InvokeNoKeywords
+     * 
+     * @param node
+     *            node
+     * @param values
+     *            values
+     * @return o
+     * @throws Exception
+     *             exception
+     */
     public Object invokeNoKeywords(Attribute node, java.util.List<expr> values) throws Exception {
         String name = getName(node.getInternalAttr());
         visit(node.getInternalValue());
@@ -1926,6 +2130,17 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return null;
     }
 
+    /**
+     * Slice
+     * 
+     * @param node
+     *            node
+     * @param slice
+     *            slice
+     * @return o
+     * @throws Exception
+     *             exception
+     */
     public Object Slice(Subscript node, Slice slice) throws Exception {
         expr_contextType ctx = node.getInternalCtx();
         if (ctx == expr_contextType.AugStore && augmode == expr_contextType.Store) {
@@ -2079,6 +2294,15 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return null;
     }
 
+    /**
+     * SeqSet
+     * 
+     * @param nodes
+     *            nodes
+     * @return o
+     * @throws Exception
+     *             exception
+     */
     public Object seqSet(java.util.List<expr> nodes) throws Exception {
         code.aload(temporary);
         code.iconst(nodes.size());
@@ -2099,6 +2323,15 @@ public class CodeCompiler extends Visitor implements Opcodes, ClassConstants {
         return null;
     }
 
+    /**
+     * SeqDel
+     * 
+     * @param nodes
+     *            modes
+     * @return p
+     * @throws Exception
+     *             exception
+     */
     public Object seqDel(java.util.List<expr> nodes) throws Exception {
         for (expr e : nodes) {
             visit(e);

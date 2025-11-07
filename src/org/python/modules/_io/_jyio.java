@@ -51,10 +51,17 @@ public class _jyio implements ClassDictInit {
     public static PyType UnsupportedOperation;
 
     /**
-     * A function that returns a {@link PyException}, which is a Java exception suitable for
-     * throwing, and that will be raised as an <code>UnsupportedOperation</code> Python exception.
+     * Default constructor
+     */
+    _jyio() {
+    }
+
+    /**
+     * A function that returns a {@link PyException}, which is a Java exception suitable for throwing, and that will be
+     * raised as an <code>UnsupportedOperation</code> Python exception.
      *
-     * @param message text message parameter to the Python exception
+     * @param message
+     *            text message parameter to the Python exception
      * @return nascent <code>UnsupportedOperation</code> Python exception
      */
     public static PyException UnsupportedOperation(String message) {
@@ -209,6 +216,7 @@ public class _jyio implements ClassDictInit {
     private static final String[] openKwds = {"file", "mode", "buffering", "encoding", "errors",
             "newline", "closefd"};
 
+    /** __doc__ */
     public static final String __doc__ =
             "The io module provides the Python interfaces to stream handling. The\n"
                     + "builtin open function is defined in this module.\n" + "\n"
@@ -232,6 +240,7 @@ public class _jyio implements ClassDictInit {
                     + "Argument names are not part of the specification, and only the arguments\n"
                     + "of open() are intended to be used as keyword arguments.\n";
 
+    /** __doc__open */
     public static final String __doc__open =
             "Open file and return a stream.  Raise IOError upon failure.\n" + "\n"
                     + "file is either a text or byte string giving the name (and the path\n"

@@ -90,6 +90,10 @@ public class DBSink extends BaseDB implements Sink {
 
     /**
      * Return true if the key (converted to lowercase) is not found in the exclude list.
+     * 
+     * @param key
+     *            key
+     * @return excluded
      */
     protected boolean excluded(PyObject key) {
 
@@ -100,6 +104,9 @@ public class DBSink extends BaseDB implements Sink {
 
     /**
      * Create the insert statement given the header row.
+     * 
+     * @param row
+     *            row
      */
     protected void createSql(PyObject row) {
 

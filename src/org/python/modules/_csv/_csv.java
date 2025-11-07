@@ -20,6 +20,15 @@ import org.python.core.PyStringMap;
  */
 public class _csv implements ClassDictInit {
 
+    /**
+     * Default constructor
+     */
+    _csv() {
+    }
+
+    /**
+     * __doc__
+     */
     public static PyString __doc__ = Py.newString(
         "CSV parsing and writing.\n" +
         "\n" +
@@ -89,6 +98,14 @@ public class _csv implements ClassDictInit {
 
     /** _csv.Error exception. */
     public static final PyObject Error = Py.makeClass("Error", Py.Exception, exceptionNamespace());
+
+    /**
+     * Error
+     * 
+     * @param message
+     *            message
+     * @return e
+     */
     public static PyException Error(String message) {
         return new PyException(Error, message);
     }
@@ -96,6 +113,12 @@ public class _csv implements ClassDictInit {
     /** Module version. */
     public static PyString __version__ = new PyString("1.0");
 
+    /**
+     * ClassDictInit
+     * 
+     * @param dict
+     *            dict
+     */
     public static void classDictInit(PyObject dict) {
         dict.__setitem__("__name__", Py.newString("_csv"));
         dict.__setitem__("__doc__", __doc__);
@@ -110,6 +133,14 @@ public class _csv implements ClassDictInit {
         dict.__setitem__("field_limit", null);
     }
 
+    /**
+     * Register_dialect
+     * 
+     * @param args
+     *            args
+     * @param keywords
+     *            keywords
+     */
     public static void register_dialect(PyObject[] args, String[] keywords) {
         int argc = args.length - keywords.length;
         if (argc > 2) {
@@ -128,6 +159,12 @@ public class _csv implements ClassDictInit {
         return;
     }
 
+    /**
+     * Unregister_dialect
+     * 
+     * @param name
+     *            name
+     */
     public static void unregister_dialect(PyObject name) {
         if (!_dialects.has_key(name)) {
             throw Error("unknown dialect");
@@ -135,14 +172,35 @@ public class _csv implements ClassDictInit {
         _dialects.__delitem__(name);
     }
 
+    /**
+     * Get_dialect
+     * 
+     * @param name
+     *            name
+     * @return o
+     */
     public static PyObject get_dialect(PyObject name) {
         return get_dialect_from_registry(name);
     }
 
+    /**
+     * List_dialects
+     * 
+     * @return o
+     */
     public static PyObject list_dialects() {
         return _dialects.keys();
     }
 
+    /**
+     * Reader
+     * 
+     * @param args
+     *            args
+     * @param keywords
+     *            keywords
+     * @return o
+     */
     public static PyObject reader(PyObject[] args, String[] keywords) {
         ArgParser ap = parseArgs("reader", args, keywords);
         PyObject iterator = Py.iter(ap.getPyObject(0), "argument 1 must be an iterator");
@@ -150,6 +208,15 @@ public class _csv implements ClassDictInit {
         return new PyReader(iterator, dialectFromKwargs(dialect, args, keywords));
     }
 
+    /**
+     * Writer
+     * 
+     * @param args
+     *            args
+     * @param keywords
+     *            keywords
+     * @return o
+     */
     public static PyObject writer(PyObject[] args, String[] keywords) {
         ArgParser ap = parseArgs("writer", args, keywords);
         PyObject outputFile = ap.getPyObject(0);
@@ -162,10 +229,22 @@ public class _csv implements ClassDictInit {
         return new PyWriter(writeline, dialectFromKwargs(dialect, args, keywords));
     }
 
+    /**
+     * Field_size_limit
+     * 
+     * @return i
+     */
     public static PyInteger field_size_limit() {
         return Py.newInteger(field_limit);
     }
 
+    /**
+     * Field_size_limit
+     * 
+     * @param new_limit
+     *            new_limit
+     * @return i
+     */
     public static PyInteger field_size_limit(PyObject new_limit) {
         if (!(new_limit instanceof PyInteger)) {
             throw Py.TypeError("limit must be an integer");

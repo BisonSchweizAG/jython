@@ -3,23 +3,36 @@ package org.python.modules;
 
 import java.io.File;
 
-import jnr.constants.platform.Errno;
 import org.python.core.Py;
 import org.python.core.PyList;
 import org.python.core.PyString;
 import org.python.core.PySystemState;
 
+import jnr.constants.platform.Errno;
+
+/**
+ * _py_compile
+ */
 public class _py_compile {
+    /** __all__ */
     public static PyList __all__ = new PyList(new PyString[] { new PyString("compile") });
 
     /**
-     * Java wrapper on the module compiler in support of of py_compile.compile. Filenames here will
-     * be interpreted as Unicode if they are PyUnicode, and as byte-encoded names if they only
-     * PyString.
+     * Default constructor
+     */
+    _py_compile() {
+    }
+
+    /**
+     * Java wrapper on the module compiler in support of of py_compile.compile. Filenames here will be interpreted as
+     * Unicode if they are PyUnicode, and as byte-encoded names if they only PyString.
      *
-     * @param fileName actual source file name
-     * @param compiledName compiled filename
-     * @param displayName displayed source filename, only used for error messages (and not resolved)
+     * @param fileName
+     *            actual source file name
+     * @param compiledName
+     *            compiled filename
+     * @param displayName
+     *            displayed source filename, only used for error messages (and not resolved)
      * @return true if successful
      */
     public static boolean compile(PyString fileName, PyString compiledName, PyString displayName) {
@@ -39,6 +52,13 @@ public class _py_compile {
         return bytes.length > 0;
     }
 
+    /**
+     * getModuleName
+     * 
+     * @param f
+     *            f
+     * @return s
+     */
     public static final String getModuleName(File f) {
         String name = f.getName();
         int dot = name.lastIndexOf('.');

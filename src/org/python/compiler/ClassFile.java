@@ -21,11 +21,15 @@ import org.objectweb.asm.Type;
 import org.python.compiler.ProxyCodeHelpers.AnnotationDescr;
 import org.python.core.imp;
 
+/**
+ * ClassFile
+ */
 public class ClassFile
 {
     ClassWriter cw;
     int access;
     long mtime;
+    /** name */
     public String name;
     String superclass;
     String sfilename;
@@ -34,6 +38,13 @@ public class ClassFile
     List<FieldVisitor> fieldVisitors;
     List<AnnotationVisitor> annotationVisitors;
 
+    /**
+     * FixName
+     * 
+     * @param n
+     *            n
+     * @return s
+     */
     public static String fixName(String n) {
         if (n.indexOf('.') == -1)
             return n;
@@ -44,14 +55,32 @@ public class ClassFile
         return new String(c);
     }
 
+    /**
+     * VisitAnnotations
+     * 
+     * @param av
+     *            av
+     * @param fields
+     *            fields
+     */
     public static void visitAnnotations(AnnotationVisitor av, Map<String, Object> fields) {
         for (Entry<String, Object>field: fields.entrySet()) {
             visitAnnotation(av, field.getKey(), field.getValue());
         }
     }
 
-    // See org.objectweb.asm.AnnotationVisitor for details
-    // TODO Support annotation annotations and annotation array annotations
+    /**
+     * VisitAnnotation<br>
+     * See org.objectweb.asm.AnnotationVisitor for details<br>
+     * TODO Support annotation annotations and annotation array annotations
+     * 
+     * @param av
+     *            av
+     * @param fieldName
+     *            fieldName
+     * @param fieldValue
+     *            fieldValue
+     */
     public static void visitAnnotation(AnnotationVisitor av, String fieldName, Object fieldValue) {
         Class<?> fieldValueClass = fieldValue.getClass();
 
@@ -72,15 +101,43 @@ public class ClassFile
         }
     }
 
+    /**
+     * Constructor
+     * 
+     * @param name
+     *            name
+     */
     public ClassFile(String name) {
         this(name, "java/lang/Object", Opcodes.ACC_SYNCHRONIZED | Opcodes.ACC_PUBLIC,
                 org.python.core.imp.NO_MTIME);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param name
+     *            name
+     * @param superclass
+     *            superclass
+     * @param access
+     *            access
+     */
     public ClassFile(String name, String superclass, int access) {
         this(name, superclass, access, org.python.core.imp.NO_MTIME);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param name
+     *            name
+     * @param superclass
+     *            superclass
+     * @param access
+     *            access
+     * @param mtime
+     *            mtime
+     */
     public ClassFile(String name, String superclass, int access, long mtime) {
         this.name = fixName(name);
         this.superclass = fixName(superclass);
@@ -94,10 +151,24 @@ public class ClassFile
         annotationVisitors = Collections.synchronizedList(new ArrayList<AnnotationVisitor>());
     }
 
+    /**
+     * SetSource
+     * 
+     * @param name
+     *            name
+     */
     public void setSource(String name) {
         sfilename = name;
     }
 
+    /**
+     * AddInterface
+     * 
+     * @param name
+     *            name
+     * @throws IOException
+     *             ioException
+     */
     public void addInterface(String name)
         throws IOException
     {
@@ -107,6 +178,19 @@ public class ClassFile
         interfaces = new_interfaces;
     }
 
+    /**
+     * AddMethod
+     * 
+     * @param name
+     *            name
+     * @param type
+     *            type
+     * @param access
+     *            access
+     * @return code
+     * @throws IOException
+     *             ioException
+     */
     public Code addMethod(String name, String type, int access)
         throws IOException
     {
@@ -116,6 +200,21 @@ public class ClassFile
         return pmv;
     }
 
+    /**
+     * AddMethod
+     * 
+     * @param name
+     *            name
+     * @param type
+     *            type
+     * @param access
+     *            access
+     * @param exceptions
+     *            exceptions
+     * @return code
+     * @throws IOException
+     *             ioException
+     */
     public Code addMethod(String name, String type, int access, String[] exceptions)
         throws IOException
     {
@@ -125,6 +224,25 @@ public class ClassFile
         return pmv;
     }
 
+    /**
+     * AddMethod
+     * 
+     * @param name
+     *            name
+     * @param type
+     *            type
+     * @param access
+     *            access
+     * @param exceptions
+     *            exceptions
+     * @param methodAnnotationDescrs
+     *            methodAnnotationDescrs
+     * @param parameterAnnotationDescrs
+     *            parameterAnnotationDescrs
+     * @return code
+     * @throws IOException
+     *             ioException
+     */
     public Code addMethod(String name, String type, int access, String[] exceptions,
             AnnotationDescr[]methodAnnotationDescrs, AnnotationDescr[][] parameterAnnotationDescrs)
         throws IOException
@@ -156,6 +274,16 @@ public class ClassFile
         return pmv;
     }
 
+    /**
+     * AddFinalStringLiteral
+     * 
+     * @param name
+     *            name
+     * @param value
+     *            value
+     * @throws IOException
+     *             ioException
+     */
     public void addFinalStringLiteral(String name, String value)
         throws IOException
     {
@@ -164,6 +292,12 @@ public class ClassFile
         fieldVisitors.add(fv);
     }
 
+    /**
+     * AddClassAnnotation
+     * 
+     * @param annotationDescr
+     *            annotationDescr
+     */
     public void addClassAnnotation(AnnotationDescr annotationDescr) {
         AnnotationVisitor av = cw.visitAnnotation(annotationDescr.getName(), true);
         if (annotationDescr.hasFields()) {
@@ -172,12 +306,38 @@ public class ClassFile
         annotationVisitors.add(av);
     }
 
+    /**
+     * AddField
+     * 
+     * @param name
+     *            name
+     * @param type
+     *            type
+     * @param access
+     *            access
+     * @throws IOException
+     *             ioException
+     */
     public void addField(String name, String type, int access)
         throws IOException
     {
         addField(name, type, access, null);
     }
 
+    /**
+     * AddField
+     * 
+     * @param name
+     *            name
+     * @param type
+     *            type
+     * @param access
+     *            access
+     * @param annotationDescrs
+     *            annotationDescrs
+     * @throws IOException
+     *             ioException
+     */
     public void addField(String name, String type, int access, AnnotationDescr[] annotationDescrs)
         throws IOException
     {
@@ -196,6 +356,12 @@ public class ClassFile
         fieldVisitors.add(fv);
     }
 
+    /**
+     * EndFields
+     * 
+     * @throws IOException
+     *             ioException
+     */
     public void endFields()
         throws IOException
     {
@@ -204,6 +370,12 @@ public class ClassFile
         }
     }
 
+    /**
+     * EndMethods
+     * 
+     * @throws IOException
+     *             ioException
+     */
     public void endMethods()
         throws IOException
     {
@@ -214,12 +386,23 @@ public class ClassFile
         }
     }
 
+    /**
+     * EndClassAnnotations
+     */
     public void endClassAnnotations() {
         for (AnnotationVisitor av: annotationVisitors) {
             av.visitEnd();
         }
     }
 
+    /**
+     * Write
+     * 
+     * @param stream
+     *            stream
+     * @throws IOException
+     *             ioException
+     */
     public void write(OutputStream stream)
         throws IOException
     {

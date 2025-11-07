@@ -279,10 +279,18 @@ public abstract class PySequence extends PyObject {
 
     /**
      * Compare the specified object/length pairs.
+     * 
+     * @param o1
+     *            o1
+     * @param ol1
+     *            ol1
+     * @param o2
+     *            o2
+     * @param ol2
+     *            ol2
      *
-     * @return value &ge; 0 is the index where the sequences differs. -1: reached the end of o1
-     *         without a difference -2: reached the end of both sequences without a difference -3:
-     *         reached the end of o2 without a difference
+     * @return value &ge; 0 is the index where the sequences differs. -1: reached the end of o1 without a difference -2:
+     *         reached the end of both sequences without a difference -3: reached the end of o2 without a difference
      */
     protected static int cmp(PyObject o1, int ol1, PyObject o2, int ol2) {
         if (ol1 < 0) {
@@ -304,6 +312,12 @@ public abstract class PySequence extends PyObject {
 
     /**
      * Return a copy of a sequence where the __len__() method is telling the truth.
+     * 
+     * @param seq
+     *            seq
+     * @param msg
+     *            msg
+     * @return sequence
      */
     protected static PySequence fastSequence(PyObject seq, String msg) {
         if (seq instanceof PySequence) {
@@ -319,6 +333,14 @@ public abstract class PySequence extends PyObject {
 
     /**
      * Make step a long in case adding the start, stop and step together overflows an int.
+     * 
+     * @param start
+     *            start
+     * @param stop
+     *            stop
+     * @param step
+     *            step
+     * @return i
      */
     protected static final int sliceLength(int start, int stop, long step) {
         int ret;
@@ -334,9 +356,12 @@ public abstract class PySequence extends PyObject {
     }
 
     /**
-     * Adjusts <code>index</code> such that it's &ge;0 and &le; __len__. If <code>index</code>
-     * starts off negative, it's treated as an index from the end of the sequence going back to the
-     * start.
+     * Adjusts <code>index</code> such that it's &ge;0 and &le; __len__. If <code>index</code> starts off negative, it's
+     * treated as an index from the end of the sequence going back to the start.
+     * 
+     * @param index
+     *            index
+     * @return i
      */
     protected int boundToSequence(int index) {
         int length = __len__();

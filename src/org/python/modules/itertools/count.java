@@ -10,15 +10,19 @@ import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.core.PyTuple;
 import org.python.core.PyType;
-import org.python.core.__builtin__;
 import org.python.core.Visitproc;
-import org.python.expose.ExposedNew;
+import org.python.core.__builtin__;
 import org.python.expose.ExposedMethod;
+import org.python.expose.ExposedNew;
 import org.python.expose.ExposedType;
 
+/**
+ * count
+ */
 @ExposedType(name = "itertools.count", base = PyObject.class, doc = count.count_doc)
 public class count extends PyIterator {
 
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(count.class);
     private PyIterator iter;
     private PyObject counter;
@@ -32,6 +36,7 @@ public class count extends PyIterator {
         return NumberClass;
     }
 
+    /** count_doc */
     public static final String count_doc =
         "count(start=0, step=1) --> count object\n\n" +
         "Return a count object whose .next() method returns consecutive values.\n" +
@@ -43,6 +48,12 @@ public class count extends PyIterator {
         "          yield x\n" +
         "          x += step\n";
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public count(PyType subType) {
         super(subType);
     }
@@ -57,6 +68,9 @@ public class count extends PyIterator {
 
     /**
      * Creates an iterator that returns consecutive numbers starting at <code>start</code>.
+     * 
+     * @param start
+     *            start
      */
     public count(final PyObject start) {
         super();
@@ -65,6 +79,11 @@ public class count extends PyIterator {
 
     /**
      * Creates an iterator that returns consecutive numbers starting at <code>start</code> with <code>step</code> step.
+     * 
+     * @param start
+     *            start
+     * @param step
+     *            step
      */
     public count(final PyObject start, final PyObject step) {
         super();
@@ -115,6 +134,11 @@ public class count extends PyIterator {
         };
     }
 
+    /**
+     * Count___copy__
+     * 
+     * @return o
+     */
     @ExposedMethod
     public PyObject count___copy__() {
         return new count(counter, stepper);
@@ -131,6 +155,13 @@ public class count extends PyIterator {
     }
 
 
+    /**
+     * __reduce_ex__
+     * 
+     * @param protocol
+     *            protocol
+     * @return o
+     */
     public PyObject __reduce_ex__(PyObject protocol) {
         if (stepper == Py.One) {
             return new PyTuple(getType(), new PyTuple(counter));

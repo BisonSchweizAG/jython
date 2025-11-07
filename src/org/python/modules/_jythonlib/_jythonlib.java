@@ -6,10 +6,26 @@ import org.python.core.PyObject;
 import org.python.core.PyString;
 
 
+/**
+ * _jythonlib
+ */
 public class _jythonlib implements ClassDictInit {
 
+    /** __doc__ */
     public static final PyString __doc__ = new PyString("jythonlib module");
 
+    /**
+     * Default constructor
+     */
+    _jythonlib() {
+    }
+
+    /**
+     * ClassDictInit
+     * 
+     * @param dict
+     *            dict
+     */
     public static void classDictInit(PyObject dict) {
         dict.__setitem__("__name__", new PyString("_jythonlib"));
         dict.__setitem__("__doc__", __doc__);

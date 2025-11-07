@@ -13,12 +13,22 @@ import org.python.core.PyString;
 
 /**
  * Python bz2 module
- * 
  */
 public class bz2 implements ClassDictInit {
 
+    /** __doc__ */
     public static final PyString __doc__ = new PyString("bz2 module");
 
+    /** Default constructor */
+    bz2() {
+    }
+
+    /**
+     * ClassDictInit
+     * 
+     * @param dict
+     *            dict
+     */
     public static void classDictInit(PyObject dict) {
         dict.__setitem__("BZ2File", PyBZ2File.TYPE);
         dict.__setitem__("BZ2Compressor", PyBZ2Compressor.TYPE);
@@ -27,10 +37,26 @@ public class bz2 implements ClassDictInit {
         dict.__setitem__("classDictInit", null);
     }
 
+    /**
+     * Compress
+     * 
+     * @param data
+     *            data
+     * @return s
+     */
     public static PyString compress(PyString data) {
         return compress(data, 9);
     }
 
+    /**
+     * Compress
+     * 
+     * @param data
+     *            data
+     * @param compresslevel
+     *            compresslevel
+     * @return s
+     */
     public static PyString compress(PyString data, int compresslevel) {
         PyString returnData = null;
 
@@ -52,6 +78,13 @@ public class bz2 implements ClassDictInit {
         return returnData;
     }
 
+    /**
+     * Decompress
+     * 
+     * @param data
+     *            data
+     * @return s
+     */
     public static PyString decompress(PyString data) {
         PyString returnString = null;
 

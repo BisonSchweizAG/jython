@@ -6,10 +6,21 @@ package org.python.util;
 
 import java.util.Arrays;
 
+/**
+ * CodegenUtils
+ */
 public class CodegenUtils {
+
+    /** Default constructor */
+    CodegenUtils() {
+    }
 
     /**
      * Creates a dotted class name from a path/package name
+     * 
+     * @param p
+     *            p
+     * @return s
      */
     public static String c(String p) {
         return p.replace('/', '.');
@@ -17,6 +28,10 @@ public class CodegenUtils {
 
     /**
      * Creates a class path name, from a Class.
+     * 
+     * @param n
+     *            n
+     * @return s
      */
     public static String p(Class n) {
         return n.getName().replace('.','/');
@@ -24,6 +39,10 @@ public class CodegenUtils {
 
     /**
      * Creates a class identifier of form Labc/abc;, from a Class.
+     * 
+     * @param n
+     *            n
+     * @return s
      */
     public static String ci(Class n) {
         if (n.isArray()) {
@@ -82,15 +101,39 @@ public class CodegenUtils {
 
     /**
      * Create a method signature from the given param types and return values
+     * 
+     * @param retval
+     *            retval
+     * @param params
+     *            params
+     * @return s
      */
     public static String sig(Class retval, Class... params) {
         return sigParams(params) + ci(retval);
     }
 
+    /**
+     * Sig
+     * 
+     * @param retval
+     *            retval
+     * @param descriptor
+     *            descriptor
+     * @param params
+     *            params
+     * @return s
+     */
     public static String sig(Class retval, String descriptor, Class... params) {
         return sigParams(descriptor, params) + ci(retval);
     }
 
+    /**
+     * SigParams
+     * 
+     * @param params
+     *            params
+     * @return s
+     */
     public static String sigParams(Class... params) {
         StringBuilder signature = new StringBuilder("(");
         
@@ -103,6 +146,15 @@ public class CodegenUtils {
         return signature.toString();
     }
 
+    /**
+     * SigParams
+     * 
+     * @param descriptor
+     *            descriptor
+     * @param params
+     *            params
+     * @return s
+     */
     public static String sigParams(String descriptor, Class... params) {
         StringBuilder signature = new StringBuilder("(");
 
@@ -117,16 +169,43 @@ public class CodegenUtils {
         return signature.toString();
     }
     
+    /**
+     * Params
+     * 
+     * @param classes
+     *            classes
+     * @return classes
+     */
     public static Class[] params(Class... classes) {
         return classes;
     }
     
+    /**
+     * Params
+     * 
+     * @param cls
+     *            cls
+     * @param times
+     *            times
+     * @return classes
+     */
     public static Class[] params(Class cls, int times) {
         Class[] classes = new Class[times];
         Arrays.fill(classes, cls);
         return classes;
     }
-    
+
+    /**
+     * Params
+     * 
+     * @param cls1
+     *            cls1
+     * @param clsFill
+     *            clsFill
+     * @param times
+     *            times
+     * @return classes
+     */
     public static Class[] params(Class cls1, Class clsFill, int times) {
         Class[] classes = new Class[times + 1];
         Arrays.fill(classes, clsFill);

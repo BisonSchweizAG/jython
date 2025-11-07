@@ -4,6 +4,9 @@
  */
 package org.python.indexer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.python.antlr.PythonTree;
 import org.python.antlr.Visitor;
 import org.python.antlr.ast.Assert;
@@ -82,6 +85,7 @@ import org.python.indexer.ast.NDict;
 import org.python.indexer.ast.NEllipsis;
 import org.python.indexer.ast.NExceptHandler;
 import org.python.indexer.ast.NExec;
+import org.python.indexer.ast.NExprStmt;
 import org.python.indexer.ast.NFor;
 import org.python.indexer.ast.NFunctionDef;
 import org.python.indexer.ast.NGeneratorExp;
@@ -105,7 +109,6 @@ import org.python.indexer.ast.NQname;
 import org.python.indexer.ast.NRaise;
 import org.python.indexer.ast.NRepr;
 import org.python.indexer.ast.NReturn;
-import org.python.indexer.ast.NExprStmt;
 import org.python.indexer.ast.NSlice;
 import org.python.indexer.ast.NStr;
 import org.python.indexer.ast.NSubscript;
@@ -117,14 +120,22 @@ import org.python.indexer.ast.NWhile;
 import org.python.indexer.ast.NWith;
 import org.python.indexer.ast.NYield;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Converts the antlr AST into the indexer's AST format.
  */
 public class AstConverter extends Visitor {
 
+    /** Default constructor */
+    AstConverter() {
+    }
+    
+    /**
+     * ConvOp
+     * 
+     * @param t
+     *            t
+     * @return s
+     */
     public String convOp(Object t) {
         if (t instanceof operatorType) {
             switch((operatorType)t) {

@@ -8,8 +8,19 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 import org.python.util.Generic;
 
+/**
+ * AdapterMaker
+ */
 public class AdapterMaker extends ProxyMaker {
 
+    /**
+     * Constructor
+     * 
+     * @param adapterName
+     *            adapterName
+     * @param interfac
+     *            interface
+     */
     public AdapterMaker(String adapterName, Class<?> interfac) {
         super(adapterName, Object.class, new Class<?>[] {interfac});
     }

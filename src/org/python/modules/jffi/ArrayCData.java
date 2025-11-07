@@ -14,8 +14,12 @@ import org.python.expose.ExposedClassMethod;
 import org.python.expose.ExposedNew;
 import org.python.expose.ExposedType;
 
+/**
+ * ArrayCData
+ */
 @ExposedType(name = "jffi.ArrayCData", base = CData.class)
 public class ArrayCData extends CData implements Pointer {
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(ArrayCData.class);
 
     final CType.Array arrayType;
@@ -29,6 +33,21 @@ public class ArrayCData extends CData implements Pointer {
         this.componentMemoryOp = componentMemoryOp;
     }
 
+    /**
+     * ArrayCData_new
+     * 
+     * @param new_
+     *            new_
+     * @param init
+     *            init
+     * @param subtype
+     *            subtype
+     * @param args
+     *            args
+     * @param keywords
+     *            keywords
+     * @return o
+     */
     @ExposedNew
     public static PyObject ArrayCData_new(PyNewWrapper new_, boolean init, PyType subtype,
             PyObject[] args, String[] keywords) {
@@ -57,7 +76,16 @@ public class ArrayCData extends CData implements Pointer {
         return (CType.Array) jffi_type;
     }
 
-    @ExposedClassMethod(names= { "from_address" })
+    /**
+     * From_address
+     * 
+     * @param subtype
+     *            subtype
+     * @param address
+     *            subtype
+     * @return o
+     */
+    @ExposedClassMethod(names = { "from_address" })
     public static final PyObject from_address(PyType subtype, PyObject address) {
 
         CType.Array arrayType = getArrayType(subtype);
@@ -107,6 +135,9 @@ public class ArrayCData extends CData implements Pointer {
         return new ArrayIter();
     }
 
+    /**
+     * SequenceIndexDelegate
+     */
     protected final SequenceIndexDelegate delegator = new SequenceIndexDelegate() {
 
         @Override
@@ -161,7 +192,14 @@ public class ArrayCData extends CData implements Pointer {
         }
     };
 
+    /**
+     * ArrayIter
+     */
     public class ArrayIter extends PyIterator {
+
+        /** Default constructor */
+        ArrayIter() {
+        }
 
         private int index = 0;
 

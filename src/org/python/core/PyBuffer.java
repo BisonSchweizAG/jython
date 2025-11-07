@@ -197,10 +197,11 @@ public interface PyBuffer extends PyBUF, BufferProtocol, AutoCloseable {
     void close();
 
     /**
-     * True only if the buffer has been released with (the required number of calls to)
-     * {@link #release()} or some equivalent operation. The consumer may be sharing the reference
-     * with other consumers and the buffer only achieves the released state when all consumers who
-     * called <code>getBuffer</code> have called <code>release</code>.
+     * True only if the buffer has been released with (the required number of calls to) {@link #release()} or some
+     * equivalent operation. The consumer may be sharing the reference with other consumers and the buffer only achieves
+     * the released state when all consumers who called <code>getBuffer</code> have called <code>release</code>.
+     * 
+     * @return isReleased
      */
     boolean isReleased();
 

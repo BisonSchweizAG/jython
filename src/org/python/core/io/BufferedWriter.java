@@ -17,7 +17,9 @@ public class BufferedWriter extends BufferedIOMixin {
      * Construct a BufferedWriter of bufferSize, wrapping the given RawIOBase.
      *
      * @param rawIO
+     *            rawIO
      * @param bufferSize
+     *            bufferSize
      */
     public BufferedWriter(RawIOBase rawIO, int bufferSize) {
         super(rawIO, bufferSize);

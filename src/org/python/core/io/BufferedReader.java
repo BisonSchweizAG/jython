@@ -17,7 +17,9 @@ public class BufferedReader extends BufferedIOMixin {
      * Construct a BufferedReader of bufferSize, wrapping the given RawIOBase.
      *
      * @param rawIO
+     *            rawIO
      * @param bufferSize
+     *            bufferSize
      */
     public BufferedReader(RawIOBase rawIO, int bufferSize) {
         super(rawIO, bufferSize);

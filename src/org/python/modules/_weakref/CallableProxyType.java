@@ -12,8 +12,17 @@ import org.python.expose.ExposedType;
 @ExposedType(name = "weakcallableproxy", isBaseType = false)
 public class CallableProxyType extends ProxyType {
 
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(CallableProxyType.class);
 
+    /**
+     * Constructor
+     * 
+     * @param ref
+     *            ref
+     * @param callback
+     *            callback
+     */
     public CallableProxyType(ReferenceBackend ref, PyObject callback) {
         super(TYPE, ref, callback);
     }

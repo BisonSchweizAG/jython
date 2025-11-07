@@ -1,8 +1,5 @@
 package org.python.core;
 
-import org.python.expose.ExposedType;
-import org.python.modules.gc;
-
 /**
  * <p>
  * This interface defines a
@@ -646,24 +643,28 @@ import org.python.modules.gc;
 public interface Traverseproc {
 
     /**
-     * Traverses all directly contained {@code PyObject}s.
-     * Like in CPython, {@code arg} must be passed
-     * unmodified to {@code visit} as its second parameter.
-     * If {@link Visitproc#visit(PyObject, Object)} returns
-     * nonzero, this return value
-     * must be returned immediately by traverse.
+     * Traverses all directly contained {@code PyObject}s. Like in CPython, {@code arg} must be passed unmodified to
+     * {@code visit} as its second parameter. If {@link Visitproc#visit(PyObject, Object)} returns nonzero, this return
+     * value must be returned immediately by traverse.
      *
-     * {@link Visitproc#visit(PyObject, Object)} must not be
-     * called with a {@code null} PyObject-argument.
+     * {@link Visitproc#visit(PyObject, Object)} must not be called with a {@code null} PyObject-argument.
+     * 
+     * @param visit
+     *            visit
+     * @param arg
+     *            arg
+     * @return i
      */
     public int traverse(Visitproc visit, Object arg);
 
     /**
-     * Optional operation.
-     * Should only be implemented if it is more efficient
-     * than calling {@link #traverse(Visitproc, Object)} with
-     * a visitproc that just watches out for {@code ob}.
-     * Must return {@code false} if {@code ob} is {@code null}.
+     * Optional operation. Should only be implemented if it is more efficient than calling
+     * {@link #traverse(Visitproc, Object)} with a visitproc that just watches out for {@code ob}. Must return
+     * {@code false} if {@code ob} is {@code null}.
+     * 
+     * @param ob
+     *            ob
+     * @return refersDirectly
      */
     public boolean refersDirectlyTo(PyObject ob) throws UnsupportedOperationException;
 }

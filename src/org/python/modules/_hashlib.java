@@ -39,21 +39,52 @@ public class _hashlib implements ClassDictInit {
             put("sha512", "sha-512");
     }};
 
+    /**
+     * openssl_md_meth_names
+     */
     public static final PyFrozenSet openssl_md_meth_names =
             new PyFrozenSet(new PyTuple(Py.newString("md5"), Py.newString("sha1"),
             Py.newString("sha224"), Py.newString("sha256"), Py.newString("sha384"),
             Py.newString("sha512")));
 
+    /**
+     * Default constructor
+     */
+    _hashlib() {
+    }
+
+    /**
+     * ClassDictInit
+     * 
+     * @param dict
+     *            dict
+     */
     public static void classDictInit(PyObject dict) {
         dict.__setitem__("__name__", Py.newString("_hashlib"));
         dict.__setitem__("algorithmMap", null);
         dict.__setitem__("classDictInit", null);
     }
 
+    /**
+     * New$
+     * 
+     * @param name
+     *            name
+     * @return o
+     */
     public static PyObject new$(String name) {
         return new$(name, null);
     }
 
+    /**
+     * New$
+     * 
+     * @param name
+     *            name
+     * @param obj
+     *            obj
+     * @return o
+     */
     public static PyObject new$(String name, PyObject obj) {
         name = name.toLowerCase();
         // NOTE: we're not disallowing other MessageDigest algorithms
@@ -68,50 +99,122 @@ public class _hashlib implements ClassDictInit {
         return hash;
     }
 
+    /**
+     * Openssl_md5
+     * 
+     * @return o
+     */
     public static PyObject openssl_md5() {
         return openssl_md5(null);
     }
 
+    /**
+     * Openssl_md5
+     * 
+     * @param obj
+     *            obj
+     * @return o
+     */
     public static PyObject openssl_md5(PyObject obj) {
         return new$("md5", obj);
     }
 
+    /**
+     * Openssl_sha1
+     * 
+     * @return o
+     */
     public static PyObject openssl_sha1() {
         return openssl_sha1(null);
     }
 
+    /**
+     * Openssl_sha1
+     * 
+     * @param obj
+     *            obj
+     * @return o
+     */
     public static PyObject openssl_sha1(PyObject obj) {
         return new$("sha1", obj);
     }
 
+    /**
+     * Openssl_sha224
+     * 
+     * @return o
+     */
     public static PyObject openssl_sha224() {
         return openssl_sha224(null);
     }
 
+    /**
+     * Openssl_sha224
+     * 
+     * @param obj
+     *            obj
+     * @return o
+     */
     public static PyObject openssl_sha224(PyObject obj) {
         return new$("sha224", obj);
     }
 
+    /**
+     * Openssl_sha256
+     * 
+     * @return o
+     */
     public static PyObject openssl_sha256() {
         return openssl_sha256(null);
     }
 
+    /**
+     * Openssl_sha256
+     * 
+     * @param obj
+     *            obj
+     * @return o
+     */
     public static PyObject openssl_sha256(PyObject obj) {
         return new$("sha256", obj);
     }
 
+    /**
+     * Openssl_sha384
+     * 
+     * @return o
+     */
     public static PyObject openssl_sha384() {
         return openssl_sha384(null);
     }
 
+    /**
+     * Openssl_sha384
+     * 
+     * @param obj
+     *            obj
+     * @return o
+     */
     public static PyObject openssl_sha384(PyObject obj) {
         return new$("sha384", obj);
     }
 
+    /**
+     * Openssl_sha512
+     * 
+     * @return o
+     */
     public static PyObject openssl_sha512() {
         return openssl_sha512(null);
     }
 
+    /**
+     * Openssl_sha512
+     * 
+     * @param obj
+     *            obj
+     * @return o
+     */
     public static PyObject openssl_sha512(PyObject obj) {
         return new$("sha512", obj);
     }
@@ -123,6 +226,9 @@ public class _hashlib implements ClassDictInit {
     @ExposedType(name = "_hashlib.HASH")
     public static class Hash extends PyObject {
 
+        /**
+         * TYPE
+         */
         public static final PyType TYPE = PyType.fromClass(Hash.class);
 
         /** The hash algorithm name. */
@@ -142,6 +248,12 @@ public class _hashlib implements ClassDictInit {
                 put("sha-512", 128);
             }};
 
+        /**
+         * Hash
+         * 
+         * @param name
+         *            name
+         */
         public Hash(String name) {
             this(name, getDigest(name));
         }
@@ -184,6 +296,12 @@ public class _hashlib implements ClassDictInit {
             return cloneDigest().digest();
         }
 
+        /**
+         * Update
+         * 
+         * @param obj
+         *            obj
+         */
         public void update(PyObject obj) {
             HASH_update(obj);
         }
@@ -207,6 +325,11 @@ public class _hashlib implements ClassDictInit {
             }
         }
 
+        /**
+         * Digest
+         * 
+         * @return o
+         */
         public PyObject digest() {
             return HASH_digest();
         }
@@ -216,6 +339,11 @@ public class _hashlib implements ClassDictInit {
             return Py.newString(StringUtil.fromBytes(calculateDigest()));
         }
 
+        /**
+         * Hexdigest
+         * 
+         * @return o
+         */
         public PyObject hexdigest() {
             return HASH_hexdigest();
         }
@@ -236,6 +364,11 @@ public class _hashlib implements ClassDictInit {
             return Py.newString(new String(hexDigest));
         }
 
+        /**
+         * Copy
+         * 
+         * @return o
+         */
         public PyObject copy() {
             return HASH_copy();
         }
@@ -245,16 +378,31 @@ public class _hashlib implements ClassDictInit {
             return new Hash(name, cloneDigest());
         }
 
+        /**
+         * GetDigestSize
+         * 
+         * @return i
+         */
         @ExposedGet(name = "digestsize")
         public synchronized int getDigestSize() {
             return digest.getDigestLength();
         }
 
+        /**
+         * GetDigest_size
+         * 
+         * @return i
+         */
         @ExposedGet(name = "digest_size")
         public int getDigest_size() {
             return getDigestSize();
         }
 
+        /**
+         * GetBlockSize
+         * 
+         * @return o
+         */
         @ExposedGet(name = "block_size")
         public PyObject getBlockSize() {
             Integer size = blockSizes.get(name);

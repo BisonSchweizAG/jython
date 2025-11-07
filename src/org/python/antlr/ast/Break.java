@@ -15,22 +15,53 @@ import org.python.expose.ExposedNew;
 import org.python.expose.ExposedSet;
 import org.python.expose.ExposedType;
 
+/**
+ * Break
+ */
 @ExposedType(name = "_ast.Break", base = stmt.class)
 public class Break extends stmt {
-public static final PyType TYPE = PyType.fromClass(Break.class);
+    /** TYPE */
+    public static final PyType TYPE = PyType.fromClass(Break.class);
 
     private final static PyString[] fields = new PyString[0];
+
     @ExposedGet(name = "_fields")
+    /**
+     * Get_fields
+     * 
+     * @return fields
+     */
     public PyString[] get_fields() { return fields; }
 
     private final static PyString[] attributes =
     new PyString[] {new PyString("lineno"), new PyString("col_offset")};
+
+    /**
+     * Get_attributes
+     * 
+     * @return attributes
+     */
     @ExposedGet(name = "_attributes")
     public PyString[] get_attributes() { return attributes; }
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public Break(PyType subType) {
         super(subType);
     }
+
+    /**
+     * Break___init__
+     * 
+     * @param args
+     *            args
+     * @param keywords
+     *            keywords
+     */
     @ExposedNew
     @ExposedMethod
     public void Break___init__(PyObject[] args, String[] keywords) {
@@ -45,20 +76,40 @@ public static final PyType TYPE = PyType.fromClass(Break.class);
         if (col != -1) {
             setLineno(col);
         }
-
     }
 
+    /** Default constructor */
     public Break() {
     }
 
+    /**
+     * Constructor
+     * 
+     * @param token
+     *            token
+     */
     public Break(Token token) {
         super(token);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param ttype
+     *            ttype
+     * @param token
+     *            token
+     */
     public Break(Integer ttype, Token token) {
         super(ttype, token);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param tree
+     *            tree
+     */
     public Break(PythonTree tree) {
         super(tree);
     }
@@ -81,6 +132,7 @@ public static final PyType TYPE = PyType.fromClass(Break.class);
     public void traverse(VisitorIF<?> visitor) throws Exception {
     }
 
+    /** __dict__ */
     public PyObject __dict__;
 
     @Override
@@ -109,6 +161,12 @@ public static final PyType TYPE = PyType.fromClass(Break.class);
         return getLine();
     }
 
+    /**
+     * SetLineno
+     * 
+     * @param num
+     *            num
+     */
     @ExposedSet(name = "lineno")
     public void setLineno(int num) {
         lineno = num;
@@ -123,6 +181,12 @@ public static final PyType TYPE = PyType.fromClass(Break.class);
         return getCharPositionInLine();
     }
 
+    /**
+     * SetCol_offset
+     * 
+     * @param num
+     *            num
+     */
     @ExposedSet(name = "col_offset")
     public void setCol_offset(int num) {
         col_offset = num;

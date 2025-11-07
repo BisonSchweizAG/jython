@@ -20,7 +20,9 @@ public class BufferedRandom extends BufferedIOMixin {
      * Construct a BufferedRandom of bufferSize, wrapping the given RawIOBase.
      *
      * @param rawIO
+     *            rawIO
      * @param bufferSize
+     *            bufferSize
      */
     public BufferedRandom(RawIOBase rawIO, int bufferSize) {
         super(rawIO, bufferSize);

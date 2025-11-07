@@ -1,5 +1,7 @@
 package org.python.modules;
 
+import java.math.BigInteger;
+
 import org.python.core.BaseSet;
 import org.python.core.BufferProtocol;
 import org.python.core.ClassDictInit;
@@ -24,10 +26,17 @@ import org.python.core.PyUnicode;
 import org.python.core.Traverseproc;
 import org.python.core.Visitproc;
 
-import java.math.BigInteger;
-
+/**
+ * _marshal
+ */
 public class _marshal implements ClassDictInit {
 
+    /**
+     * ClassDictInit
+     * 
+     * @param dict
+     *            dict
+     */
     public static void classDictInit(PyObject dict) {
         dict.__setitem__("__name__", Py.newString("_marshal"));
     }
@@ -57,25 +66,55 @@ public class _marshal implements ClassDictInit {
     private final static int MAX_MARSHAL_STACK_DEPTH = 2000;
     private final static int CURRENT_VERSION = 2;
 
+    /** Default constructor */
+    _marshal() {
+    }
+
+    /**
+     * Marshaller
+     */
     public static class Marshaller extends PyObject implements Traverseproc {
 
         private final PyIOFile file;
         private final int version;
 
+        /**
+         * Constructor
+         * 
+         * @param file
+         *            file
+         */
         public Marshaller(PyObject file) {
             this(file, CURRENT_VERSION);
         }
 
+        /**
+         * Constructor
+         * 
+         * @param file
+         *            file
+         * @param version
+         *            version
+         */
         public Marshaller(PyObject file, int version) {
             this.file = PyIOFileFactory.createIOFile(file);
             this.version = version;
         }
         private boolean debug = false;
 
+        /**
+         * _debug
+         */
         public void _debug() {
             debug = true;
         }
 
+        /**
+         * Dump
+         * 
+         * @param obj
+         *            obj
+         */
         public void dump(PyObject obj) {
             write_object(obj, 0);
         }
@@ -275,6 +314,9 @@ public class _marshal implements ClassDictInit {
         }
     }
 
+    /**
+     * Unmarshaller
+     */
     public static class Unmarshaller extends PyObject implements Traverseproc {
 
         private final PyIOFile file;
@@ -282,20 +324,42 @@ public class _marshal implements ClassDictInit {
         private final int version;
         int depth = 0;
 
+        /**
+         * Constructor
+         * 
+         * @param file
+         *            file
+         */
         public Unmarshaller(PyObject file) {
             this(file, CURRENT_VERSION);
         }
 
+        /**
+         * Constructor
+         * 
+         * @param file
+         *            file
+         * @param version
+         *            version
+         */
         public Unmarshaller(PyObject file, int version) {
             this.file = PyIOFileFactory.createIOFile(file);
             this.version = version;
         }
         private boolean debug = false;
 
+        /**
+         * _debug
+         */
         public void _debug() {
             debug = true;
         }
 
+        /**
+         * load()
+         * 
+         * @return o
+         */
         public PyObject load() {
             try {
                 PyObject obj = read_object(0);

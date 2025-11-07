@@ -35,6 +35,10 @@ import java.lang.reflect.Array;
  */
 public class ByteSwapper {
 
+    /** Default constructor */
+    ByteSwapper() {
+    }
+
     /**
      * Reverses the byte order of all elements in the supplied array, converting
      * between little and big endian byte order.

@@ -241,7 +241,12 @@ public abstract class BaseBuffer implements PyBuffer {
         return shape;
     }
 
-    // XXX Consider making this part of the PyBUF interface
+    /**
+     * GetSize<br>
+     * XXX Consider making this part of the PyBUF interface
+     * 
+     * @return i
+     */
     protected int getSize() {
         final int N = shape.length;
         int size = shape[0];
@@ -559,22 +564,23 @@ public abstract class BaseBuffer implements PyBuffer {
     }
 
     /**
-     * Allow an exporter to re-use this object again even if it has been "finally" released. Many
-     * sub-classes of <code>BaseBytes</code> can be re-used even after a final release by consumers,
-     * simply by incrementing the <code>exports</code> count again: the navigation arrays and the
-     * buffer view of the exporter's state all remain valid. We do not let consumers do this through
-     * the {@link PyBuffer} interface: from their perspective, calling {@link PyBuffer#release()}
-     * should mean the end of their access, although we can't stop them holding a reference to the
-     * PyBuffer. Only the exporting object, which handles the implementation type is trusted to know
-     * when re-use is safe.
+     * Allow an exporter to re-use this object again even if it has been "finally" released. Many sub-classes of
+     * <code>BaseBytes</code> can be re-used even after a final release by consumers, simply by incrementing the
+     * <code>exports</code> count again: the navigation arrays and the buffer view of the exporter's state all remain
+     * valid. We do not let consumers do this through the {@link PyBuffer} interface: from their perspective, calling
+     * {@link PyBuffer#release()} should mean the end of their access, although we can't stop them holding a reference
+     * to the PyBuffer. Only the exporting object, which handles the implementation type is trusted to know when re-use
+     * is safe.
      * <p>
-     * An exporter will use this method as part of its implementation of
-     * {@link BufferProtocol#getBuffer(int)}. On return from that, the buffer <i>and the exporting
-     * object</i> must then be in effectively the same state as if the buffer had just been
-     * constructed by that method. Exporters that destroy related resources on final release of
-     * their buffer (by overriding {@link #releaseAction()}), or permit themselves structural change
-     * invalidating the buffer, must either reconstruct the missing resources or avoid
-     * <code>getBufferAgain</code>.
+     * An exporter will use this method as part of its implementation of {@link BufferProtocol#getBuffer(int)}. On
+     * return from that, the buffer <i>and the exporting object</i> must then be in effectively the same state as if the
+     * buffer had just been constructed by that method. Exporters that destroy related resources on final release of
+     * their buffer (by overriding {@link #releaseAction()}), or permit themselves structural change invalidating the
+     * buffer, must either reconstruct the missing resources or avoid <code>getBufferAgain</code>.
+     * 
+     * @param flags
+     *            flags
+     * @return buffer
      */
     public synchronized BaseBuffer getBufferAgain(int flags) {
         // If only the request flags are correct for this type, we can re-use this buffer
@@ -633,9 +639,11 @@ public abstract class BaseBuffer implements PyBuffer {
     // @Override public PyBuffer getBufferSlice(int flags, int start, int count, int stride) {}
 
     /**
-     * Create a new <code>java.nio.ByteBuffer</code> on the underlying storage, such that
-     * positioning this buffer to a particular byte using {@link #byteIndex(int)} or
-     * {@link #byteIndex(int[])} positions it at the first byte of the item so indexed.
+     * Create a new <code>java.nio.ByteBuffer</code> on the underlying storage, such that positioning this buffer to a
+     * particular byte using {@link #byteIndex(int)} or {@link #byteIndex(int[])} positions it at the first byte of the
+     * item so indexed.
+     * 
+     * @return b
      */
     abstract protected ByteBuffer getNIOByteBufferImpl();
 
@@ -912,6 +920,7 @@ public abstract class BaseBuffer implements PyBuffer {
      * <code>BufferError("underlying buffer is not {property}")</code>.
      *
      * @param property
+     *            property
      * @return the error as a PyException
      */
     protected static PyException bufferIsNot(String property) {
@@ -933,6 +942,7 @@ public abstract class BaseBuffer implements PyBuffer {
      * <code>BufferError("buffer structure requires consumer to use {feature}")</code>.
      *
      * @param feature
+     *            feature
      * @return the error as a PyException
      */
     protected static PyException bufferRequires(String feature) {

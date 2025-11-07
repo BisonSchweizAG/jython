@@ -5,6 +5,9 @@ import java.util.NoSuchElementException;
 
 /**
  * Exposes a Python iter as a Java Iterator.
+ * 
+ * @param <E>
+ *            the element type
  */
 public abstract class WrappedIterIterator<E> implements Iterator<E> {
 

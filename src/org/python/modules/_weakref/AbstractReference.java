@@ -16,8 +16,19 @@ public abstract class AbstractReference extends PyObject implements Traverseproc
 
     PyObject callback;
 
+    /** gref */
     protected ReferenceBackend gref;
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     * @param gref
+     *            gref
+     * @param callback
+     *            callback
+     */
     public AbstractReference(PyType subType, ReferenceBackend gref, PyObject callback) {
         super(subType);
         this.gref = gref;
@@ -35,6 +46,11 @@ public abstract class AbstractReference extends PyObject implements Traverseproc
         }
     }
 
+    /**
+     * Py
+     * 
+     * @return o
+     */
     protected PyObject py() {
         PyObject o = get();
         if (o == null) {
@@ -49,14 +65,31 @@ public abstract class AbstractReference extends PyObject implements Traverseproc
         return ob_other == this;
     }
 
+    /**
+     * HasCallback
+     * 
+     * @return hasCallback
+     */
     public boolean hasCallback() {
         return callback != null;
     }
 
+    /**
+     * HashCode
+     * 
+     * @return i
+     */
     public int hashCode() {
         return gref.pythonHashCode();
     }
 
+    /**
+     * __eq__
+     * 
+     * @param other
+     *            other
+     * @return o
+     */
     public PyObject __eq__(PyObject other) {
         if (other.getClass() != getClass()) {
             return null;
@@ -69,6 +102,13 @@ public abstract class AbstractReference extends PyObject implements Traverseproc
         return pythis._eq(pyother);
     }
 
+    /**
+     * __ne__
+     * 
+     * @param other
+     *            other
+     * @return o
+     */
     public PyObject __ne__(PyObject other) {
         if (other.getClass() != getClass()) {
             return Py.True;
@@ -81,6 +121,11 @@ public abstract class AbstractReference extends PyObject implements Traverseproc
         return pythis._eq(pyother).__not__();
     }
 
+    /**
+     * Get
+     * 
+     * @return o
+     */
     protected PyObject get() {
         PyObject result = gref.get();
         if (result == null && gc.delayedWeakrefCallbacksEnabled()) {

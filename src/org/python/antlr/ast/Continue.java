@@ -15,22 +15,53 @@ import org.python.expose.ExposedNew;
 import org.python.expose.ExposedSet;
 import org.python.expose.ExposedType;
 
+/**
+ * Continue
+ */
 @ExposedType(name = "_ast.Continue", base = stmt.class)
 public class Continue extends stmt {
-public static final PyType TYPE = PyType.fromClass(Continue.class);
+    /** TYPE */
+    public static final PyType TYPE = PyType.fromClass(Continue.class);
 
     private final static PyString[] fields = new PyString[0];
+
+    /**
+     * Get_fields
+     * 
+     * @return fields
+     */
     @ExposedGet(name = "_fields")
     public PyString[] get_fields() { return fields; }
 
     private final static PyString[] attributes =
     new PyString[] {new PyString("lineno"), new PyString("col_offset")};
+
+    /**
+     * Get_attributes
+     * 
+     * @return attributes
+     */
     @ExposedGet(name = "_attributes")
     public PyString[] get_attributes() { return attributes; }
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public Continue(PyType subType) {
         super(subType);
     }
+
+    /**
+     * Continue___init__
+     * 
+     * @param args
+     *            args
+     * @param keywords
+     *            keywords
+     */
     @ExposedNew
     @ExposedMethod
     public void Continue___init__(PyObject[] args, String[] keywords) {
@@ -48,17 +79,38 @@ public static final PyType TYPE = PyType.fromClass(Continue.class);
 
     }
 
+    /** Default constructor */
     public Continue() {
     }
 
+    /**
+     * Constructor
+     * 
+     * @param token
+     *            token
+     */
     public Continue(Token token) {
         super(token);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param ttype
+     *            ttype
+     * @param token
+     *            token
+     */
     public Continue(Integer ttype, Token token) {
         super(ttype, token);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param tree
+     *            tree
+     */
     public Continue(PythonTree tree) {
         super(tree);
     }
@@ -81,6 +133,7 @@ public static final PyType TYPE = PyType.fromClass(Continue.class);
     public void traverse(VisitorIF<?> visitor) throws Exception {
     }
 
+    /** __dict__ */
     public PyObject __dict__;
 
     @Override
@@ -101,6 +154,12 @@ public static final PyType TYPE = PyType.fromClass(Continue.class);
     }
 
     private int lineno = -1;
+
+    /**
+     * GetLineno
+     * 
+     * @return i
+     */
     @ExposedGet(name = "lineno")
     public int getLineno() {
         if (lineno != -1) {
@@ -109,12 +168,24 @@ public static final PyType TYPE = PyType.fromClass(Continue.class);
         return getLine();
     }
 
+    /**
+     * SetLineno
+     * 
+     * @param num
+     *            num
+     */
     @ExposedSet(name = "lineno")
     public void setLineno(int num) {
         lineno = num;
     }
 
     private int col_offset = -1;
+
+    /**
+     * GetCol_offset
+     * 
+     * @return i
+     */
     @ExposedGet(name = "col_offset")
     public int getCol_offset() {
         if (col_offset != -1) {
@@ -123,6 +194,12 @@ public static final PyType TYPE = PyType.fromClass(Continue.class);
         return getCharPositionInLine();
     }
 
+    /**
+     * SetCol_offset
+     * 
+     * @param num
+     *            num
+     */
     @ExposedSet(name = "col_offset")
     public void setCol_offset(int num) {
         col_offset = num;

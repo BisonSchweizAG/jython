@@ -260,6 +260,18 @@ public class __builtin__ {
 
     private static final PyStringMap internedStrings = new PyStringMap();
 
+    /**
+     * Default constructor
+     */
+    __builtin__() {
+    }
+
+    /**
+     * FillWithBuiltins
+     * 
+     * @param dict
+     *            dict
+     */
     public static void fillWithBuiltins(PyObject dict) {
         /* newstyle */
         dict.__setitem__("object", PyObject.TYPE);
@@ -355,18 +367,52 @@ public class __builtin__ {
         dict.__setitem__("bin", new BinFunction());
     }
 
+    /**
+     * Abs
+     * 
+     * @param o
+     *            o
+     * @return o
+     */
     public static PyObject abs(PyObject o) {
         return o.__abs__();
     }
 
+    /**
+     * Apply
+     * 
+     * @param o
+     *            o
+     * @return o
+     */
     public static PyObject apply(PyObject o) {
     return o.__call__();
     }
 
+    /**
+     * Apply
+     * 
+     * @param o
+     *            o
+     * @param args
+     *            args
+     * @return o
+     */
     public static PyObject apply(PyObject o, PyObject args) {
         return o.__call__(Py.make_array(args));
     }
 
+    /**
+     * Apply
+     * 
+     * @param o
+     *            o
+     * @param args
+     *            args
+     * @param kws
+     *            kws
+     * @return o
+     */
     public static PyObject apply(PyObject o, PyObject args, PyDictionary kws) {
         PyObject[] a;
         String[] kw;
@@ -395,10 +441,24 @@ public class __builtin__ {
         }
     }
 
+    /**
+     * Callable
+     * 
+     * @param obj
+     *            obj
+     * @return callable
+     */
     public static boolean callable(PyObject obj) {
         return obj.isCallable();
     }
 
+    /**
+     * Unichr
+     * 
+     * @param obj
+     *            obj
+     * @return unichr
+     */
     public static int unichr(PyObject obj) {
         long l = obj.asLong();
         if (l < PySystemState.minint) {
@@ -409,6 +469,13 @@ public class __builtin__ {
         return unichr((int)l);
     }
 
+    /**
+     * Unichr
+     * 
+     * @param i
+     *            i
+     * @return i
+     */
     public static int unichr(int i) {
         if (i < 0 || i > PySystemState.maxunicode) {
             throw Py.ValueError("unichr() arg not in range(0x110000)");
@@ -419,6 +486,13 @@ public class __builtin__ {
         return i;
     }
 
+    /**
+     * Char
+     * 
+     * @param i
+     *            i
+     * @return char
+     */
     public static char chr(int i) {
         if (i < 0 || i > 255) {
             throw Py.ValueError("chr() arg not in range(256)");
@@ -426,10 +500,28 @@ public class __builtin__ {
         return (char) i;
     }
 
+    /**
+     * Cmp
+     * 
+     * @param x
+     *            x
+     * @param y
+     *            y
+     * @return cmp
+     */
     public static int cmp(PyObject x, PyObject y) {
         return x._cmp(y);
     }
 
+    /**
+     * Coerce
+     * 
+     * @param o1
+     *            o1
+     * @param o2
+     *            o2
+     * @return tuple
+     */
     public static PyTuple coerce(PyObject o1, PyObject o2) {
         PyObject[] result = o1._coerce(o2);
         if (result != null) {
@@ -438,10 +530,25 @@ public class __builtin__ {
         throw Py.TypeError("number coercion failed");
     }
 
+    /**
+     * __delattr
+     * 
+     * @param obj
+     *            obj
+     * @param name
+     *            name
+     */
     public static void delattr(PyObject obj, PyObject name) {
         obj.__delattr__(asName(name, "delattr"));
     }
 
+    /**
+     * Dir
+     * 
+     * @param o
+     *            o
+     * @return o
+     */
     public static PyObject dir(PyObject o) {
         PyObject ret = o.__dir__();
         if (!Py.isInstance(ret, PyList.TYPE)) {
@@ -451,6 +558,11 @@ public class __builtin__ {
         return ret;
     }
 
+    /**
+     * Dir
+     * 
+     * @return o
+     */
     public static PyObject dir() {
         PyObject l = locals();
         PyList ret;
@@ -465,6 +577,15 @@ public class __builtin__ {
         return ret;
     }
 
+    /**
+     * Divmod
+     * 
+     * @param x
+     *            x
+     * @param y
+     *            y
+     * @return divmod
+     */
     public static PyObject divmod(PyObject x, PyObject y) {
         return x._divmod(y);
     }
@@ -482,6 +603,17 @@ public class __builtin__ {
         }
     }
 
+    /**
+     * Eval
+     * 
+     * @param o
+     *            o
+     * @param globals
+     *            globals
+     * @param locals
+     *            locals
+     * @return o
+     */
     public static PyObject eval(PyObject o, PyObject globals, PyObject locals) {
         verify_mappings(globals, locals);
         PyCode code;
@@ -497,10 +629,26 @@ public class __builtin__ {
         return Py.runCode(code, locals, globals);
     }
 
+    /**
+     * Eval
+     * 
+     * @param o
+     *            o
+     * @param globals
+     *            globals
+     * @return o
+     */
     public static PyObject eval(PyObject o, PyObject globals) {
         return eval(o, globals, globals);
     }
 
+    /**
+     * Eval
+     * 
+     * @param o
+     *            o
+     * @return o
+     */
     public static PyObject eval(PyObject o) {
         if (o instanceof PyBaseCode && ((PyBaseCode) o).hasFreevars()) {
             throw Py.TypeError("code object passed to eval() may not contain free variables");
@@ -508,10 +656,32 @@ public class __builtin__ {
         return eval(o, null, null);
     }
 
+    /**
+     * Execfile
+     * 
+     * @param name
+     *            name
+     * @param globals
+     *            globals
+     * @param locals
+     *            locals
+     */
     public static void execfile(String name, PyObject globals, PyObject locals) {
         execfile_flags(name, globals, locals, Py.getCompilerFlags());
     }
 
+    /**
+     * Execfile_flags
+     * 
+     * @param name
+     *            name
+     * @param globals
+     *            globals
+     * @param locals
+     *            locals
+     * @param cflags
+     *            cflags
+     */
     public static void execfile_flags(String name, PyObject globals, PyObject locals,
                                       CompilerFlags cflags) {
         verify_mappings(globals, locals);
@@ -535,14 +705,37 @@ public class __builtin__ {
         Py.runCode(code, locals, globals);
     }
 
+    /**
+     * Execfile
+     * 
+     * @param name
+     *            name
+     * @param globals
+     *            globals
+     */
     public static void execfile(String name, PyObject globals) {
         execfile(name, globals, globals);
     }
 
+    /**
+     * Execfile
+     * 
+     * @param name
+     *            name
+     */
     public static void execfile(String name) {
         execfile(name, null, null);
     }
 
+    /**
+     * filter
+     * 
+     * @param func
+     *            func
+     * @param seq
+     *            seq
+     * @return o
+     */
     public static PyObject filter(PyObject func, PyObject seq) {
         if (seq instanceof PyString) {
             return filterBaseString(func, (PyString)seq,
@@ -566,6 +759,17 @@ public class __builtin__ {
         return list;
     }
 
+    /**
+     * FilterBaseString
+     * 
+     * @param func
+     *            func
+     * @param seq
+     *            seq
+     * @param stringType
+     *            stringType
+     * @return o
+     */
     public static PyObject filterBaseString(PyObject func, PyBaseString seq, PyType stringType) {
         if (func == Py.None && seq.getType() == stringType) {
             // If it's a real string we can return the original, as no character is ever
@@ -595,6 +799,15 @@ public class __builtin__ {
         return stringType == PyString.TYPE ? new PyString(result) : new PyUnicode(result);
     }
 
+    /**
+     * FilterTuple
+     * 
+     * @param func
+     *            func
+     * @param seq
+     *            seq
+     * @return o
+     */
     public static PyObject filterTuple(PyObject func, PyTuple seq) {
         int len = seq.size();
         if (len == 0) {
@@ -620,10 +833,30 @@ public class __builtin__ {
         return PyTuple.fromIterable(list);
     }
 
+    /**
+     * Getattr
+     * 
+     * @param obj
+     *            obj
+     * @param name
+     *            name
+     * @return o
+     */
     public static PyObject getattr(PyObject obj, PyObject name) {
         return getattr(obj, name, null);
     }
 
+    /**
+     * Getattr
+     * 
+     * @param obj
+     *            obj
+     * @param nameObj
+     *            nameObj
+     * @param def
+     *            def
+     * @return o
+     */
     public static PyObject getattr(PyObject obj, PyObject nameObj, PyObject def) {
         String name = asName(nameObj, "getattr");
         PyObject result = null;
@@ -651,10 +884,24 @@ public class __builtin__ {
         throw attributeError;
     }
 
+    /**
+     * Globals
+     * 
+     * @return globals
+     */
     public static PyObject globals() {
         return Py.getFrame().f_globals;
     }
 
+    /**
+     * Hasattr
+     * 
+     * @param obj
+     *            obj
+     * @param nameObj
+     *            nameObj
+     * @return hasattr
+     */
     public static boolean hasattr(PyObject obj, PyObject nameObj) {
         String name = asName(nameObj, "hasattr");
         try {
@@ -668,27 +915,67 @@ public class __builtin__ {
         return false;
     }
 
+    /**
+     * Hash
+     * 
+     * @param o
+     *            o
+     * @return i
+     */
     public static PyInteger hash(PyObject o) {
         return o.__hash__();
     }
 
+    /**
+     * Hex
+     * 
+     * @param o
+     *            o
+     * @return s
+     */
     public static PyString hex(PyObject o) {
         return o.__hex__();
     }
 
+    /**
+     * id
+     * 
+     * @param o
+     *            o
+     * @return id
+     */
     public static long id(PyObject o) {
         return Py.id(o);
     }
 
+    /**
+     * Input
+     * 
+     * @param prompt
+     *            prompt
+     * @return o
+     */
     public static PyObject input(PyObject prompt) {
         String line = raw_input(prompt);
         return eval(new PyString(line));
     }
 
+    /**
+     * Input
+     * 
+     * @return o
+     */
     public static PyObject input() {
         return input(Py.EmptyString);
     }
 
+    /**
+     * intern
+     * 
+     * @param obj
+     *            obj
+     * @return s
+     */
     public static PyString intern(PyObject obj) {
         if (!(obj instanceof PyString) || obj instanceof PyUnicode) {
             throw Py.TypeError("intern() argument 1 must be string, not "
@@ -707,32 +994,87 @@ public class __builtin__ {
         return s;
     }
 
-    // xxx find where used, modify with more appropriate if necessary
+    /**
+     * Issubclass
+     * 
+     * xxx find where used, modify with more appropriate if necessary
+     * 
+     * @param obj
+     *            obj
+     * @param cls
+     *            cls
+     * @return issubclass
+     */
     public static boolean isinstance(PyObject obj, PyObject cls) {
         return Py.isInstance(obj, cls);
     }
 
-    // xxx find where used, modify with more appropriate if necessary
+    /**
+     * Issubclass
+     * 
+     * xxx find where used, modify with more appropriate if necessary
+     * 
+     * @param derived
+     *            derived
+     * @param cls
+     *            cls
+     * @return issubclass
+     */
     public static boolean issubclass(PyObject derived, PyObject cls) {
         return Py.isSubClass(derived, cls);
     }
 
+    /**
+     * Iter
+     * 
+     * @param obj
+     *            obj
+     * @return o
+     */
     public static PyObject iter(PyObject obj) {
         return obj.__iter__();
     }
 
+    /**
+     * Iter
+     * 
+     * @param callable
+     *            callable
+     * @param sentinel
+     *            sentinel
+     * @return o
+     */
     public static PyObject iter(PyObject callable, PyObject sentinel) {
         return new PyCallIter(callable, sentinel);
     }
 
+    /**
+     * Len
+     * 
+     * @param obj
+     *            obj
+     * @return len
+     */
     public static int len(PyObject obj) {
         return obj.__len__();
     }
 
+    /**
+     * Locals
+     * 
+     * @return locals
+     */
     public static PyObject locals() {
         return Py.getFrame().getLocals();
     }
 
+    /**
+     * Map
+     * 
+     * @param argstar
+     *            args
+     * @return o
+     */
     public static PyObject map(PyObject[] argstar) {
         int n = argstar.length - 1;
         if (n < 1) {
@@ -775,6 +1117,13 @@ public class __builtin__ {
         return list;
     }
 
+    /**
+     * Oct
+     * 
+     * @param o
+     *            o
+     * @return s
+     */
     public static PyString oct(PyObject o) {
         return o.__oct__();
     }
@@ -823,6 +1172,15 @@ public class __builtin__ {
         throw Py.TypeError("ord() expected a character, but string of length " + length + " found");
     }
 
+    /**
+     * Pow
+     * 
+     * @param x
+     *            x
+     * @param y
+     *            y
+     * @return o
+     */
     public static PyObject pow(PyObject x, PyObject y) {
         return x._pow(y);
     }
@@ -846,6 +1204,17 @@ public class __builtin__ {
         return false;
     }
 
+    /**
+     * Pow
+     * 
+     * @param x
+     *            x
+     * @param y
+     *            y
+     * @param z
+     *            z
+     * @return o
+     */
     public static PyObject pow(PyObject x, PyObject y, PyObject z) {
         if (z == Py.None) {
             return pow(x, y);
@@ -895,14 +1264,41 @@ public class __builtin__ {
                                          y.getType().fastGetName(), z.getType().fastGetName()));
     }
 
+    /**
+     * Range
+     * 
+     * @param n
+     *            n
+     * @return o
+     */
     public static PyObject range(PyObject n) {
         return range(Py.Zero, n, Py.One);
     }
 
+    /**
+     * Range
+     * 
+     * @param start
+     *            start
+     * @param stop
+     *            stop
+     * @return o
+     */
     public static PyObject range(PyObject start, PyObject stop) {
         return range(start, stop, Py.One);
     }
 
+    /**
+     * Range
+     * 
+     * @param ilow
+     *            ilow
+     * @param ihigh
+     *            ihigh
+     * @param istep
+     *            istep
+     * @return o
+     */
     public static PyObject range(PyObject ilow, PyObject ihigh, PyObject istep) {
         ilow = getRangeLongArgument(ilow, "start");
         ihigh = getRangeLongArgument(ihigh, "end");
@@ -1040,6 +1436,17 @@ public class __builtin__ {
         return raw_input(Py.EmptyString);
     }
 
+    /**
+     * Reduce
+     * 
+     * @param f
+     *            f
+     * @param l
+     *            l
+     * @param z
+     *            z
+     * @return o
+     */
     public static PyObject reduce(PyObject f, PyObject l, PyObject z) {
         PyObject result = z;
         PyObject iter = Py.iter(l, "reduce() arg 2 must support iteration");
@@ -1057,10 +1464,26 @@ public class __builtin__ {
         return result;
     }
 
+    /**
+     * Reduce
+     * 
+     * @param f
+     *            f
+     * @param l
+     *            l
+     * @return o
+     */
     public static PyObject reduce(PyObject f, PyObject l) {
         return reduce(f, l, null);
     }
 
+    /**
+     * Reload
+     * 
+     * @param o
+     *            the object
+     * @return o
+     */
     public static PyObject reload(PyObject o) {
         Object module = o.__tojava__(PyModule.class);
         if (module == Py.NoConversion) {
@@ -1075,24 +1498,64 @@ public class __builtin__ {
         return __builtin__.reload((PyModule) module);
     }
 
-    public static PyObject reload(PyModule o) {
-        return imp.reload(o);
+    /**
+     * Reload
+     * 
+     * @param m
+     *            the module
+     * @return m
+     */
+    public static PyObject reload(PyModule m) {
+        return imp.reload(m);
     }
 
-    public static PyObject reload(PySystemState o) {
+    /**
+     * Reload
+     * 
+     * @param s
+     *            the state
+     * @return s
+     */
+    public static PyObject reload(PySystemState s) {
         // reinitialize methods
-        o.reload();
-        return o;
+        s.reload();
+        return s;
     }
 
+    /**
+     * Repr
+     * 
+     * @param o
+     *            o
+     * @return s
+     */
     public static PyString repr(PyObject o) {
         return o.__repr__();
     }
 
+    /**
+     * Setattr
+     * 
+     * @param obj
+     *            obj
+     * @param name
+     *            name
+     * @param value
+     *            value
+     */
     public static void setattr(PyObject obj, PyObject name, PyObject value) {
         obj.__setattr__(asName(name, "setattr"), value);
     }
 
+    /**
+     * Sum
+     * 
+     * @param seq
+     *            seq
+     * @param result
+     *            result
+     * @return o
+     */
     public static PyObject sum(PyObject seq, PyObject result) {
         if (result instanceof PyString) {
             throw Py.TypeError("sum() can't sum strings [use ''.join(seq) instead]");
@@ -1103,6 +1566,13 @@ public class __builtin__ {
         return result;
     }
 
+    /**
+     * Reversed
+     * 
+     * @param seq
+     *            seq
+     * @return o
+     */
     public static PyObject reversed(PyObject seq) {
         PyObject reversed = seq.__findattr__("__reversed__");
         if (reversed != null) {
@@ -1116,18 +1586,44 @@ public class __builtin__ {
         return reversed;
     }
 
+    /**
+     * Sum
+     * 
+     * @param seq
+     *            seq
+     * @return o
+     */
     public static PyObject sum(PyObject seq) {
         return sum(seq, Py.Zero);
     }
 
+    /**
+     * Type
+     * 
+     * @param o
+     *            o
+     * @return t
+     */
     public static PyType type(PyObject o) {
         return o.getType();
     }
 
+    /**
+     * Vars
+     * 
+     * @return locals
+     */
     public static PyObject vars() {
         return locals();
     }
 
+    /**
+     * Vars
+     * 
+     * @param o
+     *            o
+     * @return o
+     */
     public static PyObject vars(PyObject o) {
         try {
             return o.__getattr__("__dict__");
@@ -1139,16 +1635,31 @@ public class __builtin__ {
         }
     }
 
+    /**
+     * __doc__zip
+     */
     public static PyString __doc__zip = PyString.fromInterned(
         "zip(seq1 [, seq2 [...]]) -> [(seq1[0], seq2[0] ...), (...)]\n\n" +
         "Return a list of tuples, where each tuple contains the i-th element\n" +
         "from each of the argument sequences.  The returned list is\n" +
         "truncated in length to the length of the shortest argument sequence.");
 
+    /**
+     * Zip
+     * 
+     * @return o
+     */
     public static PyObject zip() {
         return new PyList();
     }
 
+    /**
+     * Zip
+     * 
+     * @param argstar
+     *            args
+     * @return o
+     */
     public static PyObject zip(PyObject[] argstar) {
         int itemsize = argstar.length;
 
@@ -1188,23 +1699,78 @@ public class __builtin__ {
         }
     }
 
+    /**
+     * Import
+     * 
+     * @param name
+     *            name
+     * @return o
+     */
     public static PyObject __import__(String name) {
         return __import__(name, null, null, null, imp.DEFAULT_LEVEL);
     }
 
+    /**
+     * Import
+     * 
+     * @param name
+     *            name
+     * @param globals
+     *            globals
+     * @return o
+     */
     public static PyObject __import__(String name, PyObject globals) {
         return __import__(name, globals, null, null, imp.DEFAULT_LEVEL);
     }
 
+    /**
+     * Import
+     * 
+     * @param name
+     *            name
+     * @param globals
+     *            globals
+     * @param locals
+     *            locals
+     * @return o
+     */
     public static PyObject __import__(String name, PyObject globals, PyObject locals) {
         return __import__(name, globals, locals, null, imp.DEFAULT_LEVEL);
     }
 
+    /**
+     * Import
+     * 
+     * @param name
+     *            name
+     * @param globals
+     *            globals
+     * @param locals
+     *            locals
+     * @param fromlist
+     *            fromlist
+     * @return o
+     */
     public static PyObject __import__(String name, PyObject globals, PyObject locals,
                                       PyObject fromlist) {
         return __import__(name, globals, locals, fromlist, imp.DEFAULT_LEVEL);
     }
 
+    /**
+     * Import
+     * 
+     * @param name
+     *            name
+     * @param globals
+     *            globals
+     * @param locals
+     *            locals
+     * @param fromlist
+     *            fromlist
+     * @param level
+     *            level
+     * @return o
+     */
     public static PyObject __import__(String name, PyObject globals, PyObject locals,
                                       PyObject fromlist, int level) {
         PyFrame frame = Py.getFrame();

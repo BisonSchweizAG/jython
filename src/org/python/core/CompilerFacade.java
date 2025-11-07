@@ -17,6 +17,16 @@ public class CompilerFacade {
     
     private static volatile PythonCompiler compiler = loadDefaultCompiler();
 
+    /** Default constructor */
+    CompilerFacade() {
+    }
+
+    /**
+     * SetCompiler
+     * 
+     * @param compiler
+     *            compiler
+     */
     public static void setCompiler(PythonCompiler compiler) {
         CompilerFacade.compiler = compiler;
     }
@@ -25,6 +35,23 @@ public class CompilerFacade {
         return new LegacyCompiler();
     }
 
+    /**
+     * Compile
+     * 
+     * @param node
+     *            node
+     * @param name
+     *            name
+     * @param filename
+     *            filename
+     * @param linenumbers
+     *            linenumbers
+     * @param printResults
+     *            printResults
+     * @param cflags
+     *            cflags
+     * @return code
+     */
     public static PyCode compile(mod node, String name, String filename,
             boolean linenumbers, boolean printResults, CompilerFlags cflags) {
         try {

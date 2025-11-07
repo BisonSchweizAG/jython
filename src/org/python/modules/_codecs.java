@@ -19,8 +19,8 @@ import org.python.core.PyString;
 import org.python.core.PySystemState;
 import org.python.core.PyTuple;
 import org.python.core.PyUnicode;
-import org.python.core.codecs;
 import org.python.core.Untraversable;
+import org.python.core.codecs;
 import org.python.expose.ExposedType;
 
 /**
@@ -33,6 +33,18 @@ import org.python.expose.ExposedType;
  */
 public class _codecs {
 
+    /**
+     * Default constructor
+     */
+    _codecs() {
+    }
+
+    /**
+     * Register
+     * 
+     * @param search_function
+     *            search_function
+     */
     public static void register(PyObject search_function) {
         codecs.register(search_function);
     }
@@ -53,14 +65,36 @@ public class _codecs {
         }
     }
 
+    /**
+     * Lookup
+     * 
+     * @param encoding
+     *            encoding
+     * @return tuple
+     */
     public static PyTuple lookup(PyString encoding) {
         return codecs.lookup(_castString(encoding));
     }
 
+    /**
+     * Lookup_error
+     * 
+     * @param handlerName
+     *            handlerName
+     * @return o
+     */
     public static PyObject lookup_error(PyString handlerName) {
         return codecs.lookup_error(_castString(handlerName));
     }
 
+    /**
+     * Register_error
+     * 
+     * @param name
+     *            name
+     * @param errorHandler
+     *            errorHandler
+     */
     public static void register_error(String name, PyObject errorHandler) {
         codecs.register_error(name, errorHandler);
     }
@@ -149,6 +183,13 @@ public class _codecs {
 
     /* --- Some codec support methods -------------------------------------------- */
 
+    /**
+     * Charmap_build
+     * 
+     * @param map
+     *            map
+     * @return o
+     */
     public static PyObject charmap_build(PyUnicode map) {
         return EncodingMap.buildEncodingMap(map);
     }
@@ -231,71 +272,203 @@ public class _codecs {
     }
 
     /* --- UTF-8 Codec --------------------------------------------------- */
+
+    /**
+     * UTF_8_decode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple utf_8_decode(String str) {
         return utf_8_decode(str, null);
     }
 
+    /**
+     * UTF_8_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple utf_8_decode(String str, String errors) {
         return utf_8_decode(str, errors, false);
     }
 
+    /**
+     * UTF_8_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param final_
+     *            final_
+     * @return tuple
+     */
     public static PyTuple utf_8_decode(String str, String errors, PyObject final_) {
         return utf_8_decode(str, errors, final_.__nonzero__());
     }
 
+    /**
+     * UTF_8_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param final_
+     *            final_
+     * @return tuple
+     */
     public static PyTuple utf_8_decode(String str, String errors, boolean final_) {
         int[] consumed = final_ ? null : new int[1];
         return decode_tuple(codecs.PyUnicode_DecodeUTF8Stateful(str, errors, consumed), final_
                 ? str.length() : consumed[0]);
     }
 
+    /**
+     * UTF_8_encode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple utf_8_encode(String str) {
         return utf_8_encode(str, null);
     }
 
+    /**
+     * UTF_8_encode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple utf_8_encode(String str, String errors) {
         int size = str.length();
         return encode_tuple(codecs.PyUnicode_EncodeUTF8(str, errors), size);
     }
 
     /* --- UTF-7 Codec --------------------------------------------------- */
+
+    /**
+     * Utf_7_decode
+     * 
+     * @param bytes
+     *            bytes
+     * @return tuple
+     */
     public static PyTuple utf_7_decode(String bytes) {
         return utf_7_decode(bytes, null);
     }
 
+    /**
+     * Utf_7_decode
+     * 
+     * @param bytes
+     *            bytes
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple utf_7_decode(String bytes, String errors) {
         return utf_7_decode(bytes, null, false);
     }
 
+    /**
+     * Utf_7_decode
+     * 
+     * @param bytes
+     *            bytes
+     * @param errors
+     *            errors
+     * @param finalFlag
+     *            finalFlag
+     * @return tuple
+     */
     public static PyTuple utf_7_decode(String bytes, String errors, boolean finalFlag) {
         int[] consumed = finalFlag ? null : new int[1];
         String decoded = codecs.PyUnicode_DecodeUTF7Stateful(bytes, errors, consumed);
         return decode_tuple(decoded, consumed, bytes.length());
     }
 
+    /**
+     * Utf_7_encode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple utf_7_encode(String str) {
         return utf_7_encode(str, null);
     }
 
+    /**
+     * Utf_7_encode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple utf_7_encode(String str, String errors) {
         int size = str.length();
         return encode_tuple(codecs.PyUnicode_EncodeUTF7(str, false, false, errors), size);
     }
 
     /* --- string-escape Codec -------------------------------------------- */
+
+    /**
+     * Escape_decode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple escape_decode(String str) {
         return escape_decode(str, null);
     }
 
+    /**
+     * Escape_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple escape_decode(String str, String errors) {
         return decode_tuple_str(PyString.decode_UnicodeEscape(str, 0, str.length(), errors, true),
                 str.length());
     }
 
+    /**
+     * Escape_encode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple escape_encode(String str) {
         return escape_encode(str, null);
     }
 
+    /**
+     * Escape_encode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple escape_encode(String str, String errors) {
         return encode_tuple(PyString.encode_UnicodeEscape(str, false), str.length());
     }
@@ -416,7 +589,19 @@ public class _codecs {
         return decode_tuple(v.toString(), size);
     }
 
-    // parallel to CPython's PyUnicode_TranslateCharmap
+    /**
+     * TranslateCharmap
+     * 
+     * parallel to CPython's PyUnicode_TranslateCharmap
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param mapping
+     *            mapping
+     * @return o
+     */
     public static PyObject translateCharmap(PyUnicode str, String errors, PyObject mapping) {
         StringBuilder buf = new StringBuilder(str.toString().length());
 
@@ -610,72 +795,209 @@ public class _codecs {
     }
 
     /* --- ascii Codec ---------------------------------------------- */
+
+    /**
+     * Ascii_decode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple ascii_decode(String str) {
         return ascii_decode(str, null);
     }
 
+    /**
+     * Ascii_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple ascii_decode(String str, String errors) {
         int size = str.length();
         return decode_tuple(codecs.PyUnicode_DecodeASCII(str, size, errors), size);
     }
 
+    /**
+     * Ascii_encode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple ascii_encode(String str) {
         return ascii_encode(str, null);
     }
 
+    /**
+     * Ascii_encode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple ascii_encode(String str, String errors) {
         int size = str.length();
         return encode_tuple(codecs.PyUnicode_EncodeASCII(str, size, errors), size);
     }
 
     /* --- Latin-1 Codec -------------------------------------------- */
+
+    /**
+     * Latin_e_decode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple latin_1_decode(String str) {
         return latin_1_decode(str, null);
     }
 
+    /**
+     * Latin_e_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple latin_1_decode(String str, String errors) {
         int size = str.length();
         return decode_tuple(codecs.PyUnicode_DecodeLatin1(str, size, errors), size);
     }
 
+    /**
+     * Latin_e_encode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple latin_1_encode(String str) {
         return latin_1_encode(str, null);
     }
 
+    /**
+     * Latin_e_encode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple latin_1_encode(String str, String errors) {
         int size = str.length();
         return encode_tuple(codecs.PyUnicode_EncodeLatin1(str, size, errors), size);
     }
 
     /* --- UTF-16 Codec ------------------------------------------- */
+
+    /**
+     * Utf_16_le_encode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple utf_16_encode(String str) {
         return utf_16_encode(str, null);
     }
 
+    /**
+     * Utf_16_encode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple utf_16_encode(String str, String errors) {
         return encode_tuple(encode_UTF16(str, errors, 0), str.length());
     }
 
+    /**
+     * Utf_16_le_encode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param byteorder
+     *            byteorder
+     * @return tuple
+     */
     public static PyTuple utf_16_encode(String str, String errors, int byteorder) {
         return encode_tuple(encode_UTF16(str, errors, byteorder), str.length());
     }
 
+    /**
+     * Utf_16_le_encode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple utf_16_le_encode(String str) {
         return utf_16_le_encode(str, null);
     }
 
+    /**
+     * Utf_16_le_encode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple utf_16_le_encode(String str, String errors) {
         return encode_tuple(encode_UTF16(str, errors, -1), str.length());
     }
 
+    /**
+     * Utf_16_be_encode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple utf_16_be_encode(String str) {
         return utf_16_be_encode(str, null);
     }
 
+    /**
+     * Utf_16_be_encode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple utf_16_be_encode(String str, String errors) {
         return encode_tuple(encode_UTF16(str, errors, 1), str.length());
     }
 
+    /**
+     * Encode_UTF16
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param byteorder
+     *            byteorder
+     * @return s
+     */
     public static String encode_UTF16(String str, String errors, int byteorder) {
         final Charset utf16;
         if (byteorder == 0) {
@@ -700,14 +1022,41 @@ public class _codecs {
         return v.toString();
     }
 
+    /**
+     * Utf_16_decode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple utf_16_decode(String str) {
         return utf_16_decode(str, null);
     }
 
+    /**
+     * Utf_16_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple utf_16_decode(String str, String errors) {
         return utf_16_decode(str, errors, false);
     }
 
+    /**
+     * Utf_16_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param final_
+     *            final_
+     * @return tuple
+     */
     public static PyTuple utf_16_decode(String str, String errors, boolean final_) {
         int[] bo = new int[] {0};
         int[] consumed = final_ ? null : new int[1];
@@ -715,14 +1064,41 @@ public class _codecs {
                 : consumed[0]);
     }
 
+    /**
+     * Utf_16_le_decode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple utf_16_le_decode(String str) {
         return utf_16_le_decode(str, null);
     }
 
+    /**
+     * Utf_16_le_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple utf_16_le_decode(String str, String errors) {
         return utf_16_le_decode(str, errors, false);
     }
 
+    /**
+     * Utf_16_le_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param final_
+     *            final_
+     * @return tuple
+     */
     public static PyTuple utf_16_le_decode(String str, String errors, boolean final_) {
         int[] bo = new int[] {-1};
         int[] consumed = final_ ? null : new int[1];
@@ -730,14 +1106,41 @@ public class _codecs {
                 : consumed[0]);
     }
 
+    /**
+     * Utf_16_be_decode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple utf_16_be_decode(String str) {
         return utf_16_be_decode(str, null);
     }
 
+    /**
+     * Utf_16_be_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple utf_16_be_decode(String str, String errors) {
         return utf_16_be_decode(str, errors, false);
     }
 
+    /**
+     * Utf_16_be_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param final_
+     *            final_
+     * @return tuple
+     */
     public static PyTuple utf_16_be_decode(String str, String errors, boolean final_) {
         int[] bo = new int[] {1};
         int[] consumed = final_ ? null : new int[1];
@@ -745,18 +1148,58 @@ public class _codecs {
                 : consumed[0]);
     }
 
+    /**
+     * Utf_16_ex_decode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple utf_16_ex_decode(String str) {
         return utf_16_ex_decode(str, null);
     }
 
+    /**
+     * Utf_16_ex_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple utf_16_ex_decode(String str, String errors) {
         return utf_16_ex_decode(str, errors, 0);
     }
 
+    /**
+     * Utf_16_ex_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param byteorder
+     *            byteorder
+     * @return tuple
+     */
     public static PyTuple utf_16_ex_decode(String str, String errors, int byteorder) {
         return utf_16_ex_decode(str, errors, byteorder, false);
     }
 
+    /**
+     * Utf_16_ex_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param byteorder
+     *            byteorder
+     * @param final_
+     *            final_
+     * @return tuple
+     */
     public static PyTuple
             utf_16_ex_decode(String str, String errors, int byteorder, boolean final_) {
         int[] bo = new int[] {0};
@@ -1518,36 +1961,102 @@ public class _codecs {
     }
 
     /* --- RawUnicodeEscape Codec ----------------------------------------- */
+
+    /**
+     * Raw_unicode_escape
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple raw_unicode_escape_encode(String str) {
         return raw_unicode_escape_encode(str, null);
     }
 
+    /**
+     * Raw_unicode_escape
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple raw_unicode_escape_encode(String str, String errors) {
         return encode_tuple(codecs.PyUnicode_EncodeRawUnicodeEscape(str, errors, false),
                 str.length());
     }
 
+    /**
+     * Raw_unicode_escape
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple raw_unicode_escape_decode(String str) {
         return raw_unicode_escape_decode(str, null);
     }
 
+    /**
+     * Raw_unicode_escape
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple raw_unicode_escape_decode(String str, String errors) {
         return decode_tuple(codecs.PyUnicode_DecodeRawUnicodeEscape(str, errors), str.length());
     }
 
     /* --- unicode-escape Codec ------------------------------------------- */
+
+    /**
+     * Unicode_escape_encode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple unicode_escape_encode(String str) {
         return unicode_escape_encode(str, null);
     }
 
+    /**
+     * Unicode_escape_encode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple unicode_escape_encode(String str, String errors) {
         return encode_tuple(PyString.encode_UnicodeEscape(str, false), str.length());
     }
 
+    /**
+     * Unicode_escape_decode
+     * 
+     * @param str
+     *            str
+     * @return tuple
+     */
     public static PyTuple unicode_escape_decode(String str) {
         return unicode_escape_decode(str, null);
     }
 
+    /**
+     * Unicode_escape_decode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return tuple
+     */
     public static PyTuple unicode_escape_decode(String str, String errors) {
         int n = str.length();
         return decode_tuple(PyString.decode_UnicodeEscape(str, 0, n, errors, true), n);
@@ -1565,8 +2074,11 @@ public class _codecs {
      * See http://mail.python.org/pipermail/python-dev/2011-November/114415.html
      */
     /**
-     * Legacy method to encode given unicode in CPython wide-build internal format (equivalent
-     * UTF-32BE).
+     * Legacy method to encode given unicode in CPython wide-build internal format (equivalent UTF-32BE).
+     * 
+     * @param unicode
+     *            unicode
+     * @return tuple
      */
     @Deprecated
     public static PyTuple unicode_internal_encode(String unicode) {
@@ -1574,8 +2086,14 @@ public class _codecs {
     }
 
     /**
-     * Legacy method to encode given unicode in CPython wide-build internal format (equivalent
-     * UTF-32BE). There must be a multiple of 4 bytes.
+     * Legacy method to encode given unicode in CPython wide-build internal format (equivalent UTF-32BE). There must be
+     * a multiple of 4 bytes.
+     * 
+     * @param unicode
+     *            unicode
+     * @param errors
+     *            errors
+     * @return tuple
      */
     @Deprecated
     public static PyTuple unicode_internal_encode(String unicode, String errors) {
@@ -1583,8 +2101,12 @@ public class _codecs {
     }
 
     /**
-     * Legacy method to decode given bytes as if CPython wide-build internal format (equivalent
-     * UTF-32BE). There must be a multiple of 4 bytes.
+     * Legacy method to decode given bytes as if CPython wide-build internal format (equivalent UTF-32BE). There must be
+     * a multiple of 4 bytes.
+     * 
+     * @param bytes
+     *            bytes
+     * @return tuple
      */
     @Deprecated
     public static PyTuple unicode_internal_decode(String bytes) {
@@ -1592,8 +2114,14 @@ public class _codecs {
     }
 
     /**
-     * Legacy method to decode given bytes as if CPython wide-build internal format (equivalent
-     * UTF-32BE). There must be a multiple of 4 bytes.
+     * Legacy method to decode given bytes as if CPython wide-build internal format (equivalent UTF-32BE). There must be
+     * a multiple of 4 bytes.
+     * 
+     * @param bytes
+     *            bytes
+     * @param errors
+     *            errors
+     * @return tuple
      */
     @Deprecated
     public static PyTuple unicode_internal_decode(String bytes, String errors) {

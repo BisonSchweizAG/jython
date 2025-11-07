@@ -31,6 +31,13 @@ public class ContextGuard implements ContextManager {
                 traceback == null ? Py.None : traceback).__nonzero__();
     }
 
+    /**
+     * GetManager
+     * 
+     * @param manager
+     *            manager
+     * @return manager
+     */
     public static ContextManager getManager(PyObject manager) {
         if (manager instanceof ContextManager) {
             return (ContextManager) manager;
@@ -41,18 +48,25 @@ public class ContextGuard implements ContextManager {
 
     // XXX - tentative support for generators in conjunction w/ contextlib.contextmanager
     
-    /* Sample usage:
+    /**
+     * Sample usage:
      * 
+     * <pre>
      * from org.python.core.ContextGuard import makeManager as contextmanager
-     * @contextmanager
-     * def my_manager():
-     *     print "setup"
-     *     try:
-     *         yield
-     *     finally:
-     *         print "done"
+     * 
+     * {@literal @}contextmanager 
+     * def my_manager(): 
+     *   print "setup" 
+     *   try: 
+     *     yield 
+     *   finally: 
+     *     print "done"
+     * </pre>
+     * 
+     * @param object
+     *            object
+     * @return o
      */
-
     public static PyObject makeManager(PyObject object) {
         if (object instanceof PyFunction) {
             PyFunction function = (PyFunction) object;

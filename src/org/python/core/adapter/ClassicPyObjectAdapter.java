@@ -24,6 +24,9 @@ import org.python.core.PyType;
  */
 public class ClassicPyObjectAdapter extends ExtensiblePyObjectAdapter {
 
+    /**
+     * Default constructor
+     */
     public ClassicPyObjectAdapter() {
         addPreClass(new PyObjectAdapter() {
 

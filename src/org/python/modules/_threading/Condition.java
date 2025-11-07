@@ -5,27 +5,37 @@ import org.python.core.Py;
 import org.python.core.PyException;
 import org.python.core.PyNewWrapper;
 import org.python.core.PyObject;
-import org.python.core.PyString;
 import org.python.core.PyTuple;
 import org.python.core.PyType;
 import org.python.core.ThreadState;
-import org.python.expose.ExposedType;
-import org.python.expose.ExposedMethod;
-import org.python.expose.ExposedNew;
 import org.python.core.Traverseproc;
 import org.python.core.Visitproc;
+import org.python.expose.ExposedMethod;
+import org.python.expose.ExposedNew;
+import org.python.expose.ExposedType;
 
+/**
+ * Condition
+ */
 @ExposedType(name = "_threading.Condition")
 public class Condition extends PyObject implements ContextManager, Traverseproc {
 
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(Condition.class);
     private final ConditionSupportingLock _lock;
     private final java.util.concurrent.locks.Condition _condition;
 
+    /** Default constructor */
     public Condition() {
         this(new RLock());
     }
 
+    /**
+     * Constructor
+     * 
+     * @param lock
+     *            lock
+     */
     public Condition(ConditionSupportingLock lock) {
         _lock = lock;
         _condition = lock.getLock().newCondition();
@@ -41,10 +51,22 @@ public class Condition extends PyObject implements ContextManager, Traverseproc 
         return new Condition();
     }
 
+    /**
+     * Acquire
+     * 
+     * @return acquired
+     */
     public boolean acquire() {
         return Condition_acquire(true);
     }
 
+    /**
+     * Acquire
+     * 
+     * @param blocking
+     *            blocking
+     * @return acquired
+     */
     public boolean acquire(boolean blocking) {
         return Condition_acquire(blocking);
     }
@@ -65,6 +87,9 @@ public class Condition extends PyObject implements ContextManager, Traverseproc 
         return this;
     }
 
+    /**
+     * Release
+     */
     public void release() {
         Condition_release();
     }
@@ -85,6 +110,14 @@ public class Condition extends PyObject implements ContextManager, Traverseproc 
         return false;
     }
 
+    /**
+     * Wait$
+     * 
+     * @param timeout
+     *            timeout
+     * @throws InterruptedException
+     *             interruptedException
+     */
     public void wait$(PyObject timeout) throws InterruptedException {
         Condition_wait(timeout);
     }
@@ -103,6 +136,9 @@ public class Condition extends PyObject implements ContextManager, Traverseproc 
         }
     }
 
+    /**
+     * Notify$
+     */
     public void notify$() {
         Condition_notify(1);
     }
@@ -118,6 +154,9 @@ public class Condition extends PyObject implements ContextManager, Traverseproc 
         }
     }
 
+    /**
+     * NotifyAll$
+     */
     public void notifyAll$() {
         Condition_notifyAll();
     }
@@ -136,6 +175,11 @@ public class Condition extends PyObject implements ContextManager, Traverseproc 
         _condition.signalAll();
     }
 
+    /**
+     * _is_owned
+     * 
+     * @return isOwned
+     */
     public boolean _is_owned() {
         return Condition__is_owned();
     }

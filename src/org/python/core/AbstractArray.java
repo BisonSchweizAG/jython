@@ -69,8 +69,8 @@ public abstract class AbstractArray implements Serializable{
     protected int modCountIncr;
 
     /**
-     * Since AbstractArray can support a clone method, this facilitates subclasses that want to
-     * implement clone (poor man's cloning). Subclasses can then do this:
+     * Since AbstractArray can support a clone method, this facilitates subclasses that want to implement clone (poor
+     * man's cloning). Subclasses can then do this:
      *
      * <pre>{@literal
      * public MyManagedArray(MyManagedArray toCopy) {
@@ -86,6 +86,7 @@ public abstract class AbstractArray implements Serializable{
      * }</pre>
      *
      * @param toCopy
+     *            toCopy
      */
     public AbstractArray(AbstractArray toCopy) {
         this.capacity = toCopy.capacity;
@@ -113,16 +114,14 @@ public abstract class AbstractArray implements Serializable{
     }
 
     /**
-     * Construtor for multi-dimensional array types.
-     * For example, <CODE>char[][]</CODE>.  This class only manages the
-     * top level dimension of the array.  For single dimension
-     * arrays (the more typical usage), use the other constructors.<P>
+     * Construtor for multi-dimensional array types. For example, <CODE>char[][]</CODE>. This class only manages the top
+     * level dimension of the array. For single dimension arrays (the more typical usage), use the other constructors.
      *
-     * @param type       Array element type (primitive type or object class).
-     * @param dimensions An int array specifying the dimensions.  For
-     *                   a 2D array, something like <CODE>new int[] {10,0}</CODE> to
-     *                   create 10 elements each of which can hold an reference to an
-     *                   array of the same type.
+     * @param type
+     *            Array element type (primitive type or object class).
+     * @param dimensions
+     *            An int array specifying the dimensions. For a 2D array, something like <CODE>new int[] {10,0}</CODE>
+     *            to create 10 elements each of which can hold an reference to an array of the same type.
      * @see Array#newInstance(java.lang.Class, int[])
      */
     public AbstractArray(Class type, int[] dimensions) {
@@ -298,6 +297,11 @@ public abstract class AbstractArray implements Serializable{
      */
     protected abstract Object getArray();
 
+    /**
+     * IsEmpty
+     * 
+     * @return isEmpty
+     */
     protected boolean isEmpty() {
         return this.size == 0;
     }
@@ -314,6 +318,14 @@ public abstract class AbstractArray implements Serializable{
         makeInsertSpace(index, 1);
     }
 
+    /**
+     * MakeInsertSpace
+     * 
+     * @param index
+     *            index
+     * @param length
+     *            length
+     */
     protected void makeInsertSpace(int index, int length) {
 
         this.modCountIncr = 0;
@@ -387,14 +399,15 @@ public abstract class AbstractArray implements Serializable{
     }
 
     /**
-     * Allows an array type to overwrite a segment of the array.
-     * Will expand the array if <code>(atIndex + 1) + ofArrayType</code>'s length
-     * is greater than the current length.
-     * <P><CODE>AbstractList</CODE> subclasses should update their
-     * <CODE>modCount</CODE> after calling this method.
+     * Allows an array type to overwrite a segment of the array. Will expand the array if
+     * <code>(atIndex + 1) + ofArrayType</code>'s length is greater than the current length.
+     * <P>
+     * <CODE>AbstractList</CODE> subclasses should update their <CODE>modCount</CODE> after calling this method.
      *
      * @param array
+     *            array
      * @param atIndex
+     *            atIndex
      */
     public void replaceSubArray(Object array, int atIndex) {
         int arrayLen = Array.getLength(array);
@@ -590,6 +603,10 @@ public abstract class AbstractArray implements Serializable{
     }
 
     /**
+     * CreateArray
+     * 
+     * @param size
+     *            size
      * @return an array of the given size for the type used by this abstract array.
      */
     protected abstract Object createArray(int size);

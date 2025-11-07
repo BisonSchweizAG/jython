@@ -8,9 +8,14 @@ import org.python.core.PyInstance;
 import org.python.core.PyObject;
 import org.python.core.PyTuple;
 
+/**
+ * cmath
+ */
 public class cmath {
 
+    /** pi */
     public static final PyFloat pi = new PyFloat(Math.PI);
+    /** e */
     public static final PyFloat e = new PyFloat(Math.E);
 
     /** 2<sup>-&#189;</sup> (Ref: Abramowitz &amp; Stegun [1972], p2). */
@@ -28,6 +33,10 @@ public class cmath {
 
     /** log<sub>10</sub>e (Ref: Abramowitz &amp; Stegun [1972], p3). */
     private static final double LOG10E = 0.43429448190325182765;
+
+    /** Default constructor */
+    cmath() {
+    }
 
     private static PyComplex complexFromPyObject(PyObject obj) {
         // If op is already of type PyComplex_Type, return its value
@@ -63,11 +72,11 @@ public class cmath {
     }
 
     /**
-     * Return the arc cosine of w. There are two branch cuts. One extends right from 1 along the
-     * real axis to &infin;, continuous from below. The other extends left from -1 along the real
-     * axis to -&infin;, continuous from above.
+     * Return the arc cosine of w. There are two branch cuts. One extends right from 1 along the real axis to &infin;,
+     * continuous from below. The other extends left from -1 along the real axis to -&infin;, continuous from above.
      *
      * @param w
+     *            w
      * @return cos<sup>-1</sup><i>w</i>
      */
     public static PyComplex acos(PyObject w) {
@@ -80,19 +89,18 @@ public class cmath {
      * <i>a = (1-w)<sup>&frac12;</sup> = &radic;2</i> sin <i>z/2</i> <br>
      * <i>b = (1+w)<sup>&frac12;</sup> = &radic;2</i> cos <i>z/2</i>
      * <p>
-     * Then, with <i>z = x+iy</i>, <i>a = a<sub>1</sub>+ia<sub>2</sub></i>, and <i>b =
-     * b<sub>1</sub>+ib<sub>2</sub></i>,
+     * Then, with <i>z = x+iy</i>, <i>a = a<sub>1</sub>+ia<sub>2</sub></i>, and <i>b = b<sub>1</sub>+ib<sub>2</sub></i>,
      * <p>
      * a<sub>1</sub> / b<sub>1</sub> = tan <i>x/2</i> <br>
      * a<sub>2</sub>b<sub>1</sub> - a<sub>1</sub>b<sub>2</sub> = sinh <i>y</i>
      * <p>
-     * and we use {@link Math#atan2(double, double)} and {@link math#asinh(double)} to obtain
-     * <i>x</i> and <i>y</i>.
+     * and we use {@link Math#atan2(double, double)} and {@link math#asinh(double)} to obtain <i>x</i> and <i>y</i>.
      * <p>
-     * For <i>w</i> sufficiently large that <i>w<sup>2</sup></i>&#x0226B;1, cos<sup>-1</sup><i>w</i>
-     * &asymp; -i ln(<i>2w</i>).
+     * For <i>w</i> sufficiently large that <i>w<sup>2</sup></i>&#x0226B;1, cos<sup>-1</sup><i>w</i> &asymp; -i
+     * ln(<i>2w</i>).
      *
      * @param w
+     *            w
      * @return cos<sup>-1</sup><i>w</i>
      */
     private static PyComplex _acos(PyComplex w) {
@@ -128,10 +136,11 @@ public class cmath {
     }
 
     /**
-     * Return the hyperbolic arc cosine of w. There is one branch cut, extending left from 1 along
-     * the real axis to -&infin;, continuous from above.
+     * Return the hyperbolic arc cosine of w. There is one branch cut, extending left from 1 along the real axis to
+     * -&infin;, continuous from above.
      *
      * @param w
+     *            w
      * @return cosh<sup>-1</sup><i>w</i>
      */
     public static PyComplex acosh(PyObject w) {
@@ -207,11 +216,11 @@ public class cmath {
     }
 
     /**
-     * Return the arc sine of w. There are two branch cuts. One extends right from 1 along the real
-     * axis to &infin;, continuous from below. The other extends left from -1 along the real axis to
-     * -&infin;, continuous from above.
+     * Return the arc sine of w. There are two branch cuts. One extends right from 1 along the real axis to &infin;,
+     * continuous from below. The other extends left from -1 along the real axis to -&infin;, continuous from above.
      *
      * @param w
+     *            w
      * @return sin<sup>-1</sup><i>w</i>
      */
     public static PyComplex asin(PyObject w) {
@@ -219,11 +228,12 @@ public class cmath {
     }
 
     /**
-     * Return the hyperbolic arc sine of w. There are two branch cuts. One extends from 1j along the
-     * imaginary axis to &infin;j, continuous from the right. The other extends from -1j along the
-     * imaginary axis to -&infin;j, continuous from the left.
+     * Return the hyperbolic arc sine of w. There are two branch cuts. One extends from 1j along the imaginary axis to
+     * &infin;j, continuous from the right. The other extends from -1j along the imaginary axis to -&infin;j, continuous
+     * from the left.
      *
      * @param w
+     *            w
      * @return sinh<sup>-1</sup><i>w</i>
      */
     public static PyComplex asinh(PyObject w) {
@@ -320,11 +330,12 @@ public class cmath {
     }
 
     /**
-     * Return the arc tangent of w. There are two branch cuts. One extends from 1j along the
-     * imaginary axis to &infin;j, continuous from the right. The other extends from -1j along the
-     * imaginary axis to -&infin;j, continuous from the left.
+     * Return the arc tangent of w. There are two branch cuts. One extends from 1j along the imaginary axis to &infin;j,
+     * continuous from the right. The other extends from -1j along the imaginary axis to -&infin;j, continuous from the
+     * left.
      *
      * @param w
+     *            2
      * @return tan<sup>-1</sup><i>w</i>
      */
     public static PyComplex atan(PyObject w) {
@@ -332,11 +343,11 @@ public class cmath {
     }
 
     /**
-     * Return the hyperbolic arc tangent of w. There are two branch cuts. One extends from 1 along
-     * the real axis to &infin;, continuous from below. The other extends from -1 along the real
-     * axis to -&infin;, continuous from above.
+     * Return the hyperbolic arc tangent of w. There are two branch cuts. One extends from 1 along the real axis to
+     * &infin;, continuous from below. The other extends from -1 along the real axis to -&infin;, continuous from above.
      *
      * @param w
+     *            w
      * @return tanh<sup>-1</sup><i>w</i>
      */
     public static PyComplex atanh(PyObject w) {
@@ -455,6 +466,7 @@ public class cmath {
      * Return the cosine of z.
      *
      * @param z
+     *            z
      * @return cos <i>z</i>
      */
     public static PyComplex cos(PyObject z) {
@@ -465,6 +477,7 @@ public class cmath {
      * Return the hyperbolic cosine of z.
      *
      * @param z
+     *            z
      * @return cosh <i>z</i>
      */
     public static PyComplex cosh(PyObject z) {
@@ -555,6 +568,7 @@ public class cmath {
      * Return the exponential value e<sup>z</sup>.
      *
      * @param z
+     *            z
      * @return e<sup>z</sup>
      */
     public static PyComplex exp(PyObject z) {
@@ -612,11 +626,25 @@ public class cmath {
         return exceptNaN(new PyComplex(u, v), zz);
     }
 
+    /**
+     * Phase
+     * 
+     * @param in
+     *            in
+     * @return d
+     */
     public static double phase(PyObject in) {
         PyComplex x = complexFromPyObject(in);
         return Math.atan2(x.imag, x.real);
     }
 
+    /**
+     * Polar
+     * 
+     * @param in
+     *            in
+     * @return t
+     */
     public static PyTuple polar(PyObject in) {
         PyComplex z = complexFromPyObject(in);
         double phi = Math.atan2(z.imag, z.real);
@@ -663,7 +691,10 @@ public class cmath {
     }
 
     /**
+     * Isinf
+     * 
      * @param in
+     *            in
      *
      * @return <code>true</code> if in.real or in.imag is positive or negative infinity
      */
@@ -673,7 +704,10 @@ public class cmath {
     }
 
     /**
+     * Isnan
+     * 
      * @param in
+     *            in
      *
      * @return <code>true</code> if in.real or in.imag is nan.
      */
@@ -686,6 +720,7 @@ public class cmath {
      * Returns the natural logarithm of <i>w</i>.
      *
      * @param w
+     *            w
      * @return ln <i>w</i>
      */
     public static PyComplex log(PyObject w) {
@@ -703,6 +738,7 @@ public class cmath {
      * Returns the common logarithm of <i>w</i> (base 10 logarithm).
      *
      * @param w
+     *            w
      * @return log<sub>10</sub><i>w</i>
      */
     public static PyComplex log10(PyObject w) {
@@ -716,12 +752,13 @@ public class cmath {
     }
 
     /**
-     * Returns the logarithm of <i>w</i> to the given base. If the base is not specified, returns
-     * the natural logarithm of <i>w</i>. There is one branch cut, from 0 along the negative real
-     * axis to -&infin;, continuous from above.
+     * Returns the logarithm of <i>w</i> to the given base. If the base is not specified, returns the natural logarithm
+     * of <i>w</i>. There is one branch cut, from 0 along the negative real axis to -&infin;, continuous from above.
      *
      * @param w
+     *            w
      * @param b
+     *            b
      * @return log<sub>b</sub><i>w</i>
      */
     public static PyComplex log(PyObject w, PyObject b) {
@@ -807,6 +844,7 @@ public class cmath {
      * Return the sine of z.
      *
      * @param z
+     *            z
      * @return sin <i>z</i>
      */
     public static PyComplex sin(PyObject z) {
@@ -817,6 +855,7 @@ public class cmath {
      * Return the hyperbolic sine of z.
      *
      * @param z
+     *            z
      * @return sinh <i>z</i>
      */
     public static PyComplex sinh(PyObject z) {
@@ -1022,6 +1061,7 @@ public class cmath {
      * Return the tangent of z.
      *
      * @param z
+     *            z
      * @return tan <i>z</i>
      */
     public static PyComplex tan(PyObject z) {
@@ -1032,6 +1072,7 @@ public class cmath {
      * Return the hyperbolic tangent of z.
      *
      * @param z
+     *            z
      * @return tanh <i>z</i>
      */
     public static PyComplex tanh(PyObject z) {

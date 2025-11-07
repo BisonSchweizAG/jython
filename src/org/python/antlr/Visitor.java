@@ -2,6 +2,9 @@ package org.python.antlr;
 
 import org.python.antlr.ast.VisitorBase;
 
+/**
+ * Visitor
+ */
 public class Visitor extends VisitorBase {
 
     /**
@@ -13,7 +16,14 @@ public class Visitor extends VisitorBase {
         node.traverse(this);
     }
 
-
+    /**
+     * Visit
+     * 
+     * @param nodes
+     *            nodes
+     * @throws Exception
+     *             exception
+     */
     public void visit(PythonTree[] nodes) throws Exception {
         for (int i = 0; i < nodes.length; i++) {
             visit(nodes[i]);
@@ -22,6 +32,12 @@ public class Visitor extends VisitorBase {
 
     /**
      * Visit the node by calling a visitXXX method.
+     * 
+     * @param node
+     *            node
+     * @return o
+     * @throws Exception
+     *             exception
      */
     public Object visit(PythonTree node) throws Exception {
         @SuppressWarnings("unchecked")

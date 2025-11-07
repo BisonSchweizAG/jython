@@ -7,6 +7,18 @@
  */
 package com.ziclix.python.sql;
 
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
+import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.Properties;
+import java.util.ResourceBundle;
+
 import org.python.core.ClassDictInit;
 import org.python.core.Options;
 import org.python.core.Py;
@@ -20,21 +32,9 @@ import org.python.core.PyString;
 import org.python.core.PyStringMap;
 import org.python.core.Untraversable;
 
-import java.io.CharArrayWriter;
-import java.io.PrintWriter;
-import java.lang.reflect.Field;
-import java.sql.SQLException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.Properties;
-import java.util.ResourceBundle;
-
 /**
  * Creates database connections.
- * <p>
+ * 
  * <pre>
  * from com.ziclix.python.sql import zxJDBC
  * db = zxJDBC.connect("jdbc:mysql://localhost:3306/MySql", None, None, "org.gjt.mm.mysql.Driver")

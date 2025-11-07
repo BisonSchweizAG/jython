@@ -12,27 +12,47 @@ import org.python.expose.ExposedMethod;
 import org.python.expose.ExposedNew;
 import org.python.expose.ExposedType;
 
+/**
+ * combinationsWithReplacement
+ */
 @ExposedType(name = "itertools.combinations_with_replacement", base = PyObject.class,
-    doc = combinationsWithReplacement.combinations_with_replacement_doc)
+                doc = combinationsWithReplacement.combinations_with_replacement_doc)
 public class combinationsWithReplacement extends PyIterator {
 
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(combinationsWithReplacement.class);
     private itertools.ItertoolsIterator iter;
 
+    /** combinations_with_replacement_doc */
     public static final String combinations_with_replacement_doc =
         "combinations_with_replacement(iterable, r) --> combinations_with_replacement object\n\n" +
         "Return successive r-length combinations of elements in the iterable\n" +
         "allowing individual elements to have successive repeats.\n" +
         "combinations_with_replacement('ABC', 2) --> AA AB AC BB BC CC";
 
+    /** Default constructor */
     public combinationsWithReplacement() {
         super();
     }
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public combinationsWithReplacement(PyType subType) {
         super(subType);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param iterable
+     *            iterable
+     * @param r
+     *            r
+     */
     public combinationsWithReplacement(PyObject iterable, int r) {
         super();
         combinationsWithReplacement___init__(iterable, r);

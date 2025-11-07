@@ -7,26 +7,67 @@ import org.python.antlr.base.mod;
 import org.python.core.CodeFlag;
 import org.python.core.CompilerFlags;
 
+/**
+ * BaseParser
+ */
 public class BaseParser {
 
+    /** charStream */
     protected final CharStream charStream;
+    /** partial */
     @Deprecated
     protected final boolean partial;
+    /** printFunction, unicodeLiterals */
     protected final boolean printFunction, unicodeLiterals;
+    /** filename */
     protected final String filename;
+    /** encoding */
     protected final String encoding;
+    /** errorHandler */
     protected ErrorHandler errorHandler = new FailFastHandler();
     
+    /**
+     * Constructor
+     * 
+     * @param stream
+     *            stream
+     * @param filename
+     *            filename
+     * @param flags
+     *            flags
+     */
     public BaseParser(CharStream stream, String filename, CompilerFlags flags) {
         this(stream, filename, flags.encoding, false,
              flags.isFlagSet(CodeFlag.CO_FUTURE_PRINT_FUNCTION),
              flags.isFlagSet(CodeFlag.CO_FUTURE_UNICODE_LITERALS));
     }
 
+    /**
+     * Constructor
+     * 
+     * @param stream
+     *            stream
+     * @param filename
+     *            filename
+     * @param encoding
+     *            encoding
+     */
     public BaseParser(CharStream stream, String filename, String encoding) {
         this(stream, filename, encoding, false, false, false);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param stream
+     *            stream
+     * @param filename
+     *            filename
+     * @param encoding
+     *            encodeing
+     * @param partial
+     *            partial
+     */
     @Deprecated
     public BaseParser(CharStream stream, String filename, String encoding, boolean partial) {
         this(stream, filename, encoding, partial, false, false);
@@ -42,10 +83,23 @@ public class BaseParser {
         this.unicodeLiterals = unicodeLiterals;
     }
 
+    /**
+     * SetAntlrErrorHandler
+     * 
+     * @param eh
+     *            eh
+     */
     public void setAntlrErrorHandler(ErrorHandler eh) {
         this.errorHandler = eh;
     }
 
+    /**
+     * SetupParser
+     * 
+     * @param single
+     *            single
+     * @return parser
+     */
     protected PythonParser setupParser(boolean single) {
         PythonLexer lexer = new PythonLexer(charStream);
         lexer.setErrorHandler(errorHandler);
@@ -59,6 +113,11 @@ public class BaseParser {
         return parser;
     }
 
+    /**
+     * ParseExpression
+     * 
+     * @return mod
+     */
     public mod parseExpression() {
         mod tree = null;
         PythonParser parser = setupParser(false);
@@ -72,6 +131,11 @@ public class BaseParser {
         return tree;
     }
 
+    /**
+     * ParseInteractive
+     * 
+     * @return mod
+     */
     public mod parseInteractive() {
         mod tree = null;
         PythonParser parser = setupParser(true);
@@ -86,6 +150,11 @@ public class BaseParser {
         return tree;
     }
 
+    /**
+     * ParseModule
+     * 
+     * @return mod
+     */
     public mod parseModule() {
         mod tree = null;
         PythonParser parser = setupParser(false);

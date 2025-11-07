@@ -43,7 +43,12 @@ import org.python.util.Generic;
  */
 public abstract class CachedJarsPackageManager extends PackageManager {
 
+    /** logger */
     protected static Logger logger = Logger.getLogger("org.python.import");
+
+    /** Default constructor */
+    CachedJarsPackageManager() {
+    }
 
     /**
      * Message log method - hook. This default implementation does nothing.
@@ -232,36 +237,52 @@ public abstract class CachedJarsPackageManager extends PackageManager {
     }
 
     /**
-     * Gathers classes info from jar specified by a URL. Eventually just using previously cached
-     * info. Eventually updated info is not cached. Persistent cache storage access goes through
-     * inOpenCacheFile() and outCreateCacheFile().
+     * Gathers classes info from jar specified by a URL. Eventually just using previously cached info. Eventually
+     * updated info is not cached. Persistent cache storage access goes through inOpenCacheFile() and
+     * outCreateCacheFile().
+     * 
+     * @param jarurl
+     *            jarurl
      */
     public void addJarToPackages(java.net.URL jarurl) {
         addJarToPackages(jarurl, null, false);
     }
 
     /**
-     * Gathers classes info from jar specified by URL. Eventually just using previously cached info.
-     * Eventually updated info is (re-)cached if param cache is true. Persistent cache storage
-     * access goes through inOpenCacheFile() and outCreateCacheFile().
+     * Gathers classes info from jar specified by URL. Eventually just using previously cached info. Eventually updated
+     * info is (re-)cached if param cache is true. Persistent cache storage access goes through inOpenCacheFile() and
+     * outCreateCacheFile().
+     * 
+     * @param jarurl
+     *            jarurl
+     * @param cache
+     *            cache
      */
     public void addJarToPackages(URL jarurl, boolean cache) {
         addJarToPackages(jarurl, null, cache);
     }
 
     /**
-     * Gathers classes info from jar specified by File jarfile. Eventually just using previously
-     * cached info. Eventually updated info is not cached. Persistent cache storage access goes
-     * through inOpenCacheFile() and outCreateCacheFile().
+     * Gathers classes info from jar specified by File jarfile. Eventually just using previously cached info. Eventually
+     * updated info is not cached. Persistent cache storage access goes through inOpenCacheFile() and
+     * outCreateCacheFile().
+     * 
+     * @param jarfile
+     *            jarfile
      */
     public void addJarToPackages(File jarfile) {
         addJarToPackages(null, jarfile, false);
     }
 
     /**
-     * Gathers package and class lists from a jar specified by a {@code File}. Eventually just using
-     * previously cached info. Eventually updated info is (re-)cached if param cache is true.
-     * Persistent cache storage access goes through inOpenCacheFile() and outCreateCacheFile().
+     * Gathers package and class lists from a jar specified by a {@code File}. Eventually just using previously cached
+     * info. Eventually updated info is (re-)cached if param cache is true. Persistent cache storage access goes through
+     * inOpenCacheFile() and outCreateCacheFile().
+     * 
+     * @param jarfile
+     *            jarfile
+     * @param cache
+     *            cache
      */
     public void addJarToPackages(File jarfile, boolean cache) {
         addJarToPackages(null, jarfile, cache);
@@ -542,7 +563,12 @@ public abstract class CachedJarsPackageManager extends PackageManager {
         }
     }
 
-    /** Scan a Java module, creating package objects. */
+    /**
+     * Scan a Java module, creating package objects.
+     * 
+     * @param modulePath
+     *            modulePath
+     */
     protected void addModuleToPackages(Path modulePath) {
         try {
             comment("reading packages from ''{0}''", modulePath);
@@ -739,12 +765,27 @@ public abstract class CachedJarsPackageManager extends PackageManager {
         /** Specifies the actual cache file once that is created or opened. */
         public String cachefile;
 
+        /** mtime */
         public long mtime;
 
+        /**
+         * Constructor
+         * 
+         * @param cachefile
+         *            cachefile
+         */
         public JarXEntry(String cachefile) {
             this.cachefile = cachefile;
         }
 
+        /**
+         * Constructor
+         * 
+         * @param cachefile
+         *            cachefile
+         * @param mtime
+         *            mtime
+         */
         public JarXEntry(String cachefile, long mtime) {
             this.cachefile = cachefile;
             this.mtime = mtime;
@@ -753,9 +794,12 @@ public abstract class CachedJarsPackageManager extends PackageManager {
     }
 
     /**
-     * Open cache index for reading from persistent storage &ndash; hook. Must Return null if this
-     * is absent. This default implementation is part of the off-the-shelf local file-system cache
-     * implementation. Can be overridden.
+     * Open cache index for reading from persistent storage &ndash; hook. Must Return null if this is absent. This
+     * default implementation is part of the off-the-shelf local file-system cache implementation. Can be overridden.
+     * 
+     * @return inputStream
+     * @throws IOException
+     *             ioException
      */
     protected DataInputStream inOpenIndex() throws IOException {
         File indexFile = new File(this.cachedir, "packages.idx");
@@ -768,9 +812,13 @@ public abstract class CachedJarsPackageManager extends PackageManager {
     }
 
     /**
-     * Open cache index for writing back to persistent storage &ndash; hook. This default
-     * implementation is part of the off-the-shelf local file-system cache implementation. Can be
-     * overridden.
+     * Open cache index for writing back to persistent storage &ndash; hook. This default implementation is part of the
+     * off-the-shelf local file-system cache implementation. Can be overridden.
+     * 
+     * @return outputstream
+     * 
+     * @throws IOException
+     *             ioException
      */
     protected DataOutputStream outOpenIndex() throws IOException {
         File indexFile = FileUtil.makePrivateRW(new File(this.cachedir, "packages.idx"));
@@ -779,34 +827,45 @@ public abstract class CachedJarsPackageManager extends PackageManager {
     }
 
     /**
-     * Open a particular cache file for reading from persistent storage. This default implementation
-     * is part of the off-the-shelf local file-system cache implementation. Can be overridden.
+     * Open a particular cache file for reading from persistent storage. This default implementation is part of the
+     * off-the-shelf local file-system cache implementation. Can be overridden.
+     * 
+     * @param cachefile
+     *            cachefile
+     * @return inputStream
+     * @throws IOException
+     *             ioException
      */
     protected DataInputStream inOpenCacheFile(String cachefile) throws IOException {
         return new DataInputStream(new BufferedInputStream(new FileInputStream(cachefile)));
     }
 
     /**
-     * Delete (invalidated) cache file from persistent storage - hook. This default implementation
-     * is part of the off-the-shelf local file-system cache implementation. Can be overridden.
+     * Delete (invalidated) cache file from persistent storage - hook. This default implementation is part of the
+     * off-the-shelf local file-system cache implementation. Can be overridden.
+     * 
+     * @param cachefile
+     *            cachefile
      */
     protected void deleteCacheFile(String cachefile) {
         new File(cachefile).delete();
     }
 
     /**
-     * Create/open cache file for rewriting back to persistent storage &ndash; hook. If
-     * {@code create} is {@code false}, the cache file is supposed to exist at
-     * {@code entry.cachefile} and will be opened for rewriting. If {@code create} is {@code true},
-     * {@code entry.cachefile} is the base name (e.g. JAR or module name) for a cache to be created,
-     * and the full name will be put in {@code entry.cachefile} on exit. This default implementation
-     * is part of the off-the-shelf local file-system cache implementation. It may be overridden to
-     * provide a different cache medium and use of {@code entry.cachefile}.
+     * Create/open cache file for rewriting back to persistent storage &ndash; hook. If {@code create} is {@code false},
+     * the cache file is supposed to exist at {@code entry.cachefile} and will be opened for rewriting. If
+     * {@code create} is {@code true}, {@code entry.cachefile} is the base name (e.g. JAR or module name) for a cache to
+     * be created, and the full name will be put in {@code entry.cachefile} on exit. This default implementation is part
+     * of the off-the-shelf local file-system cache implementation. It may be overridden to provide a different cache
+     * medium and use of {@code entry.cachefile}.
      *
-     * @param entry cache file description
-     * @param create new or use existing file named in {@code entry.cachefile}
+     * @param entry
+     *            cache file description
+     * @param create
+     *            new or use existing file named in {@code entry.cachefile}
      * @return stream on which to represent the package to class-list textually
      * @throws IOException
+     *             ioException
      */
     protected DataOutputStream outCreateCacheFile(JarXEntry entry, boolean create)
             throws IOException {
@@ -836,9 +895,13 @@ public abstract class CachedJarsPackageManager extends PackageManager {
     private File cachedir;
 
     /**
-     * Initialize off-the-shelf (default) local file-system cache implementation. Must be called
-     * before {@link #initCache}. cachedir is the cache repository directory, this is eventually
-     * created. Returns true if dir works.
+     * Initialize off-the-shelf (default) local file-system cache implementation. Must be called before
+     * {@link #initCache}. cachedir is the cache repository directory, this is eventually created. Returns true if dir
+     * works.
+     * 
+     * @param cachedir
+     *            cachedir
+     * @return useCacheDir
      */
     protected boolean useCacheDir(File cachedir) {
         try {

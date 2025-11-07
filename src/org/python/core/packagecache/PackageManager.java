@@ -3,6 +3,12 @@
 
 package org.python.core.packagecache;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
@@ -11,12 +17,6 @@ import org.python.core.PyJavaPackage;
 import org.python.core.PyList;
 import org.python.core.PyObject;
 import org.python.core.PyStringMap;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
 
 /**
  * Abstract package manager.
@@ -69,20 +69,34 @@ public abstract class PackageManager extends Object {
     /**
      * Append a directory to the list of directories searched for java packages and java classes.
      *
-     * @param dir A directory name.
+     * @param dir
+     *            A directory name.
+     * @param cache
+     *            cache
      */
     public abstract void addJarDir(String dir, boolean cache);
 
     /**
      * Append a jar file to the list of locations searched for java packages and java classes.
      *
-     * @param jarfile A directory name.
+     * @param jarfile
+     *            A directory name.
+     * @param cache
+     *            cache
      */
     public abstract void addJar(String jarfile, boolean cache);
 
     /**
-     * Basic helper implementation of {@link #doDir}. It merges information from jpkg
-     * {@link PyJavaPackage#clsSet} and {@link PyJavaPackage#__dict__}.
+     * Basic helper implementation of {@link #doDir}. It merges information from jpkg {@link PyJavaPackage#clsSet} and
+     * {@link PyJavaPackage#__dict__}.
+     * 
+     * @param jpkg
+     *            jpkg
+     * @param instantiate
+     *            instantiate
+     * @param exclpkgs
+     *            exclpkgs
+     * @return list
      */
     protected PyList basicDoDir(PyJavaPackage jpkg, boolean instantiate, boolean exclpkgs) {
         PyStringMap dict = jpkg.__dict__;
@@ -114,7 +128,15 @@ public abstract class PackageManager extends Object {
         return dict.keys();
     }
 
-    /** Helper merging list2 into list1. Returns list1. */
+    /**
+     * Helper merging list2 into list1.
+     * 
+     * @param list1
+     *            list1
+     * @param list2
+     *            list2
+     * @return list1
+     */
     protected PyList merge(PyList list1, PyList list2) {
         for (PyObject name : list2.asIterable()) {
             list1.append(name);
@@ -195,8 +217,13 @@ public abstract class PackageManager extends Object {
     }
 
     /**
-     * Check that a given stream is a valid Java .class file, and return its access permissions as
-     * an int.
+     * Check that a given stream is a valid Java .class file, and return its access permissions as an int.
+     * 
+     * @param cstream
+     *            cstream
+     * @return i
+     * @throws IOException
+     *             ioException
      */
     static protected int checkAccess(InputStream cstream) throws IOException {
         try {
@@ -231,7 +258,13 @@ public abstract class PackageManager extends Object {
         return result;
     }
 
-    /** Equivalent to {@code split(target, ",")}. See {@link #split(String, String)}. */
+    /**
+     * Equivalent to {@code split(target, ",")}. See {@link #split(String, String)}.
+     * 
+     * @param target
+     *            target
+     * @return set
+     */
     protected static Set<String> split(String target) {
         return split(target, ",");
     }

@@ -9,7 +9,6 @@ package com.ziclix.python.sql.util;
 import org.python.core.ClassDictInit;
 import org.python.core.Py;
 import org.python.core.PyBuiltinMethodSet;
-import org.python.core.PyClass;
 import org.python.core.PyList;
 import org.python.core.PyObject;
 import org.python.core.PyString;
@@ -43,20 +42,28 @@ public class BCP extends PyObject implements ClassDictInit, Traverseproc {
     protected PyConnection source, destination;
 
     /**
-     * The source connection will produce the rows while the destination
-     * connection will consume the rows and coerce as necessary for the
-     * destination database.
+     * The source connection will produce the rows while the destination connection will consume the rows and coerce as
+     * necessary for the destination database.
+     * 
+     * @param source
+     *            source
+     * @param destination
+     *            destination
      */
     public BCP(PyConnection source, PyConnection destination) {
         this(source, destination, -1);
     }
 
     /**
-     * The source connection will produce the rows while the destination
-     * connection will consume the rows and coerce as necessary for the
-     * destination database.
+     * The source connection will produce the rows while the destination connection will consume the rows and coerce as
+     * necessary for the destination database.
      *
-     * @param batchsize used to batch the inserts on the destination
+     * @param source
+     *            source
+     * @param destination
+     *            destination
+     * @param batchsize
+     *            used to batch the inserts on the destination
      */
     public BCP(PyConnection source, PyConnection destination, int batchsize) {
 
@@ -107,7 +114,9 @@ public class BCP extends PyObject implements ClassDictInit, Traverseproc {
      * Sets the attribute name to value.
      *
      * @param name
+     *            name
      * @param value
+     *            value
      */
     @Override
     public void __setattr__(String name, PyObject value) {
@@ -129,6 +138,7 @@ public class BCP extends PyObject implements ClassDictInit, Traverseproc {
      * Gets the value of the attribute name.
      *
      * @param name
+     *            name
      * @return the attribute for the given name
      */
     @Override
@@ -151,6 +161,7 @@ public class BCP extends PyObject implements ClassDictInit, Traverseproc {
      * Initializes the object's namespace.
      *
      * @param dict
+     *            dict
      */
     static public void classDictInit(PyObject dict) {
         dict.__setitem__("bcp", new BCPFunc("bcp", 0, 1, 2, zxJDBC.getString("bcp")));

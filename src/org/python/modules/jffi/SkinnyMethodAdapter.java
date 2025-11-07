@@ -9,18 +9,29 @@
 
 package org.python.modules.jffi;
 
-import org.objectweb.asm.*;
-import org.objectweb.asm.util.Printer;
-import org.objectweb.asm.util.Textifier;
-import org.objectweb.asm.util.TraceMethodVisitor;
+import static org.python.modules.jffi.CodegenUtils.ci;
+import static org.python.modules.jffi.CodegenUtils.p;
+import static org.python.modules.jffi.CodegenUtils.params;
+import static org.python.modules.jffi.CodegenUtils.sig;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-import static org.python.modules.jffi.CodegenUtils.*;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Attribute;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.util.Printer;
+import org.objectweb.asm.util.Textifier;
+import org.objectweb.asm.util.TraceMethodVisitor;
 
 /**
- *
+ * A skinny method adapter
+ * 
  * @author headius
  */
 public class SkinnyMethodAdapter extends MethodVisitor implements Opcodes {

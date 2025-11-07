@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * BaseSet
+ */
 public abstract class BaseSet extends PyObject implements Set, Traverseproc {
 
     /** The underlying Set. */
@@ -14,26 +17,54 @@ public abstract class BaseSet extends PyObject implements Set, Traverseproc {
 
     /**
      * Create a new Python set of type from the specified Set object.
+     * 
+     * @param type
+     *            type
+     * @param set
+     *            set
      */
     protected BaseSet(PyType type, Set<PyObject> set) {
         super(type);
         _set = set;
     }
 
+    /**
+     * GetSet
+     * 
+     * @return sest
+     */
     public Set<PyObject> getSet() {
         return _set;
     }
 
+    /**
+     * _update
+     * 
+     * @param data
+     *            data
+     */
     protected void _update(PyObject data) {
         _update(_set, data);
     }
 
+    /**
+     * _update
+     * 
+     * @param args
+     *            args
+     */
     protected void _update(PyObject [] args) {
         _update(_set, args);
     }
 
     /**
      * Update the underlying set with the contents of the iterable.
+     * 
+     * @param set
+     *            set
+     * @param data
+     *            data
+     * @return set
      */
     protected static Set<PyObject> _update(Set<PyObject> set, PyObject data) {
         if (data == null) {
@@ -52,6 +83,12 @@ public abstract class BaseSet extends PyObject implements Set, Traverseproc {
 
     /**
      * Update the underlying set with the contents of the array.
+     * 
+     * @param set
+     *            set
+     * @param data
+     *            data
+     * @return set
      */
     protected static Set<PyObject> _update(Set<PyObject> set, PyObject[] data) {
         if (data == null) {
@@ -124,6 +161,13 @@ public abstract class BaseSet extends PyObject implements Set, Traverseproc {
         return baseset_difference(other);
     }
 
+    /**
+     * Difference
+     * 
+     * @param other
+     *            other
+     * @return o
+     */
     public PyObject difference(PyObject other) {
         return baseset_difference(other);
     }
@@ -172,6 +216,13 @@ public abstract class BaseSet extends PyObject implements Set, Traverseproc {
         return baseset_symmetric_difference(other);
     }
 
+    /**
+     * Symmetric_difference
+     * 
+     * @param other
+     *            other
+     * @return o
+     */
     public PyObject symmetric_difference(PyObject other) {
         return baseset_symmetric_difference(other);
     }

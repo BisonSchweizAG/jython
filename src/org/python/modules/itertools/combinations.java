@@ -11,25 +11,45 @@ import org.python.expose.ExposedMethod;
 import org.python.expose.ExposedNew;
 import org.python.expose.ExposedType;
 
+/**
+ * combinations
+ */
 @ExposedType(name = "itertools.combinations", base = PyObject.class, doc = combinations.combinations_doc)
 public class combinations extends PyIterator {
 
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(combinations.class);
     private PyIterator iter;
 
+    /** combinations_doc */
     public static final String combinations_doc =
         "combinations(iterable, r) --> combinations object\n\n" +
         "Return successive r-length combinations of elements in the iterable.\n\n" +
         "combinations(range(4), 3) --> (0,1,2), (0,1,3), (0,2,3), (1,2,3)";
 
+    /** Default constructor */
     public combinations() {
         super();
     }
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public combinations(PyType subType) {
         super(subType);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param iterable
+     *            iterable
+     * @param r
+     *            r
+     */
     public combinations(PyObject iterable, int r) {
         super();
         combinations___init__(iterable, r);

@@ -61,13 +61,22 @@ public enum CodeFlag {
     CO_FUTURE_UNICODE_LITERALS(0x20000);
 
 
+    /** flag */
     public final int flag;
+
     private static Iterable<CodeFlag> allFlags = Collections.unmodifiableList(Arrays.asList(values()));
 
     private CodeFlag(int flag) {
         this.flag = flag;
     }
 
+    /**
+     * IsFlagBitSetIn
+     * 
+     * @param flags
+     *            flags
+     * @return isFlagBitSetIn
+     */
     public boolean isFlagBitSetIn(int flags) {
         return (flags & flag) != 0;
     }

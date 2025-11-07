@@ -2,10 +2,34 @@
 package org.python.antlr.op;
 
 import java.io.Serializable;
-import org.python.core.*;
-import org.python.core.finalization.FinalizeTrigger;
-import org.python.core.finalization.FinalizablePyObjectDerived;
 
+import org.python.core.AbstractDict;
+import org.python.core.Deriveds;
+import org.python.core.JyAttribute;
+import org.python.core.Py;
+import org.python.core.PyBoolean;
+import org.python.core.PyComplex;
+import org.python.core.PyException;
+import org.python.core.PyFloat;
+import org.python.core.PyInteger;
+import org.python.core.PyLong;
+import org.python.core.PyObject;
+import org.python.core.PySequenceIter;
+import org.python.core.PySlice;
+import org.python.core.PyString;
+import org.python.core.PyStringMap;
+import org.python.core.PyTuple;
+import org.python.core.PyType;
+import org.python.core.PyUnicode;
+import org.python.core.Slotted;
+import org.python.core.TraverseprocDerived;
+import org.python.core.Visitproc;
+import org.python.core.finalization.FinalizablePyObjectDerived;
+import org.python.core.finalization.FinalizeTrigger;
+
+/**
+ * DelDerived
+ */
 public class DelDerived extends Del implements Slotted,FinalizablePyObjectDerived,TraverseprocDerived {
 
     public PyObject getSlot(int index) {
@@ -73,6 +97,12 @@ public class DelDerived extends Del implements Slotted,FinalizablePyObjectDerive
         dict=new PyStringMap();
     }
 
+    /**
+     * Constructor
+     * 
+     * @param subtype
+     *            subtype
+     */
     public DelDerived(PyType subtype) {
         super(subtype);
         slots=new PyObject[subtype.getNumSlots()];
@@ -82,6 +112,15 @@ public class DelDerived extends Del implements Slotted,FinalizablePyObjectDerive
         }
     }
 
+    /**
+     * TraverseDictIfAny
+     * 
+     * @param visit
+     *            visit
+     * @param arg
+     *            arg
+     * @return i
+     */
     public int traverseDictIfAny(Visitproc visit,Object arg) {
         return visit.visit(dict,arg);
     }

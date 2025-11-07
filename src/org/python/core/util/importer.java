@@ -4,8 +4,8 @@ package org.python.core.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.python.core.BytecodeLoader;
 import org.python.core.Py;
@@ -17,8 +17,11 @@ import org.python.core.PyType;
 import org.python.core.imp;
 
 /**
- * A base class for PEP-302 path hooks. Handles looking through source, compiled, package and module
- * items in the right order, and creating and filling in modules.
+ * A base class for PEP-302 path hooks. Handles looking through source, compiled, package and module items in the right
+ * order, and creating and filling in modules.
+ * 
+ * @param <T>
+ *            the type of the importer
  */
 public abstract class importer<T> extends PyObject {
 
@@ -46,40 +49,65 @@ public abstract class importer<T> extends PyObject {
 
     /**
      * Return the bytes for the data located at <code>path</code>.
+     * 
+     * @param path
+     *            path
+     * @return s
      */
     public abstract String get_data(String path);
 
     /**
      * Returns the separator between directories and files used by this type of importer.
+     * 
+     * @return s
      */
     protected abstract String getSeparator();
 
     /**
-     * Returns the value to fill in __path__ on a module with the given full module name created by
-     * this importer.
+     * Returns the value to fill in __path__ on a module with the given full module name created by this importer.
+     * 
+     * @param fullname
+     *            fullname
+     * @return s
      */
     protected abstract String makePackagePath(String fullname);
 
     /**
      * Given a full module name, return the potential file path in the archive (without extension).
+     * 
+     * @param fullname
+     *            fullname
+     * @return s
      */
     protected abstract String makeFilename(String fullname);
 
     /**
-     * Given a full module name, return the potential file path including the archive (without
-     * extension).
+     * Given a full module name, return the potential file path including the archive (without extension).
+     * 
+     * @param fullname
+     *            fullname
+     * @return s
      */
     protected abstract String makeFilePath(String fullname);
 
     /**
-     * Returns an entry for a filename from makeFilename with a potential suffix such that this
-     * importer can make a bundle with it, or null if fullFilename doesn't exist in this importer.
+     * Returns an entry for a filename from makeFilename with a potential suffix such that this importer can make a
+     * bundle with it, or null if fullFilename doesn't exist in this importer.
+     * 
+     * @param filenameAndSuffix
+     *            filenameAndSuffix
+     * @return T
      */
     protected abstract T makeEntry(String filenameAndSuffix);
 
     /**
-     * Returns a Bundle for fullFilename and entry, the result from a makeEntry call for
-     * fullFilename.
+     * Returns a Bundle for fullFilename and entry, the result from a makeEntry call for fullFilename.
+     * 
+     * @param filenameAndSuffix
+     *            filenameAndSuffix
+     * @param entry
+     *            entry
+     * @return bundle
      */
     protected abstract Bundle makeBundle(String filenameAndSuffix, T entry);
 
@@ -124,6 +152,8 @@ public abstract class importer<T> extends PyObject {
     }
 
     /**
+     * Importer_is_package
+     * 
      * @param fullname
      *            the fully qualified name of the module
      * @return whether the module is a package

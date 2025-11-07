@@ -61,21 +61,27 @@ public class DataHandler {
     public DataHandler() {}
 
     /**
-     * Some database vendors are case sensitive on calls to DatabaseMetaData,
-     * most notably Oracle.  This callback allows a DataHandler to affect the
-     * name.
+     * Some database vendors are case sensitive on calls to DatabaseMetaData, most notably Oracle. This callback allows
+     * a DataHandler to affect the name.
+     * 
+     * @param name
+     *            name
+     * @return s
      */
     public String getMetaDataName(PyObject name) {
         return ((name == Py.None) ? null : name.__str__().toString());
     }
 
     /**
-     * A factory method for determing the correct procedure class to use
-     * per the cursor type.
-     * @param cursor an open cursor
-     * @param name the name of the procedure to invoke
+     * A factory method for determing the correct procedure class to use per the cursor type.
+     * 
+     * @param cursor
+     *            an open cursor
+     * @param name
+     *            the name of the procedure to invoke
      * @return an instance of a Procedure
      * @throws SQLException
+     *             sqlException
      */
     public Procedure getProcedure(PyCursor cursor, PyObject name) throws SQLException {
         return new Procedure(cursor, name);
@@ -94,8 +100,13 @@ public class DataHandler {
     }
 
     /**
-     * A callback prior to each execution of the statement.  If the statement is
-     * a PreparedStatement, all the parameters will have been set.
+     * A callback prior to each execution of the statement. If the statement is a PreparedStatement, all the parameters
+     * will have been set.
+     * 
+     * @param stmt
+     *            stmt
+     * @throws SQLException
+     *             sqlException
      */
     public void preExecute(Statement stmt) throws SQLException {
         return;
@@ -103,19 +114,28 @@ public class DataHandler {
 
     /**
      * A callback after successfully executing the statement.
+     * 
+     * @param stmt
+     *            stmt
+     * @throws SQLException
+     *             sqlException
      */
     public void postExecute(Statement stmt) throws SQLException {
         return;
     }
 
     /**
-     * Any .execute() which uses prepared statements will receive a callback for deciding
-     * how to map the PyObject to the appropriate JDBC type.
+     * Any .execute() which uses prepared statements will receive a callback for deciding how to map the PyObject to the
+     * appropriate JDBC type.
      *
-     * @param stmt the current PreparedStatement
-     * @param index the index for which this object is bound
-     * @param object the PyObject in question
+     * @param stmt
+     *            the current PreparedStatement
+     * @param index
+     *            the index for which this object is bound
+     * @param object
+     *            the PyObject in question
      * @throws SQLException
+     *             sqlException
      */
     public void setJDBCObject(PreparedStatement stmt, int index, PyObject object) throws SQLException {
 
@@ -143,15 +163,19 @@ public class DataHandler {
     }
 
     /**
-     * Any .execute() which uses prepared statements will receive a callback for deciding
-     * how to map the PyObject to the appropriate JDBC type.  The <i>type</i> is the JDBC
-     * type as obtained from <i>java.sql.Types</i>.
+     * Any .execute() which uses prepared statements will receive a callback for deciding how to map the PyObject to the
+     * appropriate JDBC type. The <i>type</i> is the JDBC type as obtained from <i>java.sql.Types</i>.
      *
-     * @param stmt the current PreparedStatement
-     * @param index the index for which this object is bound
-     * @param object the PyObject in question
-     * @param type the <i>java.sql.Types</i> for which this PyObject should be bound
+     * @param stmt
+     *            the current PreparedStatement
+     * @param index
+     *            the index for which this object is bound
+     * @param object
+     *            the PyObject in question
+     * @param type
+     *            the <i>java.sql.Types</i> for which this PyObject should be bound
      * @throws SQLException
+     *             sqlException
      */
     public void setJDBCObject(PreparedStatement stmt, int index, PyObject object, int type)
         throws SQLException {
@@ -216,15 +240,20 @@ public class DataHandler {
     }
 
     /**
-     * Given a ResultSet, column and type, return the appropriate
-     * Jython object.
+     * Given a ResultSet, column and type, return the appropriate Jython object.
      *
-     * <p>Note: DO NOT iterate the ResultSet.
+     * <p>
+     * Note: DO NOT iterate the ResultSet.
      *
-     * @param set the current ResultSet set to the current row
-     * @param col the column number (adjusted properly for JDBC)
-     * @param type the column type
-     * @throws SQLException if the type is unmappable
+     * @param set
+     *            the current ResultSet set to the current row
+     * @param col
+     *            the column number (adjusted properly for JDBC)
+     * @param type
+     *            the column type
+     * @return o
+     * @throws SQLException
+     *             if the type is unmappable
      */
     public PyObject getPyObject(ResultSet set, int col, int type) throws SQLException {
         PyObject obj = Py.None;
@@ -337,6 +366,15 @@ public class DataHandler {
         return set.wasNull() || obj == null ? Py.None : obj;
     }
 
+    /**
+     * CreateUnsupportedTypeSQLException
+     * 
+     * @param type
+     *            type
+     * @param col
+     *            col
+     * @return SQLException
+     */
     protected final SQLException createUnsupportedTypeSQLException(Object type, int col) {
         Object[] vals = {type, Integer.valueOf(col)};
         String msg = zxJDBC.getString("unsupportedTypeForColumn", vals);
@@ -344,13 +382,17 @@ public class DataHandler {
     }
 
     /**
-     * Given a CallableStatement, column and type, return the appropriate
-     * Jython object.
+     * Given a CallableStatement, column and type, return the appropriate Jython object.
      *
-     * @param stmt the CallableStatement
-     * @param col the column number (adjusted properly for JDBC)
-     * @param type the column type
-     * @throws SQLException if the type is unmappable
+     * @param stmt
+     *            the CallableStatement
+     * @param col
+     *            the column number (adjusted properly for JDBC)
+     * @param type
+     *            the column type
+     * @return o
+     * @throws SQLException
+     *             if the type is unmappable
      */
     public PyObject getPyObject(CallableStatement stmt, int col, int type) throws SQLException {
         PyObject obj = Py.None;
@@ -427,17 +469,22 @@ public class DataHandler {
     }
 
     /**
-     * Called when a stored procedure or function is executed and OUT parameters
-     * need to be registered with the statement.
+     * Called when a stored procedure or function is executed and OUT parameters need to be registered with the
+     * statement.
      *
      * @param statement
-     * @param index the JDBC offset column number
-     * @param colType the column as from DatabaseMetaData (eg, procedureColumnOut)
-     * @param dataType the JDBC datatype from Types
-     * @param dataTypeName the JDBC datatype name
+     *            statement
+     * @param index
+     *            the JDBC offset column number
+     * @param colType
+     *            the column as from DatabaseMetaData (eg, procedureColumnOut)
+     * @param dataType
+     *            the JDBC datatype from Types
+     * @param dataTypeName
+     *            the JDBC datatype name
      *
      * @throws SQLException
-     *
+     *             sqlException
      */
     public void registerOut(CallableStatement statement, int index, int colType, int dataType,
                             String dataTypeName) throws SQLException {
@@ -462,8 +509,19 @@ public class DataHandler {
 
     /**
      * Handles checking if the object is null or None and setting it on the statement.
+     * 
+     * @param stmt
+     *            stmt
+     * @param index
+     *            index
+     * @param object
+     *            object
+     * @param type
+     *            type
      *
      * @return true if the object is null and was set on the statement, false otherwise
+     * @throws SQLException
+     *             sqlException
      */
     public static final boolean checkNull(PreparedStatement stmt, int index, PyObject object,
                                           int type) throws SQLException {
@@ -477,6 +535,9 @@ public class DataHandler {
 
     /**
      * Consume the InputStream into an byte array and close the InputStream.
+     * 
+     * @param stream
+     *            stream
      *
      * @return the contents of the InputStream a byte[]
      */
@@ -504,6 +565,9 @@ public class DataHandler {
 
     /**
      * Consume the Reader into a String and close the Reader.
+     * 
+     * @param reader
+     *            reader
      *
      * @return the contents of the Reader as a String
      */

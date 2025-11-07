@@ -15,17 +15,29 @@ import org.python.expose.ExposedNew;
 import org.python.expose.ExposedType;
 import org.python.util.Generic;
 
+/**
+ * ClasspathPyImporter
+ */
 @Untraversable
 @ExposedType(name="ClasspathPyImporter")
 public class ClasspathPyImporter extends importer<String> {
 
+    /** PYCLASSPATH_PREFIX */
     public static final String PYCLASSPATH_PREFIX = "__pyclasspath__/";
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(ClasspathPyImporter.class);
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public ClasspathPyImporter(PyType subType) {
         super(subType);
     }
 
+    /** Default constructor */
     public ClasspathPyImporter() {
         super();
     }

@@ -1,9 +1,9 @@
 package org.python.core;
 
-import org.python.antlr.AST;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import org.python.antlr.AST;
 
 /**
  * A utility class for handling mixed positional and keyword arguments.
@@ -20,7 +20,6 @@ import java.util.Set;
  *       ...
  * </pre>
  */
-
 public class ArgParser {
     // The name of the function. Used in exception messages
     private String funcname;
@@ -112,6 +111,20 @@ public class ArgParser {
         check();
     }
 
+    /**
+     * Constructor
+     * 
+     * @param funcname
+     *            funcname
+     * @param args
+     *            args
+     * @param kws
+     *            kws
+     * @param paramnames
+     *            paramnames
+     * @param minargs
+     *            minargs
+     */
     public ArgParser(String funcname, PyObject[] args, String[] kws,
             String[] paramnames, int minargs) {
         this(funcname, args, kws);
@@ -124,6 +137,22 @@ public class ArgParser {
         }
     }
 
+    /**
+     * Constructor
+     * 
+     * @param funcname
+     *            funcname
+     * @param args
+     *            args
+     * @param kws
+     *            kws
+     * @param paramnames
+     *            paramnames
+     * @param minargs
+     *            minargs
+     * @param takesZeroArgs
+     *            takesZeroArgs
+     */
     public ArgParser(String funcname, PyObject[] args, String[] kws,
             String[] paramnames, int minargs, boolean takesZeroArgs) {
         this(funcname, args, kws);
@@ -137,7 +166,9 @@ public class ArgParser {
     /**
      * Return a required argument as a String.
      * 
-     * @param pos The position of the .. First argument is numbered 0.
+     * @param pos
+     *            The position of the .. First argument is numbered 0.
+     * @return s
      */
     public String getString(int pos) {
         return (String) getArg(pos, String.class, "string");
@@ -146,7 +177,11 @@ public class ArgParser {
     /**
      * Return an optional argument as a String.
      * 
-     * @param pos The position of the argument. First argument is numbered 0.
+     * @param pos
+     *            The position of the argument. First argument is numbered 0.
+     * @param def
+     *            def
+     * @return s
      */
     public String getString(int pos, String def) {
         return (String) getArg(pos, String.class, "string", def);
@@ -155,7 +190,9 @@ public class ArgParser {
     /**
      * Return a required argument as an int.
      * 
-     * @param pos The position of the argument. First argument is numbered 0.
+     * @param pos
+     *            The position of the argument. First argument is numbered 0.
+     * @return i
      */
     public int getInt(int pos) {
         return asInt(getRequiredArg(pos));
@@ -164,7 +201,11 @@ public class ArgParser {
     /**
      * Return an optional argument as an int.
      * 
-     * @param pos The position of the argument. First argument is numbered 0.
+     * @param pos
+     *            The position of the argument. First argument is numbered 0.
+     * @param def
+     *            def
+     * @return i
      */
     public int getInt(int pos, int def) {
         PyObject value = getOptionalArg(pos);
@@ -191,7 +232,9 @@ public class ArgParser {
     /**
      * Return an required argument as an index.
      * 
-     * @param pos The position of the argument. First argument is numbered 0.
+     * @param pos
+     *            The position of the argument. First argument is numbered 0.
+     * @return i
      */
     public int getIndex(int pos) {
         PyObject value = getRequiredArg(pos);
@@ -201,7 +244,11 @@ public class ArgParser {
     /**
      * Return an optional argument as an index.
      * 
-     * @param pos The position of the argument. First argument is numbered 0.
+     * @param pos
+     *            The position of the argument. First argument is numbered 0.
+     * @param def
+     *            def
+     * @return i
      */
     public int getIndex(int pos, int def) {
         PyObject value = getOptionalArg(pos);
@@ -214,7 +261,9 @@ public class ArgParser {
     /**
      * Return a required argument as a PyObject.
      * 
-     * @param pos The position of the argument. First argument is numbered 0.
+     * @param pos
+     *            The position of the argument. First argument is numbered 0.
+     * @return o
      */
     public PyObject getPyObject(int pos) {
         return getRequiredArg(pos);
@@ -223,7 +272,11 @@ public class ArgParser {
     /**
      * Return an optional argument as a PyObject.
      * 
-     * @param pos The position of the argument. First argument is numbered 0.
+     * @param pos
+     *            The position of the argument. First argument is numbered 0.
+     * @param def
+     *            def
+     * @return o
      */
     public PyObject getPyObject(int pos, PyObject def) {
         PyObject value = getOptionalArg(pos);
@@ -270,7 +323,9 @@ public class ArgParser {
     /**
      * Return the remaining arguments as a tuple.
      * 
-     * @param pos The position of the argument. First argument is numbered 0.
+     * @param pos
+     *            The position of the argument. First argument is numbered 0.
+     * @return o
      */
     public PyObject getList(int pos) {
         int kws_start = this.args.length - this.kws.length;

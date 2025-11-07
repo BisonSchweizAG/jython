@@ -19,13 +19,22 @@ import org.python.expose.ExposedMethod;
 import org.python.expose.ExposedType;
 import org.python.expose.MethodType;
 
+/**
+ * AstList
+ */
 @ExposedType(name = "_ast.astlist", base = PyList.class)
 public class AstList extends PySequence implements Cloneable, List, Traverseproc {
 
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(AstList.class);
 
     private final static PyString[] fields = new PyString[0];
 
+    /**
+     * Get_fields
+     * 
+     * @return fields
+     */
     @ExposedGet(name = "_fields")
     public PyString[] get_fields() { return fields; }
 
@@ -35,18 +44,45 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
 
     private AstAdapter adapter;
 
+    /**
+     * Default constructor
+     */
     public AstList() {
         this(TYPE, new ArrayList(), null);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param data
+     *            data
+     */
     public AstList(List data) {
         this(TYPE, data, null);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param data
+     *            data
+     * @param adapter
+     *            adapter
+     */
     public AstList(List data, AstAdapter adapter) {
         this(TYPE, data, adapter);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param type
+     *            type
+     * @param data
+     *            data
+     * @param adapter
+     *            adapter
+     */
     public AstList(PyType type, List data, AstAdapter adapter) {
         super(TYPE);
         if (data == null) {
@@ -115,6 +151,11 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         return seq___nonzero__();
     }
 
+    /**
+     * Astlist___iter__
+     * 
+     * @return o
+     */
     @ExposedMethod
     public PyObject astlist___iter__() {
         return seq___iter__();
@@ -270,6 +311,12 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         return data.toString();
     }
 
+    /**
+     * Append
+     * 
+     * @param o
+     *            o
+     */
     public void append(PyObject o) {
         astlist_append(o);
     }
@@ -295,18 +342,52 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         return count;
     }
 
+    /**
+     * Count
+     * 
+     * @param value
+     *            value
+     * @return i
+     */
     public int count(PyObject value) {
         return astlist_count(value);
     }
 
+    /**
+     * Index
+     * 
+     * @param o
+     *            o
+     * @return i
+     */
     public int index(PyObject o) {
         return astlist_index(o, 0, size());
     }
 
+    /**
+     * Index
+     * 
+     * @param o
+     *            o
+     * @param start
+     *            start
+     * @return i
+     */
     public int index(PyObject o, int start) {
         return astlist_index(o, start, size());
     }
 
+    /**
+     * Index
+     * 
+     * @param o
+     *            o
+     * @param start
+     *            start
+     * @param stop
+     *            stop
+     * @return i
+     */
     public int index(PyObject o, int start, int stop) {
         return astlist_index(o, start, stop);
     }
@@ -346,6 +427,16 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         data.remove(i);
     }
 
+    /**
+     * DelRange
+     * 
+     * @param start
+     *            start
+     * @param stop
+     *            stop
+     * @param step
+     *            step
+     */
     protected void delRange(int start, int stop, int step) {
         if(step >= 1) {
             for(int i = start; i < stop; i += step) {
@@ -366,6 +457,12 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         setslice(length, length, 1, iterable);
     }
 
+    /**
+     * Extend
+     * 
+     * @param iterable
+     *            iterable
+     */
     public void extend(PyObject iterable) {
         astlist_extend(iterable);
     }
@@ -389,6 +486,14 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         return new AstList(newList, adapter);
     }
 
+    /**
+     * Insert
+     * 
+     * @param index
+     *            index
+     * @param o
+     *            o
+     */
     public void insert(int index, PyObject o) {
         astlist_insert(index, o);
     }
@@ -410,10 +515,19 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         del(_index(value, "astlist.remove(x): x not in list", 0, size()));
     }
 
+    /**
+     * Remove
+     * 
+     * @param value
+     *            value
+     */
     public void remove(PyObject value) {
         astlist_remove(value);
     }
 
+    /**
+     * Reverse
+     */
     public void reverse() {
         astlist_reverse();
     }
@@ -423,10 +537,22 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         Collections.reverse(data);
     }
 
+    /**
+     * Pop
+     * 
+     * @return o
+     */
     public PyObject pop() {
         return pop(-1);
     }
 
+    /**
+     * Pop
+     * 
+     * @param n
+     *            n
+     * @return o
+     */
     public PyObject pop(int n) {
         return astlist_pop(n);
     }
@@ -477,6 +603,18 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         }
     }
 
+    /**
+     * SetsliicePySequence
+     * 
+     * @param start
+     *            start
+     * @param stop
+     *            stop
+     * @param step
+     *            step
+     * @param value
+     *            value
+     */
     protected void setslicePySequence(int start, int stop, int step, PySequence value) {
         if (step != 0) {
             if(value == this) {
@@ -494,6 +632,18 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         }
     }
 
+    /**
+     * SetsliceList
+     * 
+     * @param start
+     *            start
+     * @param stop
+     *            stop
+     * @param step
+     *            step
+     * @param value
+     *            value
+     */
     @SuppressWarnings("unchecked")
     protected void setsliceList(int start, int stop, int step, @SuppressWarnings("rawtypes") List value) {
         if(step != 1) {
@@ -505,6 +655,18 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         }
     }
 
+    /**
+     * SetsliceIterable
+     * 
+     * @param start
+     *            start
+     * @param stop
+     *            stop
+     * @param step
+     *            step
+     * @param value
+     *            value
+     */
     protected void setsliceIterable(int start, int stop, int step, PyObject value) {
         PyObject[] seq;
         try {
@@ -579,12 +741,27 @@ public class AstList extends PySequence implements Cloneable, List, Traverseproc
         return data.listIterator(index);
     }
 
+    /**
+     * Pyadd
+     * 
+     * @param o
+     *            o
+     * @return true
+     */
     @SuppressWarnings("unchecked")
     public boolean pyadd(PyObject o) {
         data.add(o);
         return true;
     }
 
+    /**
+     * Pyadd
+     * 
+     * @param index
+     *            index
+     * @param element
+     *            element
+     */
     @SuppressWarnings("unchecked")
     public void pyadd(int index, PyObject element) {
         data.add(index, element);

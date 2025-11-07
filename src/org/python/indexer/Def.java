@@ -20,10 +20,24 @@ public class Def {
     private String fileOrUrl;
     private String name;
 
+    /**
+     * Constructor
+     * 
+     * @param node
+     *            node
+     */
     public Def(NNode node) {
         this(node, null);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param node
+     *            node
+     * @param b
+     *            b
+     */
     public Def(NNode node, NBinding b) {
         if (node == null) {
             throw new IllegalArgumentException("null 'node' param");
@@ -62,6 +76,8 @@ public class Def {
 
     /**
      * Returns the file if this node is from a source file, else {@code null}.
+     * 
+     * @return s
      */
     public String getFile() {
         return isURL() ? null : fileOrUrl;
@@ -69,6 +85,8 @@ public class Def {
 
     /**
      * Returns the URL if this node is from a URL, else {@code null}.
+     * 
+     * @return s
      */
     public String getURL() {
         return isURL() ? fileOrUrl : null;
@@ -76,6 +94,8 @@ public class Def {
 
     /**
      * Returns the file if from a source file, else the URL.
+     * 
+     * @return s
      */
     public String getFileOrUrl() {
         return fileOrUrl;
@@ -83,27 +103,54 @@ public class Def {
 
     /**
      * Returns {@code true} if this node is from a URL.
+     * 
+     * @return isURL
      */
     public boolean isURL() {
         return fileOrUrl.startsWith("http://");
     }
 
+    /**
+     * IsModule
+     * 
+     * @return isModule
+     */
     public boolean isModule() {
         return binding != null && binding.kind == NBinding.Kind.MODULE;
     }
 
+    /**
+     * Start
+     * 
+     * @return i
+     */
     public int start() {
         return start;
     }
 
+    /**
+     * End
+     * 
+     * @return i
+     */
     public int end() {
         return end;
     }
 
+    /**
+     * Length
+     * 
+     * @return i
+     */
     public int length() {
         return end - start;
     }
 
+    /**
+     * IsName
+     * 
+     * @return isName
+     */
     public boolean isName() {
         return name != null;
     }
@@ -112,6 +159,11 @@ public class Def {
         binding = b;
     }
 
+    /**
+     * GetBinding
+     * 
+     * @return binding
+     */
     public NBinding getBinding() {
         return binding;
     }

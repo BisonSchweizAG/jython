@@ -7,11 +7,12 @@
  */
 package com.ziclix.python.sql.pipe.db;
 
-import com.ziclix.python.sql.PyConnection;
-import com.ziclix.python.sql.pipe.Source;
 import org.python.core.Py;
 import org.python.core.PyObject;
 import org.python.core.PyTuple;
+
+import com.ziclix.python.sql.PyConnection;
+import com.ziclix.python.sql.pipe.Source;
 
 /**
  * A database source.  Given a PyConnection and information about the query, produce the data.
@@ -57,6 +58,10 @@ public class DBSource extends BaseDB implements Source {
 
     /**
      * Create the sql string given the where clause.
+     * 
+     * @param where
+     *            where
+     * @return s
      */
     protected String createSql(String where) {
 
@@ -82,7 +87,9 @@ public class DBSource extends BaseDB implements Source {
     }
 
     /**
-     * Return the next row in the result set.  The first row returned will be column information.
+     * Return the next row in the result set. The first row returned will be column information.
+     * 
+     * @return o
      */
     public PyObject next() {
 

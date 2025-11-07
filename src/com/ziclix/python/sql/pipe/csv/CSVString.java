@@ -24,6 +24,10 @@ public class CSVString {
 
     /**
      * Escape the string as needed using the default delimiter.
+     * 
+     * @param string
+     *            string
+     * @return s
      */
     public static String toCSV(String string) {
         return toCSV(string, CSVString.DELIMITER);
@@ -31,6 +35,12 @@ public class CSVString {
 
     /**
      * Escape the string as needed using the given delimiter.
+     * 
+     * @param string
+     *            string
+     * @param delimiter
+     *            delimiter
+     * @return s
      */
     public static String toCSV(String string, String delimiter) {
 
@@ -44,16 +54,21 @@ public class CSVString {
     }
 
     /**
-     * Returns a new string resulting from replacing the first occurrence, or all occurrences, of
-     * search string in this string with replace string. If the string search does not occur in the
-     * character sequence represented by this object, then this string is returned.
+     * Returns a new string resulting from replacing the first occurrence, or all occurrences, of search string in this
+     * string with replace string. If the string search does not occur in the character sequence represented by this
+     * object, then this string is returned.
      *
-     * @param search the old string
-     * @param replace the new string
-     * @param all if {@code true} all occurrences of the search string are replaced; if
-     *            {@code false} only the first occurrence
-     * @return a string derived from this string by replacing the first occurrence, or every
-     *         occurrence, of {@code search} with {@code replace}.
+     * @param original
+     *            original
+     * @param search
+     *            the old string
+     * @param replace
+     *            the new string
+     * @param all
+     *            if {@code true} all occurrences of the search string are replaced; if {@code false} only the first
+     *            occurrence
+     * @return a string derived from this string by replacing the first occurrence, or every occurrence, of
+     *         {@code search} with {@code replace}.
      */
     public static String replace(String original, String search, String replace, boolean all) {
 
@@ -85,13 +100,16 @@ public class CSVString {
     }
 
     /**
-     * Returns a new string resulting from replacing all occurrences,
-     * of search string in this string with replace string.
-     * If the string search does not occur in the character sequence represented by this object,
-     * then this string is returned.
+     * Returns a new string resulting from replacing all occurrences, of search string in this string with replace
+     * string. If the string search does not occur in the character sequence represented by this object, then this
+     * string is returned.
      *
-     * @param search  the old string
-     * @param replace the new string
+     * @param original
+     *            original
+     * @param search
+     *            the old string
+     * @param replace
+     *            the new string
      * @return a string derived from this string by replacing every occurrence of search with replace.
      */
     public static String replace(String original, String search, String replace) {
@@ -99,12 +117,15 @@ public class CSVString {
     }
 
     /**
-     * Returns a new string resulting from replacing the end of this String
-     * from oldSuffix to newSuffix.
-     * The original string is returned if it does not end with oldSuffix.
+     * Returns a new string resulting from replacing the end of this String from oldSuffix to newSuffix. The original
+     * string is returned if it does not end with oldSuffix.
      *
-     * @param oldSuffix the old suffix
-     * @param newSuffix the new suffix
+     * @param original
+     *            original
+     * @param oldSuffix
+     *            the old suffix
+     * @param newSuffix
+     *            the new suffix
      * @return a string derived from this string by replacing the end oldSuffix by newSuffix
      */
     public static String replaceEndWith(String original, String oldSuffix, String newSuffix) {

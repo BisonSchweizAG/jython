@@ -8,6 +8,9 @@ import org.python.core.PyObject;
 import org.python.core.PyStringMap;
 import org.python.core.PyType;
 
+/**
+ * BaseTypeBuilder
+ */
 public class BaseTypeBuilder implements TypeBuilder {
 
     private PyNewWrapper newWrapper;
@@ -26,6 +29,26 @@ public class BaseTypeBuilder implements TypeBuilder {
 
     private String doc;
 
+    /**
+     * Constructor
+     * 
+     * @param name
+     *            name
+     * @param typeClass
+     *            typeClass
+     * @param baseClass
+     *            baseClass
+     * @param isBaseType
+     *            isBaseType
+     * @param doc
+     *            doc
+     * @param meths
+     *            meths
+     * @param descrs
+     *            descrs
+     * @param newWrapper
+     *            newWrapper
+     */
     public BaseTypeBuilder(String name,
                            Class<? extends PyObject> typeClass,
                            Class<?> baseClass,

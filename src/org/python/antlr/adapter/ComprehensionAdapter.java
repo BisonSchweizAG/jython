@@ -7,7 +7,14 @@ import org.python.antlr.ast.comprehension;
 import org.python.core.Py;
 import org.python.core.PyObject;
 
+/**
+ * ComprehensionAdapter
+ */
 public class ComprehensionAdapter implements AstAdapter {
+
+    /** Default constructor */
+    ComprehensionAdapter() {
+    }
 
     public Object py2ast(PyObject o) {
         if (o instanceof comprehension) {

@@ -7,11 +7,12 @@
  */
 package com.ziclix.python.sql.pipe.csv;
 
-import com.ziclix.python.sql.pipe.Sink;
+import java.io.PrintWriter;
+
 import org.python.core.Py;
 import org.python.core.PyObject;
 
-import java.io.PrintWriter;
+import com.ziclix.python.sql.pipe.Sink;
 
 /**
  * The CSVSink writes data out in a Comma Seperated Format.
@@ -89,6 +90,12 @@ public class CSVSink implements Sink {
 
     /**
      * Convert the object at index to a String.
+     * 
+     * @param index
+     *            index
+     * @param object
+     *            object
+     * @return s
      */
     protected String convert(PyObject index, PyObject object) {
 
@@ -109,6 +116,9 @@ public class CSVSink implements Sink {
 
     /**
      * Print the row of Strings.
+     * 
+     * @param row
+     *            row
      */
     protected void println(String[] row) {
 

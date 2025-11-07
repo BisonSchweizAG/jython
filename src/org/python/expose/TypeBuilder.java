@@ -8,15 +8,47 @@ import org.python.core.PyType;
  */
 public interface TypeBuilder {
 
+    /**
+     * GetName
+     * 
+     * @return s
+     */
     public String getName();
 
+    /**
+     * GetDict
+     * 
+     * @param type
+     *            type
+     * @return o
+     */
     public PyObject getDict(PyType type);
 
+    /**
+     * GetTypeClass
+     * 
+     * @return class
+     */
     public Class<? extends PyObject> getTypeClass();
 
+    /**
+     * GetBase
+     * 
+     * @return class
+     */
     public Class<?> getBase();
 
+    /**
+     * GetIsBaseType
+     * 
+     * @return isBasetype
+     */
     public boolean getIsBaseType();
 
+    /**
+     * GetDoc
+     * 
+     * @return s
+     */
     public String getDoc();
 }

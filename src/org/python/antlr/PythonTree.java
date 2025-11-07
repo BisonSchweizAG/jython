@@ -1,19 +1,21 @@
 package org.python.antlr;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
-
+import org.python.antlr.ast.Name;
+import org.python.antlr.ast.VisitorIF;
 import org.python.core.PyObject;
 import org.python.core.PyType;
 import org.python.core.Traverseproc;
 import org.python.core.Visitproc;
-import org.python.antlr.ast.Name;
-import org.python.antlr.ast.VisitorIF;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * PythonTree
+ */
 public class PythonTree extends AST implements Traverseproc {
 
     public boolean from_future_checked = false;
@@ -24,19 +26,42 @@ public class PythonTree extends AST implements Traverseproc {
     /** Who is the parent node of this node; if null, implies node is root */
     private PythonTree parent;
     
+    /**
+     * Default Constructor
+     */
     public PythonTree() {
         node = new CommonTree();
     }
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public PythonTree(PyType subType) {
         super(subType);
         node = new CommonTree();
     }
 
+    /**
+     * Constructor
+     * 
+     * @param t
+     *            t
+     */
     public PythonTree(Token t) {
         node = new CommonTree(t);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param ttype
+     *            ttype
+     * @param t
+     *            t
+     */
     public PythonTree(int ttype, Token t) {
         CommonToken c = new CommonToken(ttype, t.getText());
         c.setLine(t.getLine());
@@ -48,32 +73,68 @@ public class PythonTree extends AST implements Traverseproc {
         node = new CommonTree(c);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param tree
+     *            tree
+     */
     public PythonTree(PythonTree tree) {
         node = new CommonTree(tree.getNode());
         charStartIndex = tree.getCharStartIndex();
         charStopIndex = tree.getCharStopIndex();
     }
     
+    /**
+     * GetNode
+     * 
+     * @return node
+     */
     public CommonTree getNode() {
         return node;
     }
 
+    /**
+     * GetToken
+     * 
+     * @return token
+     */
     public Token getToken() {
         return node.getToken();
     }
 
+    /**
+     * DupNode
+     * 
+     * @return tree
+     */
     public PythonTree dupNode() {
         return new PythonTree(this);
     }
 
+    /**
+     * IsNil
+     * 
+     * @return isNil
+     */
     public boolean isNil() {
         return node.isNil();
     }
 
+    /**
+     * GetAntlrType
+     * 
+     * @return type
+     */
     public int getAntlrType() {
         return node.getType();
     }
 
+    /**
+     * GetText
+     * 
+     * @return s
+     */
     public String getText() {
         return node.getText();
     }
@@ -105,30 +166,67 @@ public class PythonTree extends AST implements Traverseproc {
         return token.getCharPositionInLine();
     }
 
+    /**
+     * GetLineno
+     * 
+     * @return i
+     */
     public int getLineno() {
         return getLine();
     }
 
+    /**
+     * GetCol_offset
+     * 
+     * @return i
+     */
     public int getCol_offset() {
         return getCharPositionInLine();
     }
 
+    /**
+     * GetTokenStartIndex
+     * 
+     * @return i
+     */
     public int getTokenStartIndex() {
         return node.getTokenStartIndex();
     }
 
+    /**
+     * SetTokenStartIndex
+     * 
+     * @param index
+     *            index
+     */
     public void setTokenStartIndex(int index) {
         node.setTokenStartIndex(index);
     }
 
+    /**
+     * GetTokenStopIndex
+     * 
+     * @return i
+     */
     public int getTokenStopIndex() {
         return node.getTokenStopIndex();
     }
 
+    /**
+     * SetTokenStopIndex
+     * 
+     * @param index
+     *            index
+     */
     public void setTokenStopIndex(int index) {
         node.setTokenStopIndex(index);
     }
 
+    /**
+     * GetCharStartIndex
+     * 
+     * @return i
+     */
     public int getCharStartIndex() {
         if (charStartIndex == -1 && node.getToken() != null) {
             return ((CommonToken)node.getToken()).getStartIndex();
@@ -136,18 +234,24 @@ public class PythonTree extends AST implements Traverseproc {
         return charStartIndex ;
     }
 
+    /**
+     * SetCharStartIndex
+     * 
+     * @param index
+     *            index
+     */
     public void setCharStartIndex(int index) {
         charStartIndex  = index;
     }
 
-    /*
-     * Adding one to stopIndex from Tokens.  ANTLR defines the char position as
-     * being the array index of the actual characters. Most tools these days
-     * define document offsets as the positions between the characters.  If you
-     * imagine drawing little boxes around each character and think of the
-     * numbers as pointing to either the left or right side of a character's
-     * box, then 0 is before the first character - and in a Document of 10
-     * characters, position 10 is after the last character.
+    /**
+     * Adding one to stopIndex from Tokens. ANTLR defines the char position as being the array index of the actual
+     * characters. Most tools these days define document offsets as the positions between the characters. If you imagine
+     * drawing little boxes around each character and think of the numbers as pointing to either the left or right side
+     * of a character's box, then 0 is before the first character - and in a Document of 10 characters, position 10 is
+     * after the last character.
+     * 
+     * @return i
      */
     public int getCharStopIndex() {
 
@@ -157,31 +261,61 @@ public class PythonTree extends AST implements Traverseproc {
         return charStopIndex;
     }
 
+    /**
+     * SetCharStopIndex
+     * 
+     * @param index
+     *            index
+     */
     public void setCharStopIndex(int index) {
         charStopIndex = index;
     }
 
+    /**
+     * GetChildIndex
+     * 
+     * @return i
+     */
     public int getChildIndex() {
         return node.getChildIndex();
     }
 
+    /**
+     * GetParent
+     * 
+     * @return t
+     */
     public PythonTree getParent() {
         return parent;
     }
 
+    /**
+     * SetParent
+     * 
+     * @param t
+     *            t
+     */
     public void setParent(PythonTree t) {
         this.parent = t;
     }
 
+    /**
+     * SetChildIndex
+     * 
+     * @param index
+     *            index
+     */
     public void setChildIndex(int index) {
         node.setChildIndex(index);
     }
 
     /**
-     * Converts a list of Name to a dotted-name string.
-     * Because leading dots are indexable identifiers (referring
-     * to parent directories in relative imports), a Name list
-     * may include leading dots, but not dots between names.
+     * Converts a list of Name to a dotted-name string. Because leading dots are indexable identifiers (referring to
+     * parent directories in relative imports), a Name list may include leading dots, but not dots between names.
+     * 
+     * @param names
+     *            names
+     * @return s
      */
     public static String dottedNameListToString(List<Name> names) {
         if (names == null) {
@@ -221,6 +355,11 @@ public class PythonTree extends AST implements Traverseproc {
         return node.getToken().getText() + "(" + this.getLine() + "," + this.getCharPositionInLine() + ")";
     }
 
+    /**
+     * ToStringTree
+     * 
+     * @return s
+     */
     public String toStringTree() {
         if (children == null || children.size() == 0) {
             return this.toString();// + "[" + this.info() + "]";
@@ -272,15 +411,35 @@ public class PythonTree extends AST implements Traverseproc {
         return sb.toString();
     }
 
+    /**
+     * Accept
+     * 
+     * @param <R>
+     *            R
+     * @param visitor
+     *            visitor
+     * @return R
+     * @throws Exception
+     *             exception
+     */
     public <R> R accept(VisitorIF<R> visitor) throws Exception {
         throw new RuntimeException("Unexpected node: " + this);
     }
     
+    /**
+     * Traverse
+     * 
+     * @param visitor
+     *            visitor
+     * @throws Exception
+     *             exception
+     */
     public void traverse(VisitorIF<?> visitor) throws Exception {
         throw new RuntimeException("Cannot traverse node: " + this);
     }
  
-//XXX: From here down copied from org.antlr.runtime.tree.BaseTree
+    // XXX: From here down copied from org.antlr.runtime.tree.BaseTree
+
     protected List<PythonTree> children;
 
     public PythonTree getChild(int i) {
@@ -290,8 +449,10 @@ public class PythonTree extends AST implements Traverseproc {
         return children.get(i);
     }
 
-    /** Get the children internal List; note that if you directly mess with
-     *  the list, do so at your own risk.
+    /**
+     * Get the children internal List; note that if you directly mess with the list, do so at your own risk.
+     * 
+     * @return l
      */
     public List<PythonTree> getChildren() {
         return children;
@@ -314,11 +475,14 @@ public class PythonTree extends AST implements Traverseproc {
         return children.size();
     }
 
-    /** Add t as child of this node.
+    /**
+     * Add t as child of this node.
      *
-     *  Warning: if t has no children, but child does
-     *  and child isNil then this routine moves children to t via
-     *  t.children = child.children; i.e., without copying the array.
+     * Warning: if t has no children, but child does and child isNil then this routine moves children to t via
+     * t.children = child.children; i.e., without copying the array.
+     * 
+     * @param t
+     *            t
      */
     public void addChild(PythonTree t) {
         if ( t==null ) {
@@ -359,7 +523,12 @@ public class PythonTree extends AST implements Traverseproc {
         }
     }
 
-    /** Add all elements of kids list as children of this node */
+    /**
+     * Add all elements of kids list as children of this node
+     * 
+     * @param kids
+     *            kids
+     */
     public void addChildren(List<PythonTree> kids) {
         for (int i = 0; i < kids.size(); i++) {
             PythonTree t = kids.get(i);
@@ -392,10 +561,17 @@ public class PythonTree extends AST implements Traverseproc {
         return killed;
     }
 
-    /** Delete children from start to stop and replace with t even if t is
-     *  a list (nil-root tree).  num of children can increase or decrease.
-     *  For huge child lists, inserting children can force walking rest of
-     *  children to set their childindex; could be slow.
+    /**
+     * Delete children from start to stop and replace with t even if t is a list (nil-root tree). num of children can
+     * increase or decrease. For huge child lists, inserting children can force walking rest of children to set their
+     * childindex; could be slow.
+     * 
+     * @param startChildIndex
+     *            startChildIndex
+     * @param stopChildIndex
+     *            stopChildIndex
+     * @param t
+     *            t
      */
     public void replaceChildren(int startChildIndex, int stopChildIndex, Object t) {
         if ( children==null ) {
@@ -452,7 +628,11 @@ public class PythonTree extends AST implements Traverseproc {
         }
     }
 
-    /** Override in a subclass to change the impl of children list */
+    /**
+     * Override in a subclass to change the impl of children list
+     * 
+     * @return l
+     */
     protected List<PythonTree> createChildrenList() {
         return new ArrayList<PythonTree>();
     }
@@ -462,6 +642,12 @@ public class PythonTree extends AST implements Traverseproc {
         freshenParentAndChildIndexes(0);
     }
 
+    /**
+     * FreshenParentAndChildIndexes
+     * 
+     * @param offset
+     *            offset
+     */
     public void freshenParentAndChildIndexes(int offset) {
         int n = getChildCount();
         for (int c = offset; c < n; c++) {

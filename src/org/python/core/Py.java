@@ -552,12 +552,17 @@ public final class Py extends PrePy {
     }
 
     /**
-    Convert a given <code>PyObject</code> to an instance of a Java class.
-    Identical to <code>o.__tojava__(c)</code> except that it will
-    raise a <code>TypeError</code> if the conversion fails.
-    @param o the <code>PyObject</code> to convert.
-    @param c the class to convert it to.
-     **/
+     * Convert a given {@code PyObject} to an instance of a Java class.<br>
+     * Identical to {@code o.__tojava__(c)}, except that it will raise a {@code TypeError} if the conversion fails.
+     * 
+     * @param <T>
+     *            T
+     * @param o
+     *            the {@code PyObject} to convert.
+     * @param c
+     *            the class to convert it to.
+     * @return T
+     */
     @SuppressWarnings("unchecked")
     public static <T> T tojava(PyObject o, Class<T> c) {
         Object obj = o.__tojava__(c);
@@ -838,7 +843,13 @@ public final class Py extends PrePy {
         return environ;
     }
 
-    /** The same as {@code getenv(name, null)}. See {@link #getenv(PyString, PyString)}. */
+    /**
+     * The same as {@code getenv(name, null)}. See {@link #getenv(PyString, PyString)}.
+     * 
+     * @param name
+     *            name
+     * @return s
+     */
     public static PyString getenv(PyString name) {
         return getenv(name, null);
     }
@@ -865,7 +876,13 @@ public final class Py extends PrePy {
         }
     }
 
-    /** The same as {@code getenv(name, null)}. See {@link #getenv(String, String)}. */
+    /**
+     * The same as {@code getenv(name, null)}. See {@link #getenv(String, String)}.
+     * 
+     * @param name
+     *            name
+     * @return s
+     */
     public static String getenv(String name) {
         return getenv(name, null);
     }
@@ -1255,19 +1272,31 @@ public final class Py extends PrePy {
     }
 
     /**
-     * Initializes a default PythonInterpreter and runs the code from
-     * {@link PyRunnable#getMain} as __main__
+     * Initializes a default PythonInterpreter and runs the code from {@link PyRunnable#getMain} as __main__
      *
      * Called by the code generated in {@link org.python.compiler.Module#addMain()}
+     * 
+     * @param main
+     *            main
+     * @param args
+     *            args
+     * @throws Exception
+     *             exception
      */
     public static void runMain(PyRunnable main, String[] args) throws Exception {
         runMain(new PyRunnableBootstrap(main), args);
     }
 
     /**
-     * Initializes a default PythonInterpreter and runs the code loaded from the
-     * {@link CodeBootstrap} as __main__ Called by the code generated in
-     * {@link org.python.compiler.Module#addMain()}
+     * Initializes a default PythonInterpreter and runs the code loaded from the {@link CodeBootstrap} as __main__
+     * Called by the code generated in {@link org.python.compiler.Module#addMain()}
+     * 
+     * @param main
+     *            main
+     * @param args
+     *            args
+     * @throws Exception
+     *             exception
      */
     public static void runMain(CodeBootstrap main, String[] args)
             throws Exception {
@@ -1679,6 +1708,13 @@ public final class Py extends PrePy {
 
 
     /**
+     * MatchException
+     * 
+     * @param pye
+     *            pye
+     * @param exc
+     *            exc
+     * @return matches
      * @deprecated As of Jython 2.5, use {@link PyException#match} instead.
      */
     @Deprecated
@@ -1689,6 +1725,18 @@ public final class Py extends PrePy {
 
     // XXX: the following 4 are backwards compat. for the
     // oldcompiler. newcompiler should just call doRaise instead
+
+    /**
+     * MakeException
+     * 
+     * @param type
+     *            type
+     * @param value
+     *            value
+     * @param traceback
+     *            traceback
+     * @return exception
+     */
     public static PyException makeException(PyObject type, PyObject value,
                                             PyObject traceback) {
         return PyException.doRaise(type, value, traceback);
@@ -2090,6 +2138,10 @@ public final class Py extends PrePy {
 
     /**
      * Uses the PyObjectAdapter passed to {@link PySystemState#initialize} to turn o into a PyObject.
+     * 
+     * @param o
+     *            o
+     * @return o
      *
      * @see ClassicPyObjectAdapter - default PyObjectAdapter type
      */
@@ -2098,8 +2150,12 @@ public final class Py extends PrePy {
     }
 
     /**
-     * Uses the PyObjectAdapter passed to {@link PySystemState#initialize} to turn
-     * <code>objects</code> into an array of PyObjects.
+     * Uses the PyObjectAdapter passed to {@link PySystemState#initialize} to turn <code>objects</code> into an array of
+     * PyObjects.
+     * 
+     * @param objects
+     *            objects
+     * @return objects
      *
      * @see ClassicPyObjectAdapter - default PyObjectAdapter type
      */
@@ -2112,6 +2168,8 @@ public final class Py extends PrePy {
     }
 
     /**
+     * GetAdapter
+     * 
      * @return the ExtensiblePyObjectAdapter used by java2py.
      */
     public static ExtensiblePyObjectAdapter getAdapter() {
@@ -2259,6 +2317,16 @@ public final class Py extends PrePy {
 
     /**
      * Compiles python source code coming from a file or another external stream
+     * 
+     * @param istream
+     *            istream
+     * @param filename
+     *            filename
+     * @param kind
+     *            kind
+     * @param cflags
+     *            cflags
+     * @return code
      */
     public static PyCode compile_flags(InputStream istream, String filename,
                                          CompileMode kind, CompilerFlags cflags) {
@@ -2269,8 +2337,17 @@ public final class Py extends PrePy {
     /**
      * Compiles python source code coming from String (raw bytes) data.
      *
-     * If the String is properly decoded (from PyUnicode) the PyCF_SOURCE_IS_UTF8 flag
-     * should be specified.
+     * If the String is properly decoded (from PyUnicode) the PyCF_SOURCE_IS_UTF8 flag should be specified.
+     * 
+     * @param data
+     *            data
+     * @param filename
+     *            filename
+     * @param kind
+     *            kind
+     * @param cflags
+     *            cflags
+     * @return code
      */
     public static PyCode compile_flags(String data, String filename,
                                          CompileMode kind, CompilerFlags cflags) {
@@ -2638,10 +2715,14 @@ public final class Py extends PrePy {
     }
 
     /**
-     * Returns a Python-class that extends {@code cls} and {@code interfce}. If {@code cls} already
-     * extends {@code interfce}, simply {@code cls} is returned. Otherwise a new class is created
-     * (if not yet cached). It caches such classes and only creates a new one if no appropriate
-     * class was cached yet.
+     * Returns a Python-class that extends {@code cls} and {@code interfce}. If {@code cls} already extends
+     * {@code interfce}, simply {@code cls} is returned. Otherwise a new class is created (if not yet cached). It caches
+     * such classes and only creates a new one if no appropriate class was cached yet.
+     * 
+     * @param cls
+     *            cls
+     * @param interfce
+     *            interfce
      *
      * @return a Python-class that extends {@code cls} and {@code interfce}
      */
@@ -2664,11 +2745,10 @@ public final class Py extends PrePy {
     }
 
     /**
-     * This method is a compact helper to access Python-constructors from Java. It creates an
-     * instance of {@code cls} and retruns it in form of {@code jcls}, which must be an interface.
-     * This method even works if {@code cls} does not extend {@code jcls} in Python-code. In that
-     * case, it uses {@link #javaPyClass(PyObject, Class)} to create an appropriate class on the
-     * fly.
+     * This method is a compact helper to access Python-constructors from Java. It creates an instance of {@code cls}
+     * and retruns it in form of {@code jcls}, which must be an interface. This method even works if {@code cls} does
+     * not extend {@code jcls} in Python-code. In that case, it uses {@link #javaPyClass(PyObject, Class)} to create an
+     * appropriate class on the fly.
      * <p>
      * It automatically converts {@code args} to {@link org.python.core.PyObject}s.<br>
      * For keyword-support use {@link #newJ(PyObject, Class, String[], Object...)}.
@@ -2680,9 +2760,14 @@ public final class Py extends PrePy {
      * @see PyModule#newJ(Class, Object...)
      * @see PyModule#newJ(Class, String[], Object...)
      *
-     * @param cls - the class to be instanciated
-     * @param jcls - the Java-type to be returned
-     * @param args are automatically converted to Jython-PyObjects
+     * @param <T>
+     *            T
+     * @param cls
+     *            - the class to be instanciated
+     * @param jcls
+     *            - the Java-type to be returned
+     * @param args
+     *            are automatically converted to Jython-PyObjects
      * @return an instance of cls in form of the interface jcls
      */
     @SuppressWarnings("unchecked")
@@ -2693,11 +2778,10 @@ public final class Py extends PrePy {
     }
 
     /**
-     * This method is a compact helper to access Python-constructors from Java. It creates an
-     * instance of {@code cls} and retruns it in form of {@code jcls}, which must be an interface.
-     * This method even works if {@code cls} does not extend {@code jcls} in Python-code. In that
-     * case, it uses {@link #javaPyClass(PyObject, Class)} to create an appropriate class on the
-     * fly.
+     * This method is a compact helper to access Python-constructors from Java. It creates an instance of {@code cls}
+     * and retruns it in form of {@code jcls}, which must be an interface. This method even works if {@code cls} does
+     * not extend {@code jcls} in Python-code. In that case, it uses {@link #javaPyClass(PyObject, Class)} to create an
+     * appropriate class on the fly.
      * <p>
      * {@code keywordss} are applied to the last {@code args} in the list.
      *
@@ -2708,10 +2792,16 @@ public final class Py extends PrePy {
      * @see PyModule#newJ(Class, Object...)
      * @see PyModule#newJ(Class, String[], Object...)
      *
-     * @param cls - the class to be instanciated
-     * @param jcls - the Java-type to be returned
-     * @param keywords are applied to the last args
-     * @param args for the Python-class constructor
+     * @param <T>
+     *            T
+     * @param cls
+     *            - the class to be instanciated
+     * @param jcls
+     *            - the Java-type to be returned
+     * @param keywords
+     *            are applied to the last args
+     * @param args
+     *            for the Python-class constructor
      * @return an instance of cls in form of the interface jcls
      */
     @SuppressWarnings("unchecked")
@@ -2722,11 +2812,10 @@ public final class Py extends PrePy {
     }
 
     /**
-     * This method is a compact helper to access Python-constructors from Java. It creates an
-     * instance of {@code cls} and retruns it in form of {@code jcls}, which must be an interface.
-     * This method even works if {@code cls} does not extend {@code jcls} in Python-code. In that
-     * case, it uses {@link #javaPyClass(PyObject, Class)} to create an appropriate class on the
-     * fly.
+     * This method is a compact helper to access Python-constructors from Java. It creates an instance of {@code cls}
+     * and retruns it in form of {@code jcls}, which must be an interface. This method even works if {@code cls} does
+     * not extend {@code jcls} in Python-code. In that case, it uses {@link #javaPyClass(PyObject, Class)} to create an
+     * appropriate class on the fly.
      * <p>
      * It automatically converts {@code args} to {@link org.python.core.PyObject}s.<br>
      * {@code keywordss} are applied to the last {@code args} in the list.
@@ -2738,10 +2827,16 @@ public final class Py extends PrePy {
      * @see PyModule#newJ(Class, Object...)
      * @see PyModule#newJ(Class, String[], Object...)
      *
-     * @param cls - the class to be instanciated
-     * @param jcls - the Java-type to be returned
-     * @param keywords are applied to the last args
-     * @param args are automatically converted to Jython-PyObjects
+     * @param <T>
+     *            T
+     * @param cls
+     *            - the class to be instanciated
+     * @param jcls
+     *            - the Java-type to be returned
+     * @param keywords
+     *            are applied to the last args
+     * @param args
+     *            are automatically converted to Jython-PyObjects
      * @return an instance of cls in form of the interface jcls
      */
     @SuppressWarnings("unchecked")
@@ -2752,8 +2847,8 @@ public final class Py extends PrePy {
     }
 
     /**
-     * Works like {@link #newJ(PyObject, Class, Object...)}, but looks up the Python-class in the
-     * module-dict using the interface-name, i.e. {@code jcls.getSimpleName()}.
+     * Works like {@link #newJ(PyObject, Class, Object...)}, but looks up the Python-class in the module-dict using the
+     * interface-name, i.e. {@code jcls.getSimpleName()}.
      * <p>
      * For keywords-support use {@link #newJ(PyModule, Class, String[], Object...)}.
      *
@@ -2764,9 +2859,14 @@ public final class Py extends PrePy {
      * @see PyModule#newJ(Class, Object...)
      * @see PyModule#newJ(Class, String[], Object...)
      *
-     * @param module the module containing the desired class
-     * @param jcls Java-type of the desired clas, must have the same name
-     * @param args constructor-arguments
+     * @param <T>
+     *            T
+     * @param module
+     *            the module containing the desired class
+     * @param jcls
+     *            Java-type of the desired clas, must have the same name
+     * @param args
+     *            constructor-arguments
      * @return a new instance of the desired class
      */
     public static <T> T newJ(PyModule module, Class<T> jcls, Object... args) {
@@ -2775,8 +2875,8 @@ public final class Py extends PrePy {
     }
 
     /**
-     * Works like {@link #newJ(PyObject, Class, String[], Object...)}, but looks up the Python-class
-     * in the module-dict using the interface-name, i.e. {@code jcls.getSimpleName()}.
+     * Works like {@link #newJ(PyObject, Class, String[], Object...)}, but looks up the Python-class in the module-dict
+     * using the interface-name, i.e. {@code jcls.getSimpleName()}.
      * <p>
      * {@code keywordss} are applied to the last {@code args} in the list.
      *
@@ -2787,10 +2887,16 @@ public final class Py extends PrePy {
      * @see PyModule#newJ(Class, Object...)
      * @see PyModule#newJ(Class, String[], Object...)
      *
-     * @param module the module containing the desired class
-     * @param jcls Java-type of the desired class, must have the same name
-     * @param keywords are applied to the last {@code args} in the list
-     * @param args constructor-arguments
+     * @param <T>
+     *            T
+     * @param module
+     *            the module containing the desired class
+     * @param jcls
+     *            Java-type of the desired class, must have the same name
+     * @param keywords
+     *            are applied to the last {@code args} in the list
+     * @param args
+     *            constructor-arguments
      * @return a new instance of the desired class
      */
     public static <T> T newJ(PyModule module, Class<T> jcls, String[] keywords, Object... args) {

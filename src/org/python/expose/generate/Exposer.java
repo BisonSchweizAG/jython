@@ -48,10 +48,14 @@ public abstract class Exposer implements Opcodes, PyTypes {
     };
 
     /**
-     * @param superClass -
+     * Constructor
+     * 
+     * @param superClass
      *            the super class of the generated class
-     * @param generatedName -
+     * @param generatedName
      *            the name of the class to generate
+     * @param interfacesImplemented
+     *            interfacesImplemented
      */
     public Exposer(Class<?> superClass, String generatedName, Type...interfacesImplemented) {
         superType = Type.getType(superClass);
@@ -67,6 +71,10 @@ public abstract class Exposer implements Opcodes, PyTypes {
 
     /**
      * Generates this Exposer and loads it into the given Loader.
+     * 
+     * @param l
+     *            l
+     * @return class
      */
     protected Class<?> load(BytecodeLoader.Loader l) {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
@@ -87,9 +95,11 @@ public abstract class Exposer implements Opcodes, PyTypes {
     }
 
     /**
-     * Will call the methods on visitor to generate this class. Only one call to generate may be
-     * active at a time on a single instance of Exposer. The ClassVisitor is assumed to have been
-     * constructed with COMPUTE_FRAMES.
+     * Will call the methods on visitor to generate this class. Only one call to generate may be active at a time on a
+     * single instance of Exposer. The ClassVisitor is assumed to have been constructed with COMPUTE_FRAMES.
+     * 
+     * @param visitor
+     *            visitor
      */
     public void generate(ClassVisitor visitor) {
         assert cv == null;
@@ -110,7 +120,12 @@ public abstract class Exposer implements Opcodes, PyTypes {
         cv = null;
     }
 
-    /** Calls the constructor on the super class with the given args. */
+    /**
+     * Calls the constructor on the super class with the given args.
+     * 
+     * @param args
+     *            args
+     */
     protected void superConstructor(Type... args) {
         callConstructor(superType, args);
     }
@@ -139,14 +154,24 @@ public abstract class Exposer implements Opcodes, PyTypes {
         private Type[] types;
     }
 
-    /** Instantiates ofType using its no-arg constructor */
+    /**
+     * Instantiates ofType using its no-arg constructor
+     * 
+     * @param ofType
+     *            ofType
+     */
     protected void instantiate(Type ofType) {
         instantiate(ofType, new Instantiator());
     }
 
     /**
-     * Instantiates ofType with its constructor that takes the types returned by inst.getTypes().
-     * inst should override pushArgs to put arguments of those types on the stack for the call.
+     * Instantiates ofType with its constructor that takes the types returned by inst.getTypes(). inst should override
+     * pushArgs to put arguments of those types on the stack for the call.
+     * 
+     * @param ofType
+     *            ofType
+     * @param inst
+     *            inst
      */
     protected void instantiate(Type ofType, Instantiator inst) {
         mv.visitTypeInsn(NEW, ofType.getInternalName());
@@ -155,7 +180,14 @@ public abstract class Exposer implements Opcodes, PyTypes {
         callConstructor(ofType, inst.getTypes());
     }
 
-    /** Calls the constructor on onType with the given args. */
+    /**
+     * Calls the constructor on onType with the given args.
+     * 
+     * @param onType
+     *            onType
+     * @param args
+     *            args
+     */
     protected void callConstructor(Type onType, Type... args) {
         mv.visitMethodInsn(INVOKESPECIAL,
                            onType.getInternalName(),
@@ -163,7 +195,18 @@ public abstract class Exposer implements Opcodes, PyTypes {
                            methodDesc(VOID, args), false);
     }
 
-    /** Calls the method on onType with the given return type and argument types. */
+    /**
+     * Calls the method on onType with the given return type and argument types.
+     * 
+     * @param onType
+     *            onType
+     * @param methodName
+     *            methodName
+     * @param returnType
+     *            returnType
+     * @param args
+     *            args
+     */
     protected void call(Type onType, String methodName, Type returnType, Type... args) {
         mv.visitMethodInsn(INVOKEVIRTUAL,
                            onType.getInternalName(),
@@ -171,7 +214,18 @@ public abstract class Exposer implements Opcodes, PyTypes {
                            methodDesc(returnType, args), false);
     }
 
-    /** Calls the static method on onType with the given return type and argument types. */
+    /**
+     * Calls the static method on onType with the given return type and argument types.
+     * 
+     * @param onType
+     *            onType
+     * @param methodName
+     *            methodName
+     * @param returnType
+     *            returnType
+     * @param args
+     *            args
+     */
     protected void callStatic(Type onType, String methodName, Type returnType, Type... args) {
         mv.visitMethodInsn(INVOKESTATIC,
                            onType.getInternalName(),
@@ -179,14 +233,25 @@ public abstract class Exposer implements Opcodes, PyTypes {
                            methodDesc(returnType, args), false);
     }
 
-    /** Produces a method descriptor with ret as its return type that takes args. */
+    /**
+     * Produces a method descriptor with ret as its return type that takes args.
+     * 
+     * @param ret
+     *            ret
+     * @param args
+     *            args
+     * @return s
+     */
     protected String methodDesc(Type ret, Type... args) {
         return Type.getMethodDescriptor(ret, args);
     }
 
     /**
-     * Starts building a constructor in the class. Must be followed by a call to endConstructor
-     * before startConstructor or startMethod may be called.
+     * Starts building a constructor in the class. Must be followed by a call to endConstructor before startConstructor
+     * or startMethod may be called.
+     * 
+     * @param args
+     *            args
      */
     protected void startConstructor(Type... args) {
         startMethod("<init>", VOID, args);
@@ -198,8 +263,15 @@ public abstract class Exposer implements Opcodes, PyTypes {
     }
 
     /**
-     * Starts building a method in the class being generated. Must be followed by a call to
-     * endMethod before startMethod or startConstructor may be called.
+     * Starts building a method in the class being generated. Must be followed by a call to endMethod before startMethod
+     * or startConstructor may be called.
+     * 
+     * @param name
+     *            name
+     * @param ret
+     *            ret
+     * @param args
+     *            args
      */
     protected void startMethod(String name, Type ret, Type... args) {
         assert mv == null;
@@ -207,7 +279,12 @@ public abstract class Exposer implements Opcodes, PyTypes {
         mv.visitCode();
     }
 
-    /** Closes the method under construction. */
+    /**
+     * Closes the method under construction.
+     * 
+     * @param returnCode
+     *            returnCode
+     */
     protected void endMethod(int returnCode) {
         mv.visitInsn(returnCode);
         mv.visitMaxs(0, 0);
@@ -215,15 +292,25 @@ public abstract class Exposer implements Opcodes, PyTypes {
         mv = null;
     }
 
-    /** Loads a field on the instance under construction of ofType onto the stack */
+    /**
+     * Loads a field on the instance under construction of ofType onto the stack
+     * 
+     * @param fieldName
+     *            fieldName
+     * @param ofType
+     *            ofType
+     */
     protected void get(String fieldName, Type ofType) {
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(GETFIELD, getInternalName(), fieldName, ofType.getDescriptor());
     }
 
     /**
-     * Turns an object of inputType on the top of the stack into an equivalent Py type. Handles
-     * primitives, void, and String. If void, the top item on the stack isn't touched.
+     * Turns an object of inputType on the top of the stack into an equivalent Py type. Handles primitives, void, and
+     * String. If void, the top item on the stack isn't touched.
+     * 
+     * @param inputType
+     *            inputType
      */
     protected void toPy(Type inputType) {
         if(inputType.equals(VOID)) {
@@ -254,7 +341,16 @@ public abstract class Exposer implements Opcodes, PyTypes {
         }
     }
 
-    /** Gets a static field from onType of the given type. */
+    /**
+     * Gets a static field from onType of the given type.
+     * 
+     * @param onType
+     *            onType
+     * @param fieldName
+     *            fieldName
+     * @param ofType
+     *            ofType
+     */
     protected void getStatic(Type onType, String fieldName, Type ofType) {
         mv.visitFieldInsn(GETSTATIC, onType.getInternalName(), fieldName, ofType.getDescriptor());
     }

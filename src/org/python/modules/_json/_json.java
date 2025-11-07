@@ -1,6 +1,8 @@
 /* Copyright (c) Jython Developers */
 package org.python.modules._json;
 
+import java.util.Iterator;
+
 import org.python.core.ArgParser;
 import org.python.core.ClassDictInit;
 import org.python.core.Py;
@@ -10,11 +12,8 @@ import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.core.PyTuple;
 import org.python.core.PyUnicode;
-import org.python.core.codecs;
 import org.python.core.Untraversable;
-import org.python.expose.ExposedGet;
-
-import java.util.Iterator;
+import org.python.core.codecs;
 
 /**
  * This module is a nearly exact line by line port of _json.c to Java. Names and comments  are retained
@@ -24,9 +23,23 @@ import java.util.Iterator;
  */
 public class _json implements ClassDictInit {
 
+    /** __doc__ */
     public static final PyString __doc__ = new PyString("Port of _json C module.");
+    /** module */
     public static final PyObject module = Py.newString("_json");
 
+    /**
+     * Default constructor
+     */
+    _json() {
+    }
+
+    /**
+     * ClassDictInit
+     * 
+     * @param dict
+     *            dict
+     */
     public static void classDictInit(PyObject dict) {
         dict.__setitem__("__name__", new PyString("_json"));
         dict.__setitem__("__doc__", __doc__);

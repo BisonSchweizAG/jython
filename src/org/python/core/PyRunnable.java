@@ -6,6 +6,10 @@ package org.python.core;
  * to the module code object.
  */
 public interface PyRunnable {
-    /** Return the module's code object. */
+    /**
+     * Return the module's code object.
+     * 
+     * @return code
+     */
     abstract public PyCode getMain();
 }

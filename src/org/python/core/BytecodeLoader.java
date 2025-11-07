@@ -1,8 +1,6 @@
 // Copyright (c) Corporation for National Research Initiatives
 package org.python.core;
 
-import org.objectweb.asm.ClassReader;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,17 +11,27 @@ import java.net.URLClassLoader;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.objectweb.asm.ClassReader;
+
 /**
  * Utility class for loading compiled Python modules and Java classes defined in Python modules.
  */
 public class BytecodeLoader {
 
+    /** Default constructor */
+    BytecodeLoader() {
+    }
+
     /**
      * Turn the Java class file data into a Java class.
      *
-     * @param name fully-qualified binary name of the class
-     * @param data a class file as a byte array
-     * @param referents super-classes and interfaces that the new class will reference.
+     * @param name
+     *            fully-qualified binary name of the class
+     * @param data
+     *            a class file as a byte array
+     * @param referents
+     *            super-classes and interfaces that the new class will reference.
+     * @return class
      */
     @SuppressWarnings("unchecked")
     public static Class<?> makeClass(String name, byte[] data, Class<?>... referents) {
@@ -50,9 +58,13 @@ public class BytecodeLoader {
     /**
      * Turn the Java class file data into a Java class.
      *
-     * @param name the name of the class
-     * @param referents super-classes and interfaces that the new class will reference.
-     * @param data a class file as a byte array
+     * @param name
+     *            the name of the class
+     * @param referents
+     *            super-classes and interfaces that the new class will reference.
+     * @param data
+     *            a class file as a byte array
+     * @return class
      */
     public static Class<?> makeClass(String name, List<Class<?>> referents, byte[] data) {
         if (referents != null) {
@@ -152,30 +164,33 @@ public class BytecodeLoader {
     }
 
     /**
-     * This method looks for Python-Bytecode stored in String literals.
-     * While Java supports rather long strings, constrained only by
-     * int-addressing of arrays, it supports only up to 65535 characters
-     * in literals (not sure how escape-sequences are counted).
-     * To circumvent this limitation, the code is automatically splitted
-     * into several literals with the following naming-scheme.
+     * This method looks for Python-Bytecode stored in String literals. While Java supports rather long strings,
+     * constrained only by int-addressing of arrays, it supports only up to 65535 characters in literals (not sure how
+     * escape-sequences are counted). To circumvent this limitation, the code is automatically splitted into several
+     * literals with the following naming-scheme.
      *
-     * - The marker-interface 'ContainsPyBytecode' indicates that a class
-     *   contains (static final) literals of the following scheme:
-     * - a prefix of '___' indicates a bytecode-containing string literal
-     * - a number indicating the number of parts follows
-     * - '0_' indicates that no splitting occurred
-     * - otherwise another number follows, naming the index of the literal
-     * - indexing starts at 0
+     * - The marker-interface 'ContainsPyBytecode' indicates that a class contains (static final) literals of the
+     * following scheme: - a prefix of '___' indicates a bytecode-containing string literal - a number indicating the
+     * number of parts follows - '0_' indicates that no splitting occurred - otherwise another number follows, naming
+     * the index of the literal - indexing starts at 0
      *
-     * Examples:
-     * ___0_method1   contains bytecode for method1
-     * ___2_0_method2 contains first part of method2's bytecode
+     * Examples: ___0_method1 contains bytecode for method1 ___2_0_method2 contains first part of method2's bytecode
      * ___2_1_method2 contains second part of method2's bytecode
      *
-     * Note that this approach is provisional. In future, Jython might contain
-     * the bytecode directly as bytecode-objects. The current approach was
-     * feasible with much less complicated JVM bytecode-manipulation, but needs
-     * special treatment after class-loading.
+     * Note that this approach is provisional. In future, Jython might contain the bytecode directly as
+     * bytecode-objects. The current approach was feasible with much less complicated JVM bytecode-manipulation, but
+     * needs special treatment after class-loading.
+     * 
+     * @param c
+     *            c
+     * @throws IllegalAccessException
+     *             illegalAccessException
+     * @throws NoSuchFieldException
+     *             noSuchFieldException
+     * @throws IOException
+     *             ioException
+     * @throws ClassNotFoundException
+     *             classNotFoundException
      */
     public static void fixPyBytecode(Class<? extends ContainsPyBytecode> c)
             throws IllegalAccessException, NoSuchFieldException, java.io.IOException,
@@ -257,16 +272,25 @@ public class BytecodeLoader {
         }
     }
 
+    /**
+     * Loader
+     */
     public static class Loader extends URLClassLoader {
 
         private LinkedList<ClassLoader> parents = new LinkedList<>();
 
+        /** Default constructor */
         public Loader() {
             super(new URL[0]);
             parents.add(imp.getSyspathJavaLoader());
         }
 
-        /** Add given loader at the front of the list of the parent list (if not {@code null}). */
+        /**
+         * Add given loader at the front of the list of the parent list (if not {@code null}).
+         * 
+         * @param referent
+         *            referent
+         */
         public void addParent(ClassLoader referent) {
             if (referent != null && !parents.contains(referent)) {
                 parents.addFirst(referent);

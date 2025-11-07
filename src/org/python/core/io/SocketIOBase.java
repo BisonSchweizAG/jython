@@ -8,6 +8,9 @@ import org.python.core.Py;
 
 /**
  * Base raw I/O implementation for sockets.
+ * 
+ * @param <T>
+ *            the type
  *
  * @author Philip Jenvey
  */

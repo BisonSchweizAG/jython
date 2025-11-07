@@ -30,6 +30,7 @@ import org.python.indexer.ast.NModule;
  */
 public class AstCache {
 
+    /** CACHE_DIR */
     public static final String CACHE_DIR = (new File(Util.getSystemTempDir(), "jython/ast_cache"))
             .getAbsolutePath() + File.separator;
 
@@ -46,6 +47,13 @@ public class AstCache {
         }
     }
 
+    /**
+     * Get
+     * 
+     * @return this
+     * @throws Exception
+     *             exception
+     */
     public static AstCache get() throws Exception {
         if (INSTANCE == null) {
             INSTANCE = new AstCache();
@@ -94,11 +102,16 @@ public class AstCache {
     }
 
     /**
-     * Returns the syntax tree for {@code path} with {@code contents}.
-     * Uses the memory cache but not the disk cache.
+     * Returns the syntax tree for {@code path} with {@code contents}. Uses the memory cache but not the disk cache.
      * This method exists primarily for unit testing.
-     * @param path a name for the file.  Can be relative.
-     * @param contents the source to parse
+     * 
+     * @param path
+     *            a name for the file. Can be relative.
+     * @param contents
+     *            the source to parse
+     * @return module
+     * @throws Exception
+     *             exception
      */
     public NModule getAST(String path, String contents) throws Exception {
         if (path == null) {
@@ -236,14 +249,28 @@ public class AstCache {
     }
 
     /**
-     * Each source file's AST is saved in an object file named for the MD5
-     * checksum of the source file.  All that is needed is the MD5, but the
-     * file's base name is included for ease of debugging.
+     * Each source file's AST is saved in an object file named for the MD5 checksum of the source file. All that is
+     * needed is the MD5, but the file's base name is included for ease of debugging.
+     * 
+     * @param sourcePath
+     *            sourcePath
+     * @return s
+     * @throws Exception
+     *             exception
      */
     public String getCachePath(File sourcePath) throws Exception {
         return getCachePath(Util.getMD5(sourcePath), sourcePath.getName());
     }
 
+    /**
+     * GetCachePath
+     * 
+     * @param md5
+     *            md5
+     * @param name
+     *            name
+     * @return s
+     */
     public String getCachePath(String md5, String name) {
         return CACHE_DIR + name + md5 + ".ast";
     }

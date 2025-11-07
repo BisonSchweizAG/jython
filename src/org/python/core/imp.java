@@ -460,7 +460,13 @@ public class imp {
         return compileSource(name, source, sourceFilename);
     }
 
-    /** Remove the last three characters of a file name and add the compiled suffix "$py.class". */
+    /**
+     * Remove the last three characters of a file name and add the compiled suffix "$py.class".
+     * 
+     * @param filename
+     *            filename
+     * @return s
+     */
     public static String makeCompiledFilename(String filename) {
         return filename.substring(0, filename.length() - 3) + "$py.class";
     }
@@ -472,8 +478,14 @@ public class imp {
      *
      * If sourceFilename is null or set to UNKNOWN_SOURCEFILE, then null is returned.
      *
-     * @return the compiledFilename eventually used; or null if a compiledFilename couldn't be
-     *         determined or if an error was thrown while writing to the cache file.
+     * @param sourceFilename
+     *            sourceFilename
+     * @param compiledFilename
+     *            compiledFilename
+     * @param compiledSource
+     *            compiledSource
+     * @return the compiledFilename eventually used; or null if a compiledFilename couldn't be determined or if an error
+     *         was thrown while writing to the cache file.
      */
     public static String cacheCompiledSource(String sourceFilename, String compiledFilename,
             byte[] compiledSource) {
@@ -570,8 +582,14 @@ public class imp {
     }
 
     /**
-     * Returns a module with the given name whose contents are the results of running c. __file__ is
-     * set to whatever is in c.
+     * Returns a module with the given name whose contents are the results of running c. __file__ is set to whatever is
+     * in c.
+     * 
+     * @param name
+     *            name
+     * @param c
+     *            c
+     * @return o
      */
     public static PyObject createFromCode(String name, PyCode c) {
         return createFromCode(name, c, null);
@@ -1533,6 +1551,12 @@ public class imp {
 
     /**
      * Called from jython generated code when a statement like "import spam" is executed.
+     * 
+     * @param mod
+     *            mod
+     * @param frame
+     *            frame
+     * @return o
      */
     @Deprecated
     public static PyObject importOne(String mod, PyFrame frame) {
@@ -1541,6 +1565,14 @@ public class imp {
 
     /**
      * Called from jython generated code when a statement like "import spam" is executed.
+     * 
+     * @param mod
+     *            mod
+     * @param frame
+     *            frame
+     * @param level
+     *            level
+     * @return o
      */
     public static PyObject importOne(String mod, PyFrame frame, int level) {
         PyObject module =
@@ -1550,6 +1582,12 @@ public class imp {
 
     /**
      * Called from jython generated code when a statement like "import spam as foo" is executed.
+     * 
+     * @param mod
+     *            mod
+     * @param frame
+     *            frame
+     * @return o
      */
     @Deprecated
     public static PyObject importOneAs(String mod, PyFrame frame) {
@@ -1558,6 +1596,14 @@ public class imp {
 
     /**
      * Called from jython generated code when a statement like "import spam as foo" is executed.
+     * 
+     * @param mod
+     *            mod
+     * @param frame
+     *            frame
+     * @param level
+     *            level
+     * @return o
      */
     public static PyObject importOneAs(String mod, PyFrame frame, int level) {
         PyObject module =
@@ -1581,6 +1627,13 @@ public class imp {
      * replaced by importFrom with level param. Kept for backwards compatibility.
      *
      * @deprecated use importFrom with level param.
+     * @param mod
+     *            mod
+     * @param names
+     *            names
+     * @param frame
+     *            frame
+     * @return object array
      */
     @Deprecated
     public static PyObject[] importFrom(String mod, String[] names, PyFrame frame) {
@@ -1588,8 +1641,17 @@ public class imp {
     }
 
     /**
-     * Called from jython generated code when a statement like "from spam.eggs import foo, bar" is
-     * executed.
+     * Called from jython generated code when a statement like "from spam.eggs import foo, bar" is executed.
+     * 
+     * @param mod
+     *            mod
+     * @param names
+     *            names
+     * @param frame
+     *            frame
+     * @param level
+     *            level
+     * @return object array
      */
     public static PyObject[] importFrom(String mod, String[] names, PyFrame frame, int level) {
         return importFromAs(mod, names, null, frame, level);
@@ -1599,6 +1661,13 @@ public class imp {
      * replaced by importFromAs with level param. Kept for backwards compatibility.
      *
      * @deprecated use importFromAs with level param.
+     * @param mod
+     *            mod
+     * @param names
+     *            names
+     * @param frame
+     *            frame
+     * @return object array
      */
     @Deprecated
     public static PyObject[] importFromAs(String mod, String[] names, PyFrame frame) {
@@ -1606,8 +1675,19 @@ public class imp {
     }
 
     /**
-     * Called from jython generated code when a statement like "from spam.eggs import foo as spam"
-     * is executed.
+     * Called from jython generated code when a statement like "from spam.eggs import foo as spam" is executed.
+     * 
+     * @param mod
+     *            mod
+     * @param names
+     *            names
+     * @param asnames
+     *            asnames
+     * @param frame
+     *            frame
+     * @param level
+     *            level
+     * @return object array
      */
     public static PyObject[] importFromAs(String mod, String[] names, String[] asnames,
             PyFrame frame, int level) {
@@ -1639,8 +1719,14 @@ public class imp {
     private final static PyTuple all = new PyTuple(Py.newString('*'));
 
     /**
-     * Called from jython generated code when a statement like "from spam.eggs import *" is
-     * executed.
+     * Called from jython generated code when a statement like "from spam.eggs import *" is executed.
+     * 
+     * @param mod
+     *            mod
+     * @param frame
+     *            frame
+     * @param level
+     *            level
      */
     public static void importAll(String mod, PyFrame frame, int level) {
         PyObject module =

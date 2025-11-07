@@ -18,43 +18,104 @@ import org.python.expose.ExposedNew;
 import org.python.expose.ExposedSet;
 import org.python.expose.ExposedType;
 
+/**
+ * AugAssign
+ */
 @ExposedType(name = "_ast.AugAssign", base = stmt.class)
 public class AugAssign extends stmt {
-public static final PyType TYPE = PyType.fromClass(AugAssign.class);
+    /** TYPE */
+    public static final PyType TYPE = PyType.fromClass(AugAssign.class);
     private expr target;
+
+    /**
+     * GetInternalTarget
+     * 
+     * @return expr
+     */
     public expr getInternalTarget() {
         return target;
     }
+
+    /**
+     * GetTarget
+     * 
+     * @return o
+     */
     @ExposedGet(name = "target")
     public PyObject getTarget() {
         return target;
     }
+
+    /**
+     * SetTarget
+     * 
+     * @param target
+     *            target
+     */
     @ExposedSet(name = "target")
     public void setTarget(PyObject target) {
         this.target = AstAdapters.py2expr(target);
     }
 
     private operatorType op;
+
+    /**
+     * GetInternalOp
+     * 
+     * @return type
+     */
     public operatorType getInternalOp() {
         return op;
     }
+
+    /**
+     * getOp
+     * 
+     * @return o
+     */
     @ExposedGet(name = "op")
     public PyObject getOp() {
         return AstAdapters.operator2py(op);
     }
+
+    /**
+     * SetOp
+     * 
+     * @param op
+     *            op
+     */
     @ExposedSet(name = "op")
     public void setOp(PyObject op) {
         this.op = AstAdapters.py2operator(op);
     }
 
     private expr value;
+
+    /**
+     * GetInternalValue
+     * 
+     * @return expr
+     */
     public expr getInternalValue() {
         return value;
     }
+
+    /**
+     * GetValue
+     * 
+     * @return o
+     */
     @ExposedGet(name = "value")
     public PyObject getValue() {
         return value;
     }
+
+    /**
+     * SetValue
+     * 
+     * @param value
+     *            value
+     */
     @ExposedSet(name = "value")
     public void setValue(PyObject value) {
         this.value = AstAdapters.py2expr(value);
@@ -71,12 +132,31 @@ public static final PyType TYPE = PyType.fromClass(AugAssign.class);
     @ExposedGet(name = "_attributes")
     public PyString[] get_attributes() { return attributes; }
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public AugAssign(PyType subType) {
         super(subType);
     }
+
+    /**
+     * Default constructor
+     */
     public AugAssign() {
         this(TYPE);
     }
+
+    /**
+     * AugAssign___init__
+     * 
+     * @param args
+     *            args
+     * @param keywords
+     *            keywords
+     */
     @ExposedNew
     @ExposedMethod
     public void AugAssign___init__(PyObject[] args, String[] keywords) {
@@ -97,12 +177,34 @@ public static final PyType TYPE = PyType.fromClass(AugAssign.class);
 
     }
 
+    /**
+     * Constructor
+     * 
+     * @param target
+     *            target
+     * @param op
+     *            op
+     * @param value
+     *            value
+     */
     public AugAssign(PyObject target, PyObject op, PyObject value) {
         setTarget(target);
         setOp(op);
         setValue(value);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param token
+     *            token
+     * @param target
+     *            target
+     * @param op
+     *            op
+     * @param value
+     *            value
+     */
     public AugAssign(Token token, expr target, operatorType op, expr value) {
         super(token);
         this.target = target;
@@ -112,6 +214,20 @@ public static final PyType TYPE = PyType.fromClass(AugAssign.class);
         addChild(value);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param ttype
+     *            ttype
+     * @param token
+     *            token
+     * @param target
+     *            target
+     * @param op
+     *            op
+     * @param value
+     *            value
+     */
     public AugAssign(Integer ttype, Token token, expr target, operatorType op, expr value) {
         super(ttype, token);
         this.target = target;
@@ -121,6 +237,18 @@ public static final PyType TYPE = PyType.fromClass(AugAssign.class);
         addChild(value);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param tree
+     *            tree
+     * @param target
+     *            target
+     * @param op
+     *            op
+     * @param value
+     *            value
+     */
     public AugAssign(PythonTree tree, expr target, operatorType op, expr value) {
         super(tree);
         this.target = target;
@@ -161,6 +289,7 @@ public static final PyType TYPE = PyType.fromClass(AugAssign.class);
             value.accept(visitor);
     }
 
+    /** __dict__ */
     public PyObject __dict__;
 
     @Override
@@ -189,6 +318,12 @@ public static final PyType TYPE = PyType.fromClass(AugAssign.class);
         return getLine();
     }
 
+    /**
+     * SetLineno
+     * 
+     * @param num
+     *            num
+     */
     @ExposedSet(name = "lineno")
     public void setLineno(int num) {
         lineno = num;
@@ -203,6 +338,12 @@ public static final PyType TYPE = PyType.fromClass(AugAssign.class);
         return getCharPositionInLine();
     }
 
+    /**
+     * SetCol_offset
+     * 
+     * @param num
+     *            num
+     */
     @ExposedSet(name = "col_offset")
     public void setCol_offset(int num) {
         col_offset = num;

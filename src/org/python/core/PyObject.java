@@ -149,7 +149,14 @@ public class PyObject implements Serializable {
         return objtype;
     }
 
-    /** Dispatch __init__ behavior */
+    /**
+     * Dispatch __init__ behavior
+     * 
+     * @param args
+     *            args
+     * @param keywords
+     *            keywords
+     */
     public void dispatch__init__(PyObject[] args, String[] keywords) {}
 
     /**
@@ -197,8 +204,10 @@ public class PyObject implements Serializable {
     }
 
     /**
-     * Equivalent to the standard Python <code>__repr__</code> method. Each sub-class of
-     * <code>PyObject</code> is likely to re-define this method to provide for its own reproduction.
+     * Equivalent to the standard Python <code>__repr__</code> method. Each sub-class of <code>PyObject</code> is likely
+     * to re-define this method to provide for its own reproduction.
+     * 
+     * @return s
      **/
     /*
      * The effect of exposing __repr__ as __str__ is that a Python call to o.__str__() will land
@@ -241,12 +250,13 @@ public class PyObject implements Serializable {
     }
 
     /**
-     * Equivalent to the standard Python __str__ method. The default implementation (in
-     * <code>PyObject</code>) calls {@link #__repr__()}, making it unnecessary to override
-     * <code>__str__</code> in sub-classes of <code>PyObject</code> where both forms are the same. A
-     * common choice is to provide the same implementation to <code>__str__</code> and
-     * <code>toString</code>, for consistency in the printed form of objects between Python and
+     * Equivalent to the standard Python __str__ method. The default implementation (in <code>PyObject</code>) calls
+     * {@link #__repr__()}, making it unnecessary to override <code>__str__</code> in sub-classes of
+     * <code>PyObject</code> where both forms are the same. A common choice is to provide the same implementation to
+     * <code>__str__</code> and <code>toString</code>, for consistency in the printed form of objects between Python and
      * Java.
+     * 
+     * @return s
      **/
     public PyString __str__() {
         return __repr__();
@@ -260,14 +270,21 @@ public class PyObject implements Serializable {
     @ExposedMethod
     public void __ensure_finalizer__() {}
 
+    /**
+     * __unicode__
+     * 
+     * @return u
+     */
     public PyUnicode __unicode__() {
         return new PyUnicode(__str__());
     }
 
     /**
-     * Equivalent to the standard Python __hash__ method. This method can not be overridden.
-     * Instead, you should override the standard Java <code>hashCode</code> method to return an
-     * appropriate hash code for the <code>PyObject</code>.
+     * Equivalent to the standard Python __hash__ method. This method can not be overridden. Instead, you should
+     * override the standard Java <code>hashCode</code> method to return an appropriate hash code for the
+     * <code>PyObject</code>.
+     * 
+     * @return i
      **/
     public final PyInteger __hash__() {
         return new PyInteger(hashCode());
@@ -296,19 +313,23 @@ public class PyObject implements Serializable {
     }
 
     /**
-     * Equivalent to the standard Python __nonzero__ method. Returns whether of not a given
-     * <code>PyObject</code> is considered true.
+     * Equivalent to the standard Python __nonzero__ method. Returns whether of not a given <code>PyObject</code> is
+     * considered true.
+     * 
+     * @return {@code true}
      */
     public boolean __nonzero__() {
         return true;
     }
 
     /**
-     * Equivalent to the Jython __tojava__ method. Tries to coerce this object to an instance of the
-     * requested Java class. Returns the special object <code>Py.NoConversion</code> if this
-     * <code>PyObject</code> can not be converted to the desired Java class.
+     * Equivalent to the Jython __tojava__ method. Tries to coerce this object to an instance of the requested Java
+     * class. Returns the special object <code>Py.NoConversion</code> if this <code>PyObject</code> can not be converted
+     * to the desired Java class.
      *
-     * @param c the Class to convert this <code>PyObject</code> to.
+     * @param c
+     *            the Class to convert this <code>PyObject</code> to.
+     * @return o
      **/
     public Object __tojava__(Class<?> c) {
         Object proxy = getJavaProxy();
@@ -372,11 +393,14 @@ public class PyObject implements Serializable {
     /**
      * The basic method to override when implementing a callable object.
      *
-     * The first len(args)-len(keywords) members of args[] are plain arguments. The last
-     * len(keywords) arguments are the values of the keyword arguments.
+     * The first len(args)-len(keywords) members of args[] are plain arguments. The last len(keywords) arguments are the
+     * values of the keyword arguments.
      *
-     * @param args all arguments to the function (including keyword arguments).
-     * @param keywords the keywords used for all keyword arguments.
+     * @param args
+     *            all arguments to the function (including keyword arguments).
+     * @param keywords
+     *            the keywords used for all keyword arguments.
+     * @return o
      **/
     public PyObject __call__(PyObject args[], String keywords[]) {
         throw Py.TypeError(String.format("'%s' object is not callable", getType().fastGetName()));
@@ -387,15 +411,19 @@ public class PyObject implements Serializable {
     }
 
     /**
-     * A variant of the __call__ method with one extra initial argument. This variant is used to
-     * allow method invocations to be performed efficiently.
+     * A variant of the __call__ method with one extra initial argument. This variant is used to allow method
+     * invocations to be performed efficiently.
      *
-     * The default behavior is to invoke <code>__call__(args, keywords)</code> with the appropriate
-     * arguments. The only reason to override this function would be for improved performance.
+     * The default behavior is to invoke <code>__call__(args, keywords)</code> with the appropriate arguments. The only
+     * reason to override this function would be for improved performance.
      *
-     * @param arg1 the first argument to the function.
-     * @param args the last arguments to the function (including keyword arguments).
-     * @param keywords the keywords used for all keyword arguments.
+     * @param arg1
+     *            the first argument to the function.
+     * @param args
+     *            the last arguments to the function (including keyword arguments).
+     * @param keywords
+     *            the keywords used for all keyword arguments.
+     * @return o
      **/
     public PyObject __call__(PyObject arg1, PyObject args[], String keywords[]) {
         PyObject[] newArgs = new PyObject[args.length + 1];
@@ -409,11 +437,13 @@ public class PyObject implements Serializable {
     }
 
     /**
-     * A variant of the __call__ method when no keywords are passed. The default behavior is to
-     * invoke <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason
-     * to override this function would be for improved performance.
+     * A variant of the __call__ method when no keywords are passed. The default behavior is to invoke
+     * <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason to override this function
+     * would be for improved performance.
      *
-     * @param args all arguments to the function.
+     * @param args
+     *            all arguments to the function.
+     * @return o
      **/
     public PyObject __call__(PyObject args[]) {
         return __call__(args, Py.NoKeywords);
@@ -425,8 +455,10 @@ public class PyObject implements Serializable {
 
     /**
      * A variant of the __call__ method with no arguments. The default behavior is to invoke
-     * <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason to
-     * override this function would be for improved performance.
+     * <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason to override this function
+     * would be for improved performance.
+     * 
+     * @return o
      **/
     public PyObject __call__() {
         return __call__(Py.EmptyObjects, Py.NoKeywords);
@@ -438,10 +470,12 @@ public class PyObject implements Serializable {
 
     /**
      * A variant of the __call__ method with one argument. The default behavior is to invoke
-     * <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason to
-     * override this function would be for improved performance.
+     * <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason to override this function
+     * would be for improved performance.
      *
-     * @param arg0 the single argument to the function.
+     * @param arg0
+     *            the single argument to the function.
+     * @return o
      **/
     public PyObject __call__(PyObject arg0) {
         return __call__(new PyObject[] {arg0}, Py.NoKeywords);
@@ -453,11 +487,14 @@ public class PyObject implements Serializable {
 
     /**
      * A variant of the __call__ method with two arguments. The default behavior is to invoke
-     * <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason to
-     * override this function would be for improved performance.
+     * <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason to override this function
+     * would be for improved performance.
      *
-     * @param arg0 the first argument to the function.
-     * @param arg1 the second argument to the function.
+     * @param arg0
+     *            the first argument to the function.
+     * @param arg1
+     *            the second argument to the function.
+     * @return o
      **/
     public PyObject __call__(PyObject arg0, PyObject arg1) {
         return __call__(new PyObject[] {arg0, arg1}, Py.NoKeywords);
@@ -469,12 +506,16 @@ public class PyObject implements Serializable {
 
     /**
      * A variant of the __call__ method with three arguments. The default behavior is to invoke
-     * <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason to
-     * override this function would be for improved performance.
+     * <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason to override this function
+     * would be for improved performance.
      *
-     * @param arg0 the first argument to the function.
-     * @param arg1 the second argument to the function.
-     * @param arg2 the third argument to the function.
+     * @param arg0
+     *            the first argument to the function.
+     * @param arg1
+     *            the second argument to the function.
+     * @param arg2
+     *            the third argument to the function.
+     * @return o
      **/
     public PyObject __call__(PyObject arg0, PyObject arg1, PyObject arg2) {
         return __call__(new PyObject[] {arg0, arg1, arg2}, Py.NoKeywords);
@@ -486,13 +527,18 @@ public class PyObject implements Serializable {
 
     /**
      * A variant of the __call__ method with four arguments. The default behavior is to invoke
-     * <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason to
-     * override this function would be for improved performance.
+     * <code>__call__(args, keywords)</code> with the appropriate arguments. The only reason to override this function
+     * would be for improved performance.
      *
-     * @param arg0 the first argument to the function.
-     * @param arg1 the second argument to the function.
-     * @param arg2 the third argument to the function.
-     * @param arg3 the fourth argument to the function.
+     * @param arg0
+     *            the first argument to the function.
+     * @param arg1
+     *            the second argument to the function.
+     * @param arg2
+     *            the third argument to the function.
+     * @param arg3
+     *            the fourth argument to the function.
+     * @return o
      **/
     public PyObject __call__(PyObject arg0, PyObject arg1, PyObject arg2, PyObject arg3) {
         return __call__(new PyObject[] {arg0, arg1, arg2, arg3}, Py.NoKeywords);
@@ -772,29 +818,89 @@ public class PyObject implements Serializable {
         __delitem__(new PyString(key));
     }
 
+    /**
+     * __getslice__
+     * 
+     * @param s_start
+     *            s_start
+     * @param s_stop
+     *            s_stop
+     * @param s_step
+     *            s_step
+     * @return o
+     */
     public PyObject __getslice__(PyObject s_start, PyObject s_stop, PyObject s_step) {
         PySlice s = new PySlice(s_start, s_stop, s_step);
         return __getitem__(s);
     }
 
+    /**
+     * __setslice__
+     * 
+     * @param s_start
+     *            s_start
+     * @param s_stop
+     *            s_stop
+     * @param s_step
+     *            s_step
+     * @param value
+     *            value
+     */
     public void __setslice__(PyObject s_start, PyObject s_stop, PyObject s_step, PyObject value) {
         PySlice s = new PySlice(s_start, s_stop, s_step);
         __setitem__(s, value);
     }
 
+    /**
+     * __delsclice__
+     * 
+     * @param s_start
+     *            s_start
+     * @param s_stop
+     *            s_stop
+     * @param s_step
+     *            s_step
+     */
     public void __delslice__(PyObject s_start, PyObject s_stop, PyObject s_step) {
         PySlice s = new PySlice(s_start, s_stop, s_step);
         __delitem__(s);
     }
 
+    /**
+     * __getslice__
+     * 
+     * @param start
+     *            start
+     * @param stop
+     *            stop
+     * @return o
+     */
     public PyObject __getslice__(PyObject start, PyObject stop) {
         return __getslice__(start, stop, null);
     }
 
+    /**
+     * __setsclice__
+     * 
+     * @param start
+     *            start
+     * @param stop
+     *            stop
+     * @param value
+     *            value
+     */
     public void __setslice__(PyObject start, PyObject stop, PyObject value) {
         __setslice__(start, stop, null, value);
     }
 
+    /**
+     * __delsclice__
+     * 
+     * @param start
+     *            start
+     * @param stop
+     *            stop
+     */
     public void __delslice__(PyObject start, PyObject stop) {
         __delslice__(start, stop, null);
     }
@@ -802,21 +908,27 @@ public class PyObject implements Serializable {
     /* The basic functions to implement an iterator */
 
     /**
-     * Return an iterator that is used to iterate the element of this sequence. From version 2.2,
-     * this method is the primary protocol for looping over sequences.
+     * Return an iterator that is used to iterate the element of this sequence. From version 2.2, this method is the
+     * primary protocol for looping over sequences.
      * <p>
-     * If a PyObject subclass should support iteration based in the __finditem__() method, it must
-     * supply an implementation of __iter__() like this: <pre>
+     * If a PyObject subclass should support iteration based in the __finditem__() method, it must supply an
+     * implementation of __iter__() like this:
+     * 
+     * <pre>
      * public PyObject __iter__() {
      *     return new PySequenceIter(this);
      * }
-     * </pre> When iterating over a python sequence from java code, it should be done with code like
-     * this: <pre>
+     * </pre>
+     * 
+     * When iterating over a python sequence from java code, it should be done with code like this:
+     * 
+     * <pre>
      * for (PyObject item : seq.asIterable()) {
      *     // Do something with item
      * }
      * </pre>
      *
+     * @return o
      * @since 2.2
      */
     public PyObject __iter__() {
@@ -825,9 +937,10 @@ public class PyObject implements Serializable {
     }
 
     /**
-     * Returns an Iterable over the Python iterator returned by __iter__ on this object. If this
-     * object doesn't support __iter__, a TypeException will be raised when iterator is called on
-     * the returned Iterable.
+     * Returns an Iterable over the Python iterator returned by __iter__ on this object. If this object doesn't support
+     * __iter__, a TypeException will be raised when iterator is called on the returned Iterable.
+     * 
+     * @return iterable
      */
     public Iterable<PyObject> asIterable() {
         return new Iterable<PyObject>() {
@@ -846,9 +959,10 @@ public class PyObject implements Serializable {
     }
 
     /**
-     * Return the next element of the sequence that this is an iterator for. Returns null when the
-     * end of the sequence is reached.
+     * Return the next element of the sequence that this is an iterator for. Returns null when the end of the sequence
+     * is reached.
      *
+     * @return o
      * @since 2.2
      */
     public PyObject __iternext__() {
@@ -895,17 +1009,18 @@ public class PyObject implements Serializable {
     }
 
     /**
-     * Attribute lookup hook. If the attribute is not found, null may be returned or a
-     * Py.AttributeError can be thrown, whatever is more correct, efficient and/or convenient for
-     * the implementing class.
+     * Attribute lookup hook. If the attribute is not found, null may be returned or a Py.AttributeError can be thrown,
+     * whatever is more correct, efficient and/or convenient for the implementing class.
      *
-     * Client code should use {@link #__getattr__(String)} or {@link #__findattr__(String)}. Both
-     * methods have a clear policy for failed lookups.
+     * Client code should use {@link #__getattr__(String)} or {@link #__findattr__(String)}. Both methods have a clear
+     * policy for failed lookups.
      *
+     * @param name
+     *            name
      * @return The looked up value. May return null if the attribute is not found
-     * @throws PyException {@code AttributeError} if the attribute is not found. This is not
-     *             mandatory, null can be returned if it fits the implementation better, or for
-     *             performance reasons.
+     * @throws PyException
+     *             {@code AttributeError} if the attribute is not found. This is not mandatory, null can be returned if
+     *             it fits the implementation better, or for performance reasons.
      */
     public PyObject __findattr_ex__(String name) {
         return object___findattr__(name);
@@ -962,8 +1077,12 @@ public class PyObject implements Serializable {
     /**
      * Equivalent to the standard Python __setattr__ method. This method can not be overridden.
      *
-     * @param name the name to lookup in this namespace
-     * @throws PyException {@code AttributeError} if the name is not found.
+     * @param name
+     *            the name to lookup in this namespace
+     * @param value
+     *            value
+     * @throws PyException
+     *             {@code AttributeError} if the name is not found.
      *
      * @see #__setattr__(java.lang.String, PyObject)
      **/
@@ -1167,14 +1286,15 @@ public class PyObject implements Serializable {
     }
 
     /**
-     * Adapts the result of __coerce_ex__ to a tuple of two elements, with the resulting coerced
-     * values, or to Py.NotImplemented, if o is Py.None.
+     * Adapts the result of __coerce_ex__ to a tuple of two elements, with the resulting coerced values, or to
+     * Py.NotImplemented, if o is Py.None.
      *
-     * This is safe to be used from subclasses exposing '__coerce__' (as opposed to
-     * {@link #__coerce__(PyObject)}, which calls the virtual method
-     * {@link #__coerce_ex__(PyObject)})
+     * This is safe to be used from subclasses exposing '__coerce__' (as opposed to {@link #__coerce__(PyObject)}, which
+     * calls the virtual method {@link #__coerce_ex__(PyObject)})
      *
-     * @param o either a PyObject[2] or a PyObject, as given by {@link #__coerce_ex__(PyObject)}.
+     * @param o
+     *            either a PyObject[2] or a PyObject, as given by {@link #__coerce_ex__(PyObject)}.
+     * @return o
      */
     protected final PyObject adaptToCoerceTuple(Object o) {
         if (o == Py.None) {
@@ -1718,6 +1838,13 @@ public class PyObject implements Serializable {
         return object___contains__(o);
     }
 
+    /**
+     * Object___contains__
+     * 
+     * @param o
+     *            o
+     * @return contains
+     */
     final boolean object___contains__(PyObject o) {
         for (PyObject item : asIterable()) {
             if (o.equals(item)) {
@@ -1727,10 +1854,24 @@ public class PyObject implements Serializable {
         return false;
     }
 
+    /**
+     * __format__
+     * 
+     * @param formatSpec
+     *            formatSpec
+     * @return o
+     */
     public PyObject __format__(PyObject formatSpec) {
         return object___format__(formatSpec);
     }
 
+    /**
+     * Object___format__
+     * 
+     * @param formatSpec
+     *            formatSpec
+     * @return o
+     */
     @ExposedMethod(doc = BuiltinDocs.object___format___doc)
     final PyObject object___format__(PyObject formatSpec) {
         if (formatSpec != null && formatSpec instanceof PyString
@@ -1894,8 +2035,13 @@ public class PyObject implements Serializable {
     }
 
     /**
-     * @param op the String form of the op (e.g. "+")
-     * @param o2 the right operand
+     * Unsupported op
+     * 
+     * @param op
+     *            the String form of the op (e.g. "+")
+     * @param o2
+     *            the right operand
+     * @return s
      */
     protected final String _unsupportedop(String op, PyObject o2) {
         Object[] args = {op, getType().fastGetName(), o2.getType().fastGetName()};
@@ -1913,6 +2059,12 @@ public class PyObject implements Serializable {
      * Should return an error message suitable for substitution where.
      *
      * {0} is the op name. {1} is the left operand type. {2} is the right operand type.
+     * 
+     * @param op
+     *            op
+     * @param o2
+     *            o2
+     * @return s
      */
     protected String unsupportedopMessage(String op, PyObject o2) {
         return null;
@@ -1922,6 +2074,12 @@ public class PyObject implements Serializable {
      * Should return an error message suitable for substitution where.
      *
      * {0} is the op name. {1} is the left operand type. {2} is the right operand type.
+     * 
+     * @param op
+     *            op
+     * @param o2
+     *            o2
+     * @return s
      */
     protected String runsupportedopMessage(String op, PyObject o2) {
         return null;
@@ -3545,6 +3703,12 @@ public class PyObject implements Serializable {
 
     /**
      * A convenience function for PyProxys.
+     * 
+     * @param args
+     *            args
+     * @return o
+     * @throws Throwable
+     *             in case of failure
      */
     public PyObject _jcallexc(Object[] args) throws Throwable {
         try {
@@ -3679,30 +3843,59 @@ public class PyObject implements Serializable {
         return null;
     }
 
+    /**
+     * SetDict
+     * 
+     * @param newDict
+     *            newDict
+     */
     public void setDict(PyObject newDict) {
         // fallback if setDict not implemented in subclass
         throw Py.TypeError(
                 "can't set attribute '__dict__' of instance of " + getType().fastGetName());
     }
 
+    /**
+     * DelDict
+     */
     public void delDict() {
         // fallback to error
         throw Py.TypeError("can't delete attribute '__dict__' of instance of '"
                 + getType().fastGetName() + "'");
     }
 
+    /**
+     * ImplementsDescrGet
+     * 
+     * @return implementsDescrGet
+     */
     public boolean implementsDescrGet() {
         return objtype.hasGet;
     }
 
+    /**
+     * ImplementsDescrSet
+     * 
+     * @return implementsDescrSet
+     */
     public boolean implementsDescrSet() {
         return objtype.hasSet;
     }
 
+    /**
+     * ImplementsDescrDelete
+     * 
+     * @return mplementsDescrDelete
+     */
     public boolean implementsDescrDelete() {
         return objtype.hasDelete;
     }
 
+    /**
+     * IsDataDescr
+     * 
+     * @return isDataDescr
+     */
     public boolean isDataDescr() {
         return objtype.hasSet || objtype.hasDelete;
     }
@@ -3720,12 +3913,27 @@ public class PyObject implements Serializable {
         return _doget(obj, type);
     }
 
+    /**
+     * __set__
+     * 
+     * @param obj
+     *            obj
+     * @param value
+     *            value¬3766
+     * 
+     */
     public void __set__(PyObject obj, PyObject value) {
         if (!_doset(obj, value)) {
             throw Py.AttributeError("object internal __set__ impl is abstract");
         }
     }
 
+    /**
+     * __delete__
+     * 
+     * @param obj
+     *            obj
+     */
     public void __delete__(PyObject obj) {
         throw Py.AttributeError("object internal __delete__ impl is abstract");
     }
@@ -4056,10 +4264,24 @@ public class PyObject implements Serializable {
 
     }
 
+    /**
+     * AsString
+     * 
+     * @param index
+     *            index
+     * @return s
+     * @throws ConversionException
+     *             conversionException
+     */
     public String asString(int index) throws ConversionException {
         throw new ConversionException(index);
     }
 
+    /**
+     * AsString
+     * 
+     * @return s
+     */
     public String asString() {
         throw Py.TypeError("expected a str");
     }
@@ -4068,16 +4290,39 @@ public class PyObject implements Serializable {
         return asString(index);
     }
 
+    /**
+     * AsStringOrNull
+     * 
+     * @return s
+     */
     public String asStringOrNull() {
         return asString();
     }
 
-    // TODO - remove when all asName users are moved to the @Exposed annotation
+    /**
+     * AsName<br>
+     * TODO - remove when all asName users are moved to the @Exposed annotation
+     * 
+     * @param index
+     *            index
+     * @return s
+     * @throws ConversionException
+     *             conversionException
+     */
     public String asName(int index) throws ConversionException {
         throw new ConversionException(index);
     }
 
-    // TODO - remove when all generated users are migrated to @Exposed and asInt()
+    /**
+     * AsInt<br>
+     * TODO - remove when all generated users are migrated to @Exposed and asInt()
+     * 
+     * @param index
+     *            index
+     * @return i
+     * @throws ConversionException
+     *             conversionException
+     */
     public int asInt(int index) throws ConversionException {
         throw new ConversionException(index);
     }

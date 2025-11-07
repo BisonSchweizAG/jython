@@ -17,44 +17,105 @@ import org.python.expose.ExposedNew;
 import org.python.expose.ExposedSet;
 import org.python.expose.ExposedType;
 
+/**
+ * Attribute
+ */
 @ExposedType(name = "_ast.Attribute", base = expr.class)
 public class Attribute extends expr implements Context {
-public static final PyType TYPE = PyType.fromClass(Attribute.class);
+    /** TYPE */
+    public static final PyType TYPE = PyType.fromClass(Attribute.class);
     private expr value;
+
+    /**
+     * GetInternalValue
+     * 
+     * @return expr
+     */
     public expr getInternalValue() {
         return value;
     }
+
+    /**
+     * GetValue
+     * 
+     * @return o
+     */
     @ExposedGet(name = "value")
     public PyObject getValue() {
         return value;
     }
+
+    /**
+     * SetValue
+     * 
+     * @param value
+     *            value
+     */
     @ExposedSet(name = "value")
     public void setValue(PyObject value) {
         this.value = AstAdapters.py2expr(value);
     }
 
     private String attr;
+
+    /**
+     * GetInternalAttr
+     * 
+     * @return s
+     */
     public String getInternalAttr() {
         return attr;
     }
+
+    /**
+     * GetAttr
+     * 
+     * @return o
+     */
     @ExposedGet(name = "attr")
     public PyObject getAttr() {
         if (attr == null) return Py.None;
         return new PyString(attr);
     }
+
+    /**
+     * SetAttr
+     * 
+     * @param attr
+     *            attr
+     */
     @ExposedSet(name = "attr")
     public void setAttr(PyObject attr) {
         this.attr = AstAdapters.py2identifier(attr);
     }
 
     private expr_contextType ctx;
+
+    /**
+     * GetInternalCtx
+     * 
+     * @return type
+     */
     public expr_contextType getInternalCtx() {
         return ctx;
     }
+
+    /**
+     * GetCtx
+     * 
+     * @return o
+     */
     @ExposedGet(name = "ctx")
     public PyObject getCtx() {
         return AstAdapters.expr_context2py(ctx);
     }
+
+    /**
+     * SetCtx
+     * 
+     * @param ctx
+     *            ctx
+     */
     @ExposedSet(name = "ctx")
     public void setCtx(PyObject ctx) {
         this.ctx = AstAdapters.py2expr_context(ctx);
@@ -71,12 +132,31 @@ public static final PyType TYPE = PyType.fromClass(Attribute.class);
     @ExposedGet(name = "_attributes")
     public PyString[] get_attributes() { return attributes; }
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public Attribute(PyType subType) {
         super(subType);
     }
+
+    /**
+     * Default constructor
+     */
     public Attribute() {
         this(TYPE);
     }
+
+    /**
+     * Attribute___init__
+     * 
+     * @param args
+     *            args
+     * @param keywords
+     *            keywords
+     */
     @ExposedNew
     @ExposedMethod
     public void Attribute___init__(PyObject[] args, String[] keywords) {
@@ -97,12 +177,34 @@ public static final PyType TYPE = PyType.fromClass(Attribute.class);
 
     }
 
+    /**
+     * Constructor
+     * 
+     * @param value
+     *            value
+     * @param attr
+     *            attr
+     * @param ctx
+     *            ctx
+     */
     public Attribute(PyObject value, PyObject attr, PyObject ctx) {
         setValue(value);
         setAttr(attr);
         setCtx(ctx);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param token
+     *            token
+     * @param value
+     *            value
+     * @param attr
+     *            attr
+     * @param ctx
+     *            ctx
+     */
     public Attribute(Token token, expr value, String attr, expr_contextType ctx) {
         super(token);
         this.value = value;
@@ -111,6 +213,20 @@ public static final PyType TYPE = PyType.fromClass(Attribute.class);
         this.ctx = ctx;
     }
 
+    /**
+     * Constructor
+     * 
+     * @param ttype
+     *            ttype
+     * @param token
+     *            token
+     * @param value
+     *            value
+     * @param attr
+     *            attr
+     * @param ctx
+     *            ctx
+     */
     public Attribute(Integer ttype, Token token, expr value, String attr, expr_contextType ctx) {
         super(ttype, token);
         this.value = value;
@@ -119,6 +235,18 @@ public static final PyType TYPE = PyType.fromClass(Attribute.class);
         this.ctx = ctx;
     }
 
+    /**
+     * Constructor
+     * 
+     * @param tree
+     *            tree
+     * @param value
+     *            value
+     * @param attr
+     *            attr
+     * @param ctx
+     *            ctx
+     */
     public Attribute(PythonTree tree, expr value, String attr, expr_contextType ctx) {
         super(tree);
         this.value = value;
@@ -156,6 +284,7 @@ public static final PyType TYPE = PyType.fromClass(Attribute.class);
             value.accept(visitor);
     }
 
+    /** __dict__ */
     public PyObject __dict__;
 
     @Override
@@ -188,6 +317,12 @@ public static final PyType TYPE = PyType.fromClass(Attribute.class);
         return getLine();
     }
 
+    /**
+     * SetLineno
+     * 
+     * @param num
+     *            num
+     */
     @ExposedSet(name = "lineno")
     public void setLineno(int num) {
         lineno = num;
@@ -202,6 +337,12 @@ public static final PyType TYPE = PyType.fromClass(Attribute.class);
         return getCharPositionInLine();
     }
 
+    /**
+     * SetCol_offset
+     * 
+     * @param num
+     *            num
+     */
     @ExposedSet(name = "col_offset")
     public void setCol_offset(int num) {
         col_offset = num;
@@ -210,9 +351,28 @@ public static final PyType TYPE = PyType.fromClass(Attribute.class);
     // Support for indexer below
 
     private Name attrName;
+
+    /**
+     * GetInternalAttrName
+     * 
+     * @return name
+     */
     public Name getInternalAttrName() {
         return attrName;
     }
+
+    /**
+     * Constructor
+     * 
+     * @param token
+     *            token
+     * @param value
+     *            value
+     * @param attr
+     *            attr
+     * @param ctx
+     *            ctx
+     */
     public Attribute(Token token, expr value, Name attr, expr_contextType ctx) {
         super(token);
         this.value = value;
@@ -222,6 +382,20 @@ public static final PyType TYPE = PyType.fromClass(Attribute.class);
         this.ctx = ctx;
     }
 
+    /**
+     * Constructor
+     * 
+     * @param ttype
+     *            ttype
+     * @param token
+     *            token
+     * @param value
+     *            value
+     * @param attr
+     *            attr
+     * @param ctx
+     *            ctx
+     */
     public Attribute(Integer ttype, Token token, expr value, Name attr, expr_contextType ctx) {
         super(ttype, token);
         this.value = value;

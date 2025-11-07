@@ -45,9 +45,15 @@ public abstract class BaseDB {
 
     /**
      * Construct the helper.
+     * 
+     * @param connection
+     *            connection
+     * @param dataHandler
+     *            dataHandler
+     * @param tableName
+     *            tableName
      */
     public BaseDB(PyConnection connection, Class dataHandler, String tableName) {
-
         this.tableName = tableName;
         this.dataHandler = dataHandler;
         this.connection = connection;
@@ -55,11 +61,12 @@ public abstract class BaseDB {
     }
 
     /**
-     * Create a new constructor and optionally bind a new DataHandler.  The new DataHandler must act as
-     * a Decorator, having a single argument constructor of another DataHandler.  The new DataHandler is
-     * then expected to delegate all calls to the original while enhancing the functionality in any matter
-     * desired.  This allows additional functionality without losing any previous work or requiring any
-     * complicated inheritance dependencies.
+     * Create a new constructor and optionally bind a new DataHandler. The new DataHandler must act as a Decorator,
+     * having a single argument constructor of another DataHandler. The new DataHandler is then expected to delegate all
+     * calls to the original while enhancing the functionality in any matter desired. This allows additional
+     * functionality without losing any previous work or requiring any complicated inheritance dependencies.
+     * 
+     * @return cursor
      */
     @SuppressWarnings("unchecked")
     protected PyCursor cursor() {

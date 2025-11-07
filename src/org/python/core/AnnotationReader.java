@@ -5,7 +5,6 @@
 package org.python.core;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
@@ -33,7 +32,11 @@ public class AnnotationReader extends ClassVisitor {
 
     /**
      * Reads the classfile bytecode in data and to extract the version.
-     * @throws IOException - if the classfile is malformed.
+     * 
+     * @param data
+     *            data
+     * @throws IOException
+     *             - if the classfile is malformed.
      */
     public AnnotationReader(byte[] data) throws IOException {
         super(Opcodes.ASM7);
@@ -69,14 +72,29 @@ public class AnnotationReader extends ClassVisitor {
 		};
     }
 
+    /**
+     * GetVersion
+     * 
+     * @return i
+     */
     public int getVersion() {
         return version;
     }
 
+    /**
+     * GetMTime
+     * 
+     * @return time
+     */
     public long getMTime() {
         return mtime;
     }
 
+    /**
+     * GetFilename
+     * 
+     * @return s
+     */
     public String getFilename() {
         return filename;
     }

@@ -25,12 +25,11 @@ public interface Source {
     public void start();
 
     /**
-     * Return the next row from the source.
-     * The following format:<br>
-     * &nbsp;&nbsp;[(colName, colType), (colName, colType), ...]
-     * for headers and:<br>
-     * &nbsp;&nbsp;[(col), (colName, colType), ...]
-     * for all other data must be used.
+     * Return the next row from the source. The following format:<br>
+     * &nbsp;&nbsp;[(colName, colType), (colName, colType), ...] for headers and:<br>
+     * &nbsp;&nbsp;[(col), (colName, colType), ...] for all other data must be used.
+     * 
+     * @return o
      */
     public PyObject next();
 

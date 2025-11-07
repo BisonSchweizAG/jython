@@ -11,26 +11,46 @@ import org.python.expose.ExposedMethod;
 import org.python.expose.ExposedNew;
 import org.python.expose.ExposedType;
 
+/**
+ * compress
+ */
 @ExposedType(name = "itertools.compress", base = PyObject.class, doc = compress.compress_doc)
 public class compress extends PyIterator {
 
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(compress.class);
     private itertools.ItertoolsIterator iter;
 
+    /** compress_doc */
     public static final String compress_doc =
         "compress(data, selectors) --> iterator over selected data\n\n" +
         "Return data elements corresponding to true selector elements.\n" +
         "Forms a shorter iterator from selected data elements using the\n" +
         "selectors to choose the data elements.";
 
+    /** Default constructor */
     public compress() {
         super();
     }
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public compress(PyType subType) {
         super(subType);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param dataIterable
+     *            dataIterable
+     * @param selectorsIterable
+     *            selectorsIterable
+     */
     public compress(PyObject dataIterable, PyObject selectorsIterable) {
         super();
         compress___init__(dataIterable.__iter__(), selectorsIterable.__iter__());

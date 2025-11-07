@@ -11,9 +11,14 @@ package org.python.core;
  */
 public interface TraverseprocDerived {
     /**
-     * Traverses all reachable {@code PyObject}s.
-     * Like in CPython, {@code arg} must be passed
-     * unmodified to {@code visit} as its second parameter.
+     * Traverses all reachable {@code PyObject}s. Like in CPython, {@code arg} must be passed unmodified to
+     * {@code visit} as its second parameter.
+     * 
+     * @param visit
+     *            visit
+     * @param arg
+     *            arg
+     * @return i
      */
     public int traverseDerived(Visitproc visit, Object arg);
 }

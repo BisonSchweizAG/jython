@@ -8,12 +8,27 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Notifies registered callbacks if new bytecode is loaded.
  */
 public class BytecodeNotification {
+
+    /** Default constructor */
+    BytecodeNotification() {
+    }
+
     /**
      * Interface for callbacks.
      * Notifies the name of the loaded class, raw bytes of the class,
      * and the Java class object.
      */
     public interface Callback {
+        /**
+         * Notify
+         * 
+         * @param name
+         *            name
+         * @param bytes
+         *            bytes
+         * @param c
+         *            c
+         */
         public void notify(String name, byte[] bytes, Class c);
     }
 

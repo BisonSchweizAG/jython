@@ -1,5 +1,8 @@
 package org.python.modules.itertools;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.python.core.ArgParser;
 import org.python.core.PyIterator;
 import org.python.core.PyObject;
@@ -9,31 +12,43 @@ import org.python.expose.ExposedMethod;
 import org.python.expose.ExposedNew;
 import org.python.expose.ExposedType;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * cycle
+ */
 @ExposedType(name = "itertools.count", base = PyObject.class, doc = cycle.cycle_doc)
 public class cycle extends PyIterator {
 
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(cycle.class);
     private PyIterator iter;
 
+    /** cycle_doc */
     public static final String cycle_doc =
         "cycle(iterable) --> cycle object\n\n" +
         "Return elements from the iterable until it is exhausted.\n" +
         "Then repeat the sequence indefinitely.";
 
+    /** Default constructor */
     public cycle() {
         super();
     }
 
+    /**
+     * Constructor
+     * 
+     * @param subType
+     *            subType
+     */
     public cycle(PyType subType) {
         super(subType);
     }
 
     /**
-     * Creates an iterator that iterates over an iterable, saving the values for each iteration.
-     * When the iterable is exhausted continues to iterate over the saved values indefinitely.
+     * Creates an iterator that iterates over an iterable, saving the values for each iteration. When the iterable is
+     * exhausted continues to iterate over the saved values indefinitely.
+     * 
+     * @param sequence
+     *            sequence
      */
     public cycle(PyObject sequence) {
         super();

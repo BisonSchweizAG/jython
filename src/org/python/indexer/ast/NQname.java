@@ -4,24 +4,23 @@
  */
 package org.python.indexer.ast;
 
+import java.io.File;
+
 import org.python.indexer.Indexer;
 import org.python.indexer.NBinding;
 import org.python.indexer.Scope;
 import org.python.indexer.Util;
-import org.python.indexer.types.NType;
 import org.python.indexer.types.NModuleType;
+import org.python.indexer.types.NType;
 import org.python.indexer.types.NUnknownType;
 
-import java.io.File;
-
 /**
- * Recursive doubly-linked list representation of a qualified module name,
- * either absolute or relative.  Similar to {@link NAttribute}, but handles
- * leading dots and other import-specific special cases.<p>
+ * Recursive doubly-linked list representation of a qualified module name, either absolute or relative. Similar to
+ * {@link NAttribute}, but handles leading dots and other import-specific special cases.
+ * <p>
  *
- * Qualified names with leading dots are given {@code NQname} elements for each
- * leading dot.  Dots separating simple names are not given {@code NQname}
- * elements. <p>
+ * Qualified names with leading dots are given {@code NQname} elements for each leading dot. Dots separating simple
+ * names are not given {@code NQname} elements.
  */
 public class NQname extends NNode {
 

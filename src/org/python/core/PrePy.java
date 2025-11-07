@@ -123,7 +123,11 @@ public class PrePy {
         return level != null ? level : Level.INFO;
     }
 
-    /** Convenience function to get the effective level of Logger "org.python". */
+    /**
+     * Convenience function to get the effective level of Logger "org.python".
+     * 
+     * @return level
+     */
     public static Level getLoggingLevel() {
         return getEffectiveLoggingLevel(logger);
     }
@@ -182,7 +186,16 @@ public class PrePy {
         }
     }
 
-    /** Log a message at a specified level (if that level is not below the threshold). */
+    /**
+     * Log a message at a specified level (if that level is not below the threshold).
+     * 
+     * @param type
+     *            type
+     * @param msg
+     *            msg
+     * @param verbosity
+     *            verbosity
+     */
     @SuppressWarnings("deprecation")
     public static void maybeWrite(String type, String msg, int verbosity) {
         // If the caller is using the legacy logging system they may have changed Options.verbose.
@@ -193,27 +206,62 @@ public class PrePy {
         }
     }
 
-    /** Submit a message to logging at the severity level ERROR. */
+    /**
+     * Submit a message to logging at the severity level ERROR.
+     * 
+     * @param type
+     *            type
+     * @param msg
+     *            msg
+     */
     public static void writeError(String type, String msg) {
         maybeWrite(type, msg, ERROR);
     }
 
-    /** Submit a message to logging at the severity level WARNING. */
+    /**
+     * Submit a message to logging at the severity level WARNING.
+     * 
+     * @param type
+     *            type
+     * @param msg
+     *            msg
+     */
     public static void writeWarning(String type, String msg) {
         maybeWrite(type, msg, WARNING);
     }
 
-    /** Submit a message to logging at the severity level MESSAGE. */
+    /**
+     * Submit a message to logging at the severity level MESSAGE.
+     * 
+     * @param type
+     *            type
+     * @param msg
+     *            msg
+     */
     public static void writeMessage(String type, String msg) {
         maybeWrite(type, msg, MESSAGE);
     }
 
-    /** Submit a message to logging at the severity level COMMENT. */
+    /**
+     * Submit a message to logging at the severity level COMMENT.
+     * 
+     * @param type
+     *            type
+     * @param msg
+     *            msg
+     */
     public static void writeComment(String type, String msg) {
         maybeWrite(type, msg, COMMENT);
     }
 
-    /** Submit a message to logging at the severity level DEBUG. */
+    /**
+     * Submit a message to logging at the severity level DEBUG.
+     * 
+     * @param type
+     *            type
+     * @param msg
+     *            msg
+     */
     public static void writeDebug(String type, String msg) {
         maybeWrite(type, msg, DEBUG);
     }
@@ -271,7 +319,11 @@ public class PrePy {
         }
     }
 
-    /** Return {@code true} iff the console is accessible through System.console(). */
+    /**
+     * Return {@code true} iff the console is accessible through System.console().
+     * 
+     * @return haveConsole
+     */
     public static boolean haveConsole() {
         try {
             return System.console() != null;
@@ -281,17 +333,18 @@ public class PrePy {
     }
 
     /**
-     * Check whether an input stream is interactive. This emulates CPython
-     * {@code Py_FdIsInteractive} within the constraints of pure Java. The input stream is
-     * considered ``interactive'' if either
+     * Check whether an input stream is interactive. This emulates CPython {@code Py_FdIsInteractive} within the
+     * constraints of pure Java. The input stream is considered ``interactive'' if either
      * <ol type="a">
      * <li>it is {@code System.in} and {@link #isInteractive()} is {@code true}, or</li>
-     * <li>the {@code -i} flag was given ({@link Options#interactive}={@code true}), and the
-     * filename associated with it is {@code null} or {@code "<stdin>"} or {@code "???"}.</li>
+     * <li>the {@code -i} flag was given ({@link Options#interactive}={@code true}), and the filename associated with it
+     * is {@code null} or {@code "<stdin>"} or {@code "???"}.</li>
      * </ol>
      *
-     * @param fp stream (tested only for {@code System.in})
+     * @param fp
+     *            stream (tested only for {@code System.in})
      * @param filename
+     *            filename
      * @return true iff thought to be interactive
      */
     public static boolean isInteractive(InputStream fp, String filename) {

@@ -4,33 +4,28 @@
  */
 package org.python.indexer;
 
-import org.python.antlr.base.mod;
-import org.python.indexer.ast.NUrl;
-import org.python.indexer.types.NClassType;
-import org.python.indexer.types.NDictType;
-import org.python.indexer.types.NFuncType;
-import org.python.indexer.types.NInstanceType;
-import org.python.indexer.types.NListType;
-import org.python.indexer.types.NModuleType;
-import org.python.indexer.types.NTupleType;
-import org.python.indexer.types.NType;
-import org.python.indexer.types.NUnionType;
-import org.python.indexer.types.NUnknownType;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import static org.python.indexer.NBinding.Kind.ATTRIBUTE;
 import static org.python.indexer.NBinding.Kind.CLASS;
 import static org.python.indexer.NBinding.Kind.CONSTRUCTOR;
 import static org.python.indexer.NBinding.Kind.FUNCTION;
 import static org.python.indexer.NBinding.Kind.METHOD;
 import static org.python.indexer.NBinding.Kind.MODULE;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.python.indexer.ast.NUrl;
+import org.python.indexer.types.NClassType;
+import org.python.indexer.types.NDictType;
+import org.python.indexer.types.NFuncType;
+import org.python.indexer.types.NListType;
+import org.python.indexer.types.NModuleType;
+import org.python.indexer.types.NTupleType;
+import org.python.indexer.types.NType;
+import org.python.indexer.types.NUnionType;
+import org.python.indexer.types.NUnknownType;
 
 /**
  * Initializes the built-in types, functions and modules.
@@ -40,15 +35,35 @@ import static org.python.indexer.NBinding.Kind.MODULE;
  */
 public class Builtins {
 
+    /** LIBRARY_URL */
     public static final String LIBRARY_URL = "http://docs.python.org/library/";
+    /** TUTORIAL_URL */
     public static final String TUTORIAL_URL = "http://docs.python.org/tutorial/";
+    /** REFERENCE_URL */
     public static final String REFERENCE_URL = "http://docs.python.org/reference/";
+    /** DATAMODEL_URL */
     public static final String DATAMODEL_URL = "http://docs.python.org/reference/datamodel#";
 
+    /**
+     * NewLibUrl
+     * 
+     * @param module
+     *            module
+     * @param name
+     *            name
+     * @return url
+     */
     public static NUrl newLibUrl(String module, String name) {
         return newLibUrl(module + ".html#" + name);
     }
 
+    /**
+     * NewLibUrl
+     * 
+     * @param path
+     *            path
+     * @return url
+     */
     public static NUrl newLibUrl(String path) {
         if (!path.endsWith(".html")) {
             path += ".html";
@@ -56,48 +71,96 @@ public class Builtins {
         return new NUrl(LIBRARY_URL + path);
     }
 
+    /**
+     * NewRefUrl
+     * 
+     * @param path
+     *            path
+     * @return url
+     */
     public static NUrl newRefUrl(String path) {
         return new NUrl(REFERENCE_URL + path);
     }
 
+    /**
+     * NewDataModelUrl
+     * 
+     * @param path
+     *            path
+     * @return url
+     */
     public static NUrl newDataModelUrl(String path) {
         return new NUrl(DATAMODEL_URL + path);
     }
 
+    /**
+     * NewTutUrl
+     * 
+     * @param path
+     *            path
+     * @return url
+     */
     public static NUrl newTutUrl(String path) {
         return new NUrl(TUTORIAL_URL + path);
     }
 
     // XXX:  need to model "types" module and reconcile with these types
+    /** Builtin */
     public NModuleType Builtin;
+    /** Object */
     public NClassType Object;
+    /** Type */
     public NClassType Type;
+    /** None */
     public NClassType None;
+    /** BaseNum */
     public NClassType BaseNum; // BaseNum models int, float and long
+    /** BaseComplex */
     public NClassType BaseComplex;
+    /** BaseBool */
     public NClassType BaseBool;
+    /** BaseStr */
     public NClassType BaseStr;
+    /** BaseList */
     public NClassType BaseList;
+    /** BaseArray */
     public NClassType BaseArray;
+    /** BaseDict */
     public NClassType BaseDict;
+    /** BaseTuple */
     public NClassType BaseTuple;
+    /** BaseModule */
     public NClassType BaseModule;
+    /** BaseFile */
     public NClassType BaseFile;
+    /** BaseException */
     public NClassType BaseException;
+    /** BaseStruct */
     public NClassType BaseStruct;
+    /** BaseFunction */
     public NClassType BaseFunction;  // models functions, lambas and methods
+    /** BaseClass */
     public NClassType BaseClass;  // models classes and instances
 
+    /** Datetime_datetime */
     public NClassType Datetime_datetime;
+    /** Datetime_date */
     public NClassType Datetime_date;
+    /** Datetime_time */
     public NClassType Datetime_time;
+    /** Datetime_timedelta */
     public NClassType Datetime_timedelta;
+    /** Datetime_tzinfo */
     public NClassType Datetime_tzinfo;
+    /** Time_struct_time */
     public NClassType Time_struct_time;
 
+    /** globaltable */
     Scope globaltable;
+    /** moduleTable */
     Scope moduleTable;
 
+    /** builtin_exception_types */
     String[] builtin_exception_types = {
         "ArithmeticError", "AssertionError", "AttributeError", "BaseException",
         "BytesWarning", "Exception", "DeprecationWarning", "EOFError",
@@ -307,6 +370,14 @@ public class Builtins {
      */
     private Map<String, NativeModule> modules = new HashMap<String, NativeModule>();
 
+    /**
+     * Constructor
+     * 
+     * @param globals
+     *            globals
+     * @param modules
+     *            modules
+     */
     public Builtins(Scope globals, Scope modules) {
         globaltable = globals;
         moduleTable = modules;
@@ -401,6 +472,10 @@ public class Builtins {
 
     /**
      * Loads (if necessary) and returns the specified built-in module.
+     * 
+     * @param name
+     *            name
+     * @return type
      */
     public NModuleType get(String name) {
         if (name.indexOf(".") == -1) {  // unqualified
@@ -426,6 +501,13 @@ public class Builtins {
         return wrap == null ? null : wrap.getModule();
     }
 
+    /**
+     * IsNative
+     * 
+     * @param type
+     *            type
+     * @return isNative
+     */
     public boolean isNative(NType type) {
         return nativeTypes.contains(type);
     }

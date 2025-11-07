@@ -76,6 +76,10 @@ public class CEmulationLocale implements PyLocale {
         putCharMax(EMULATION_CONV, "n_sep_by_space");
     }
 
+    /** Default constructor */
+    CEmulationLocale() {
+    }
+
     @Override
     public PyDictionary localeconv() {
         return EMULATION_CONV;

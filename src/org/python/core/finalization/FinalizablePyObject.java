@@ -18,7 +18,6 @@ package org.python.core.finalization;
  * <p>
  * If you are writing a custom built-in that shall directly extend {@link org.python.core.PyObject}
  * or some other not-yet-finalizable builtin and have a finalizer, follow the instructions below.
- * <p>
  * <ol>
  * <li>Let your subclass implement {@link FinalizablePyObject} (or {@link FinalizableBuiltin}).</li>
  * <li>In every constructor call<br>

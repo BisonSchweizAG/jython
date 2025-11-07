@@ -7,7 +7,14 @@ import org.python.antlr.ast.alias;
 import org.python.core.Py;
 import org.python.core.PyObject;
 
+/**
+ * AliasAdapter
+ */
 public class AliasAdapter implements AstAdapter {
+
+    /** Default constructor */
+    AliasAdapter() {
+    }
 
     public Object py2ast(PyObject o) {
         if (o instanceof alias) {

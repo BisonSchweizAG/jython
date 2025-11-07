@@ -1,47 +1,223 @@
 package org.python.core;
 
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentMap;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 
+/**
+ * AbstractDict
+ */
 public abstract class AbstractDict extends PyObject {
 
+    /**
+     * Constructor
+     * 
+     * @param type
+     *            type
+     */
     public AbstractDict(PyType type) {
         super(type);
     }
 
+    /**
+     * Clear
+     */
     public abstract void clear();
+
+    /**
+     * Copy
+     * 
+     * @return dict
+     */
     public abstract AbstractDict copy();
+
+    /**
+     * Get
+     * 
+     * @param key
+     *            key
+     * @return o
+     */
     public abstract PyObject get(PyObject key);
+
+    /**
+     * Get
+     * 
+     * @param key
+     *            key
+     * @param defaultObj
+     *            defaultObj
+     * @return o
+     */
     public abstract PyObject get(PyObject key, PyObject defaultObj);
+
+    /**
+     * GetMap
+     * 
+     * @return map
+     */
     public abstract ConcurrentMap<? extends Object, PyObject> getMap();
+
+    /**
+     * Has_key
+     * 
+     * @param key
+     *            key
+     * @return hasKey
+     */
     public abstract boolean has_key(PyObject key);
+
+    /**
+     * Items
+     * 
+     * @return list
+     */
     public abstract PyList items();
+
+    /**
+     * Iteritems
+     * 
+     * @return o
+     */
     public abstract PyObject iteritems();
+
+    /**
+     * Iterkeys
+     * 
+     * @return o
+     */
     public abstract PyObject iterkeys();
+
+    /**
+     * Itervalues
+     * 
+     * @return o
+     */
     public abstract PyObject itervalues();
+
+    /**
+     * Keys
+     * 
+     * @return list
+     */
     public abstract PyList keys();
+
+    /**
+     * Merge
+     * 
+     * @param other
+     *            other
+     * @param override
+     *            override
+     */
     public abstract void merge(PyObject other, boolean override);
+
+    /**
+     * MergeFromKeys
+     * 
+     * @param other
+     *            other
+     * @param keys
+     *            keys
+     * @param override
+     *            override
+     */
     public abstract void mergeFromKeys(PyObject other, PyObject keys, boolean override);
+
+    /**
+     * MergeFromSeq
+     * 
+     * @param other
+     *            other
+     * @param override
+     *            override
+     */
     public abstract void mergeFromSeq(PyObject other, boolean override);
+
+    /**
+     * Pop
+     * 
+     * @param key
+     *            key
+     * @return o
+     */
     public abstract PyObject pop(PyObject key);
+
+    /**
+     * Pop
+     * 
+     * @param key
+     *            key
+     * @param defaultValue
+     *            defaultValue
+     * @return o
+     */
     public abstract PyObject pop(PyObject key, PyObject defaultValue);
+
+    /**
+     * Popitem
+     * 
+     * @return o
+     */
     public abstract PyObject popitem();
+
+    /**
+     * Setdefault
+     * 
+     * @param key
+     *            key
+     * @return o
+     */
     public abstract PyObject setdefault(PyObject key);
+
+    /**
+     * Setdefault
+     * 
+     * @param key
+     *            key
+     * @param failobj
+     *            failobj
+     * @return o
+     */
     public abstract PyObject setdefault(PyObject key, PyObject failobj);
+
+    /**
+     * Update
+     * 
+     * @param other
+     *            other
+     */
     public abstract void update(PyObject other);
+
+    /**
+     * Values
+     * 
+     * @return values
+     */
     public abstract Collection<? extends Object> values();
+
+    /**
+     * PyKeySet
+     * 
+     * @return set
+     */
     public abstract Set<PyObject> pyKeySet();
 
+    /**
+     * EntrySet
+     * 
+     * @return set
+     */
     public abstract Set entrySet();
 
     /**
      * Returns a dict_keys on the dictionary's keys
+     * 
+     * @return o
      */
     public PyObject viewkeys() {
         return new PyDictionary.PyDictionaryViewKeys(this);
@@ -49,6 +225,8 @@ public abstract class AbstractDict extends PyObject {
 
     /**
      * Returns a dict_items on the dictionary's items
+     * 
+     * @return o
      */
     public PyObject viewitems() {
         return new PyDictionary.PyDictionaryViewItems(this);
@@ -56,6 +234,8 @@ public abstract class AbstractDict extends PyObject {
 
     /**
      * Returns a dict_values on the dictionary's values
+     * 
+     * @return o
      */
     public PyObject viewvalues() {
         return new PyDictionary.PyDictionaryViewValues(this);

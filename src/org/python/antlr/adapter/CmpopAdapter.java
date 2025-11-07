@@ -17,7 +17,16 @@ import org.python.antlr.op.NotIn;
 import org.python.core.Py;
 import org.python.core.PyObject;
 
+/**
+ * CmpopAdapter
+ */
 public class CmpopAdapter implements AstAdapter {
+
+    /**
+     * Default Constructor
+     */
+    CmpopAdapter() {
+    }
 
     public Object py2ast(PyObject o) {
         if (o != Py.None) {

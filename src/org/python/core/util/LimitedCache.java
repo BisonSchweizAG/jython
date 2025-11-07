@@ -6,10 +6,14 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 /**
- * Not for application use, a cache of recently given results from some costly function. This is
- * only public so we can reach it from the run-time. The user sets a nominal size for the cache. The
- * cache will grow to this size and a little more, but from time to time discard the "little more"
- * on the basis of a score that depends on recency of use.
+ * Not for application use, a cache of recently given results from some costly function. This is only public so we can
+ * reach it from the run-time. The user sets a nominal size for the cache. The cache will grow to this size and a little
+ * more, but from time to time discard the "little more" on the basis of a score that depends on recency of use.
+ * 
+ * @param <K>
+ *            the type of the keys
+ * @param <V>
+ *            the type of the values
  */
 public class LimitedCache<K, V> {
 

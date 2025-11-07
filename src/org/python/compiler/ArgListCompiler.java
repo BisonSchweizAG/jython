@@ -16,14 +16,25 @@ import org.python.antlr.ast.expr_contextType;
 import org.python.antlr.base.expr;
 import org.python.antlr.base.stmt;
 
+/**
+ * ArgListCompiler
+ */
 public class ArgListCompiler extends Visitor
 {
+    /** keywordlist */
     public boolean arglist, keywordlist;
+    /** defaults */
     public List<expr> defaults;
+    /** names */
     public List<String> names;
+    /** fpnames */
     public List<String> fpnames;
+    /** init_code */
     public List<stmt> init_code;
 
+    /**
+     * Default constructor
+     */
     public ArgListCompiler() {
         arglist = keywordlist = false;
         defaults = null;
@@ -32,6 +43,9 @@ public class ArgListCompiler extends Visitor
         init_code = new ArrayList<stmt>();
     }
 
+    /**
+     * Reset
+     */
     public void reset() {
         arglist = keywordlist = false;
         defaults = null;
@@ -39,14 +53,33 @@ public class ArgListCompiler extends Visitor
         init_code.clear();
     }
 
+    /**
+     * AppendInitCode
+     * 
+     * @param node
+     *            node
+     */
     public void appendInitCode(Suite node) {
         node.getInternalBody().addAll(0, init_code);
     }
 
+    /**
+     * GetDefaults
+     * 
+     * @return list
+     */
     public List<expr> getDefaults() {
         return defaults;
     }
 
+    /**
+     * VisitArgs
+     * 
+     * @param args
+     *            args
+     * @throws Exception
+     *             exception
+     */
     public void visitArgs(arguments args) throws Exception {
         for (int i = 0; i < args.getInternalArgs().size(); i++) {
             String name = (String) visit(args.getInternalArgs().get(i));

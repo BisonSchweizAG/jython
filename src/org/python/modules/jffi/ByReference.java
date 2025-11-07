@@ -6,9 +6,13 @@ import org.python.core.PyType;
 import org.python.core.Untraversable;
 import org.python.expose.ExposedType;
 
+/**
+ * ByReference
+ */
 @Untraversable
 @ExposedType(name = "jffi.ByReference", base = PyObject.class)
 public final class ByReference extends PyObject implements Pointer {
+    /** Type */
     public static final PyType TYPE = PyType.fromClass(ByReference.class);
 
     private final DirectMemory memory;

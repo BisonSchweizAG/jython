@@ -28,32 +28,80 @@ import org.python.modules._codecs;
  */
 public class codecs {
 
+    /** BACKSLASHREPLACE */
     public static final String BACKSLASHREPLACE = "backslashreplace";
+    /** IGNORE */
     public static final String IGNORE = "ignore";
+    /** REPLACE */
     public static final String REPLACE = "replace";
+    /** XMLCHARREFREPLACE */
     public static final String XMLCHARREFREPLACE = "xmlcharrefreplace";
+
     private static char Py_UNICODE_REPLACEMENT_CHARACTER = 0xFFFD;
 
+    /** Default constructor */
+    codecs() {
+    }
+
+    /**
+     * GetDefaultEncoding
+     * 
+     * @return s
+     */
     public static String getDefaultEncoding() {
         return Py.getSystemState().getCodecState().getDefaultEncoding();
     }
 
+    /**
+     * SetDefaultEncoding
+     * 
+     * @param encoding
+     *            encoding
+     */
     public static void setDefaultEncoding(String encoding) {
         Py.getSystemState().getCodecState().setDefaultEncoding(encoding);
     }
 
+    /**
+     * Lookup_error
+     * 
+     * @param handlerName
+     *            handlerName
+     * @return o
+     */
     public static PyObject lookup_error(String handlerName) {
         return Py.getSystemState().getCodecState().lookup_error(handlerName);
     }
 
+    /**
+     * Register_error
+     * 
+     * @param name
+     *            name
+     * @param error
+     *            error
+     */
     public static void register_error(String name, PyObject error) {
         Py.getSystemState().getCodecState().register_error(name, error);
     }
 
+    /**
+     * Register
+     * 
+     * @param search_function
+     *            search_function
+     */
     public static void register(PyObject search_function) {
         Py.getSystemState().getCodecState().register(search_function);
     }
 
+    /**
+     * Lookup
+     * 
+     * @param encoding
+     *            encodeing
+     * @return tuple
+     */
     public static PyTuple lookup(String encoding) {
         return Py.getSystemState().getCodecState().lookup(encoding);
     }
@@ -197,6 +245,15 @@ public class codecs {
         }
     }
 
+    /**
+     * Strict_errors
+     * 
+     * @param args
+     *            args
+     * @param kws
+     *            kws
+     * @return o
+     */
     public static PyObject strict_errors(PyObject[] args, String[] kws) {
         ArgParser ap = new ArgParser("strict_errors", args, kws, "exc");
         PyObject exc = ap.getPyObject(0);
@@ -210,6 +267,15 @@ public class codecs {
         throw wrong_exception_type(exc);
     }
 
+    /**
+     * Ignore_errors
+     * 
+     * @param args
+     *            args
+     * @param kws
+     *            kws
+     * @return o
+     */
     public static PyObject ignore_errors(PyObject[] args, String[] kws) {
         ArgParser ap = new ArgParser("ignore_errors", args, kws, "exc");
         PyObject exc = ap.getPyObject(0);
@@ -226,6 +292,15 @@ public class codecs {
                 || Py.isInstance(exc, Py.UnicodeTranslateError);
     }
 
+    /**
+     * Replace_errors
+     * 
+     * @param args
+     *            args
+     * @param kws
+     *            kws
+     * @return o
+     */
     public static PyObject replace_errors(PyObject[] args, String[] kws) {
         ArgParser ap = new ArgParser("replace_errors", args, kws, "exc");
         PyObject exc = ap.getPyObject(0);
@@ -242,6 +317,15 @@ public class codecs {
         throw wrong_exception_type(exc);
     }
 
+    /**
+     * Xmlcharrefreplace_errors
+     * 
+     * @param args
+     *            args
+     * @param kws
+     *            kws
+     * @return o
+     */
     public static PyObject xmlcharrefreplace_errors(PyObject[] args, String[] kws) {
         ArgParser ap = new ArgParser("xmlcharrefreplace_errors", args, kws, "exc");
         PyObject exc = ap.getPyObject(0);
@@ -256,6 +340,17 @@ public class codecs {
         return new PyTuple(Py.java2py(replacement.toString()), exc.__getattr__("end"));
     }
 
+    /**
+     * Xmlcharrefreplace
+     * 
+     * @param start
+     *            start
+     * @param end
+     *            ent
+     * @param toReplace
+     *            toReplace
+     * @return stringbuilder
+     */
     public static StringBuilder xmlcharrefreplace(int start, int end, String toReplace) {
         StringBuilder replacement = new StringBuilder();
         xmlcharrefreplace_internal(start, end, toReplace, replacement);
@@ -312,6 +407,15 @@ public class codecs {
         '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
     }; //@formatter:on
 
+    /**
+     * Backslashreplace_errors
+     * 
+     * @param args
+     *            args
+     * @param kws
+     *            kws
+     * @return o
+     */
     public static PyObject backslashreplace_errors(PyObject[] args, String[] kws) {
         ArgParser ap = new ArgParser("backslashreplace_errors", args, kws, "exc");
         PyObject exc = ap.getPyObject(0);
@@ -326,6 +430,17 @@ public class codecs {
         return new PyTuple(Py.java2py(replacement.toString()), exc.__getattr__("end"));
     }
 
+    /**
+     * Backslashreplace
+     * 
+     * @param start
+     *            start
+     * @param end
+     *            ent
+     * @param toReplace
+     *            toReplace
+     * @return stringbuilder
+     */
     public static StringBuilder backslashreplace(int start, int end, String toReplace) {
         StringBuilder replacement = new StringBuilder();
         backslashreplace_internal(start, end, toReplace, replacement);
@@ -1015,12 +1130,31 @@ public class codecs {
         4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 0, 0
     }; //@formatter:on
 
-    // TODO: need to modify to use a codepoint approach (which is almost the case now,
-    // ch is an
+    /**
+     * PyUnicode_DecodeUTF8<br>
+     * TODO: need to modify to use a codepoint approach (which is almost the case now, ch is an
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return s
+     */
     public static String PyUnicode_DecodeUTF8(String str, String errors) {
         return PyUnicode_DecodeUTF8Stateful(str, errors, null);
     }
 
+    /**
+     * PyUnicode_DecodeUTF8Stateful
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param consumed
+     *            consumed
+     * @return s
+     */
     public static String PyUnicode_DecodeUTF8Stateful(String str, String errors, int[] consumed) {
         int size = str.length();
         StringBuilder unicode = new StringBuilder(size);
@@ -1135,15 +1269,47 @@ public class codecs {
         return unicode.toString();
     }
 
+    /**
+     * PyUnicode_EncodeUTF8
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return s
+     */
     public static String PyUnicode_EncodeUTF8(String str, String errors) {
         return StringUtil.fromBytes(Charset.forName("UTF-8").encode(str));
     }
 
     /* --- ASCII and Latin-1 Codecs --------------------------------------- */
+
+    /**
+     * PyUnicode_DecodeASCII
+     * 
+     * @param str
+     *            str
+     * @param size
+     *            size
+     * @param errors
+     *            errors
+     * @return s
+     */
     public static String PyUnicode_DecodeASCII(String str, int size, String errors) {
         return PyUnicode_DecodeIntLimited(str, size, errors, "ascii", 128);
     }
 
+    /**
+     * PyUnicode_DecodeLatin1
+     * 
+     * @param str
+     *            str
+     * @param size
+     *            size
+     * @param errors
+     *            errors
+     * @return s
+     */
     public static String PyUnicode_DecodeLatin1(String str, int size, String errors) {
         return PyUnicode_DecodeIntLimited(str, size, errors, "latin-1", 256);
     }
@@ -1165,10 +1331,32 @@ public class codecs {
         return v.toString();
     }
 
+    /**
+     * PyUnicode_EncodeASCII
+     * 
+     * @param str
+     *            str
+     * @param size
+     *            size
+     * @param errors
+     *            errors
+     * @return s
+     */
     public static String PyUnicode_EncodeASCII(String str, int size, String errors) {
         return PyUnicode_EncodeIntLimited(str, size, errors, "ascii", 128);
     }
 
+    /**
+     * PyUnicode_EncodeLatin1
+     * 
+     * @param str
+     *            str
+     * @param size
+     *            size
+     * @param errors
+     *            errors
+     * @return s
+     */
     public static String PyUnicode_EncodeLatin1(String str, int size, String errors) {
 
         return PyUnicode_EncodeIntLimited(str, size, errors, "latin-1", 256);
@@ -1226,9 +1414,18 @@ public class codecs {
     /* --- RawUnicodeEscape Codec ---------------------------------------- */
     private static char[] hexdigit = "0123456789ABCDEF".toCharArray();
 
-    // The modified flag is used by cPickle.
-    public static String
-            PyUnicode_EncodeRawUnicodeEscape(String str, String errors, boolean modifed) {
+    /**
+     * PyUnicode_EncodeRawUnicodeEscape
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @param modifed
+     *            The modified flag is used by cPickle
+     * @return s
+     */
+    public static String PyUnicode_EncodeRawUnicodeEscape(String str, String errors, boolean modifed) {
         StringBuilder v = new StringBuilder(str.length());
 
         for (Iterator<Integer> iter = new PyUnicode(str).newSubsequenceIterator(); iter.hasNext();) {
@@ -1259,6 +1456,15 @@ public class codecs {
         return v.toString();
     }
 
+    /**
+     * PyUnicode_EncodePunycode
+     * 
+     * @param str
+     *            str
+     * @param errors
+     *            errors
+     * @return s
+     */
     public static String PyUnicode_DecodeRawUnicodeEscape(String str, String errors) {
         int size = str.length();
         StringBuilder v = new StringBuilder(size);
@@ -1349,6 +1555,15 @@ public class codecs {
         }
     }
 
+    /**
+     * PyUnicode_EncodePunycode
+     * 
+     * @param input
+     *            input
+     * @param errors
+     *            errors
+     * @return s
+     */
     public static String PyUnicode_EncodePunycode(PyUnicode input, String errors) {
         int n = Punycode.INITIAL_N;
         int delta = 0;
@@ -1421,6 +1636,15 @@ public class codecs {
         return buffer.toString();
     }
 
+    /**
+     * PyUnicode_DecodePunycode
+     * 
+     * @param input
+     *            input
+     * @param errors
+     *            errors
+     * @return unicode
+     */
     public static PyUnicode PyUnicode_DecodePunycode(String input, String errors) {
 
         int input_size = input.length();
@@ -1472,6 +1696,15 @@ public class codecs {
         return new PyUnicode(ucs4);
     }
 
+    /**
+     * PyUnicode_EncodeIDNA
+     * 
+     * @param input
+     *            input
+     * @param errors
+     *            errors
+     * @return s
+     */
     public static String PyUnicode_EncodeIDNA(PyUnicode input, String errors) {
 
         throw new UnsupportedOperationException();
@@ -1506,6 +1739,15 @@ public class codecs {
         // inclusive.
     }
 
+    /**
+     * PyUnicode_DecodeIDNA
+     * 
+     * @param input
+     *            input
+     * @param errors
+     *            errors
+     * @return unicode
+     */
     public static PyUnicode PyUnicode_DecodeIDNA(String input, String errors) {
         throw new UnsupportedOperationException();
     }
@@ -1643,12 +1885,16 @@ public class codecs {
         return newPosition;
     }
 
+    /**
+     * CodecState
+     */
     public static class CodecState {
         private PyList searchPath;
         private PyStringMap searchCache;
         private PyStringMap errorHandlers;
         private String default_encoding = "ascii";
 
+        /** BUILTIN_ERROR_HANDLERS */
         public static final String[] BUILTIN_ERROR_HANDLERS = new String[]{"strict",
                 IGNORE,
                 REPLACE,
@@ -1656,6 +1902,9 @@ public class codecs {
                 BACKSLASHREPLACE
         };
 
+        /**
+         * Default constructor
+         */
         public CodecState() {
             searchPath = new PyList();
             searchCache = new PyStringMap();
@@ -1667,15 +1916,34 @@ public class codecs {
             }
         }
 
+        /**
+         * GetDefaultEncoding
+         * 
+         * @return s
+         */
         public String getDefaultEncoding() {
             return default_encoding;
         }
 
+        /**
+         * SetDefaultEncoding
+         * 
+         * @param encoding
+         *            encodoing
+         */
         public void setDefaultEncoding(String encoding) {
             lookup(encoding);
             default_encoding = encoding;
         }
 
+        /**
+         * Register_error
+         * 
+         * @param name
+         *            name
+         * @param error
+         *            error
+         */
         public void register_error(String name, PyObject error) {
             if (!error.isCallable()) {
                 throw Py.TypeError("argument must be callable");
@@ -1683,6 +1951,12 @@ public class codecs {
             errorHandlers.__setitem__(name.intern(), error);
         }
 
+        /**
+         * Register
+         * 
+         * @param search_function
+         *            search_function
+         */
         public void register(PyObject search_function) {
             if (!search_function.isCallable()) {
                 throw Py.TypeError("argument must be callable");
@@ -1690,6 +1964,13 @@ public class codecs {
             searchPath.append(search_function);
         }
 
+        /**
+         * Lookup
+         * 
+         * @param encoding
+         *            encoding
+         * @return tuple
+         */
         public PyTuple lookup(String encoding) {
             PyString v = new PyString(normalizestring(encoding));
             PyObject cached = searchCache.__finditem__(v);
@@ -1716,6 +1997,13 @@ public class codecs {
             throw new PyException(Py.LookupError, "unknown encoding '" + encoding + "'");
         }
 
+        /**
+         * Lookup_error
+         * 
+         * @param handlerName
+         *            handlerName
+         * @return o
+         */
         public PyObject lookup_error(String handlerName) {
             if (handlerName == null) {
                 handlerName = "strict";

@@ -38,6 +38,10 @@ public class Connectx extends PyObject {
             new PyString("establish a connection through a javax.sql.DataSource or "
                          + "javax.sql.ConnectionPooledDataSource");
 
+    /** Default constructor */
+    Connectx() {
+    }
+
     @Override
     public PyObject __findattr_ex__(String name) {
         if ("__doc__".equals(name)) {
@@ -122,8 +126,11 @@ public class Connectx extends PyObject {
      * Method invoke
      *
      * @param src
+     *            src
      * @param methodName
+     *            methodName
      * @param value
+     *            value
      */
     protected void invoke(Object src, String methodName, Object value) {
         Method method = null;
@@ -148,9 +155,16 @@ public class Connectx extends PyObject {
     }
 
     /**
-     * Try to find the method by the given name.  If failing that, see if the valueClass
-     * is perhaps a primitive and attempt to recurse using the primitive type.  Failing
-     * that return null.
+     * Try to find the method by the given name. If failing that, see if the valueClass is perhaps a primitive and
+     * attempt to recurse using the primitive type. Failing that return null.
+     * 
+     * @param srcClass
+     *            srcClass
+     * @param methodName
+     *            methodName
+     * @param valueClass
+     *            valueClass
+     * @return method
      */
     protected Method getMethod(Class<?> srcClass, String methodName, Class<?> valueClass) {
         Method method = null;

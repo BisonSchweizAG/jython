@@ -3,10 +3,33 @@ package org.python.expose.generate;
 import org.objectweb.asm.Type;
 import org.python.core.PyBuiltinClassMethodNarrow;
 
+/**
+ * ClassMethodExposer
+ */
 public class ClassMethodExposer extends MethodExposer {
 
     private final Type[] actualArgs;
 
+    /**
+     * Constructor
+     * 
+     * @param onType
+     *            onType
+     * @param access
+     *            acces
+     * @param methodName
+     *            methodName
+     * @param desc
+     *            desc
+     * @param typeName
+     *            typeName
+     * @param asNames
+     *            asNames
+     * @param defaults
+     *            defaults
+     * @param doc
+     *            doc
+     */
     public ClassMethodExposer(Type onType,
                               int access,
                               String methodName,

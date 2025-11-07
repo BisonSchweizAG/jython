@@ -19,28 +19,39 @@ import org.python.core.PyTuple;
 import org.python.core.__builtin__;
 import org.python.core.imp;
 
-/*
- * A bogus implementation of the CPython builtin module "imp".
- * Only the functions required by IDLE and PMW are implemented.
- * Luckily these function are also the only function that IMO can
- * be implemented under Jython.
+/**
+ * A bogus implementation of the CPython builtin module "imp". Only the functions required by IDLE and PMW are
+ * implemented. Luckily these function are also the only function that IMO can be implemented under Jython.
  */
-
 public class _imp {
+    /** __doc__ */
     public static PyString __doc__ = new PyString(
         "This module provides the components needed to build your own\n"+
         "__import__ function.  Undocumented functions are obsolete.\n"
     );
 
+    /** PY_SOURCE */
     public static final int PY_SOURCE = 1;
+    /** PY_COMPILED */
     public static final int PY_COMPILED = 2;
+    /** C_EXTENSION */
     public static final int C_EXTENSION = 3;
+    /** PKG_DIRECTORY */
     public static final int PKG_DIRECTORY = 5;
+    /** C_BUILTIN */
     public static final int C_BUILTIN = 6;
+    /** PY_FROZEN */
     public static final int PY_FROZEN = 7;
+    /** IMP_HOOK */
     public static final int IMP_HOOK = 9;
 
     private static Logger logger = Logger.getLogger("org.python.import");
+
+    /**
+     * Default constructor
+     */
+    _imp() {
+    }
 
     private static class ModuleInfo {
         PyObject file;
@@ -134,18 +145,58 @@ public class _imp {
         return null;
     }
 
+    /**
+     * Load_dynamic
+     * 
+     * @param name
+     *            name
+     * @param pathname
+     *            pathname
+     * @return o
+     */
     public static PyObject load_dynamic(String name, String pathname) {
         return load_dynamic(name, pathname, null);
     }
 
+    /**
+     * Load_dynamic
+     * 
+     * @param name
+     *            name
+     * @param pathname
+     *            pathname
+     * @param file
+     *            file
+     * @return o
+     */
     public static PyObject load_dynamic(String name, String pathname, PyObject file) {
         throw Py.ImportError("No module named " + name);
     }
 
+    /**
+     * Load_source
+     * 
+     * @param modname
+     *            modname
+     * @param filename
+     *            filename
+     * @return o
+     */
     public static PyObject load_source(String modname, String filename) {
         return load_source(modname, filename, null);
     }
 
+    /**
+     * Load_source
+     * 
+     * @param modname
+     *            modname
+     * @param filename
+     *            filename
+     * @param file
+     *            file
+     * @return o
+     */
     public static PyObject load_source(String modname, String filename, PyObject file) {
         PyObject mod = Py.None;
         if (file == null) {
@@ -165,6 +216,13 @@ public class _imp {
         return mod;
     }
 
+    /**
+     * Reload
+     * 
+     * @param module
+     *            module
+     * @return o
+     */
     public static PyObject reload(PyObject module) {
         return __builtin__.reload(module);
     }
@@ -211,10 +269,26 @@ public class _imp {
         return imp.loadFromCompiled(name.intern(), stream, sourceName, pathname);
     }
 
+    /**
+     * Find_module
+     * 
+     * @param name
+     *            name
+     * @return o
+     */
     public static PyObject find_module(String name) {
         return find_module(name, Py.None);
     }
 
+    /**
+     * Find_module
+     * 
+     * @param name
+     *            name
+     * @param path
+     *            path
+     * @return o
+     */
     public static PyObject find_module(String name, PyObject path) {
         if (path == Py.None && PySystemState.getBuiltin(name) != null) {
             return new PyTuple(Py.None,
@@ -242,6 +316,19 @@ public class _imp {
         throw Py.ImportError("No module named " + name);
     }
 
+    /**
+     * Load_module
+     * 
+     * @param name
+     *            name
+     * @param file
+     *            file
+     * @param filename
+     *            filename
+     * @param data
+     *            data
+     * @return o
+     */
     public static PyObject load_module(String name, PyObject file, PyObject filename, PyTuple data) {
         PyObject mod = Py.None;
         PySystemState sys = Py.getSystemState();
@@ -297,18 +384,32 @@ public class _imp {
     }
 
     /**
-     * Variant of {@link imp#makeCompiledFilename(String)} dealing with encoded bytes. In the context
-     * where this is used from Python, a result in encoded bytes is preferable.
+     * Variant of {@link imp#makeCompiledFilename(String)} dealing with encoded bytes. In the context where this is used
+     * from Python, a result in encoded bytes is preferable.
+     * 
+     * @param filename
+     *            filename
+     * @return s
      */
     public static PyString makeCompiledFilename(PyString filename) {
         filename = Py.fileSystemEncode(filename);
         return Py.newString(imp.makeCompiledFilename(filename.getString()));
     }
 
+    /**
+     * Get_magic
+     * 
+     * @return o
+     */
     public static PyObject get_magic() {
         return new PyString("\u0003\u00f3\r\n");
     }
 
+    /**
+     * Get_suffixes
+     * 
+     * @return o
+     */
     public static PyObject get_suffixes() {
         return new PyList(new PyObject[] {new PyTuple(new PyString(".py"),
                                                       new PyString("r"),
@@ -318,14 +419,35 @@ public class _imp {
                                                       Py.newInteger(PY_COMPILED)),});
     }
 
+    /**
+     * New_module
+     * 
+     * @param name
+     *            name
+     * @return module
+     */
     public static PyModule new_module(String name) {
         return new PyModule(name, null);
     }
 
+    /**
+     * Is_builtin
+     * 
+     * @param name
+     *            name
+     * @return isBuiltin
+     */
     public static boolean is_builtin(String name) {
         return PySystemState.getBuiltin(name) != null;
     }
 
+    /**
+     * Is_frozen
+     * 
+     * @param name
+     *            name
+     * @return isFrozen
+     */
     public static boolean is_frozen(String name) {
         return false;
     }

@@ -11,8 +11,23 @@ import org.python.core.PyString;
  */
 public class _functools implements ClassDictInit {
 
+    /**
+     * __doc__
+     */
     public static final PyString __doc__ = new PyString("Tools that operate on functions.");
 
+    /**
+     * Default constructor
+     */
+    _functools() {
+    }
+
+    /**
+     * ClassDictInit
+     * 
+     * @param dict
+     *            dict
+     */
     public static void classDictInit(PyObject dict) {
         dict.__setitem__("__name__", new PyString("_functools"));
         dict.__setitem__("__doc__", __doc__);
@@ -22,6 +37,9 @@ public class _functools implements ClassDictInit {
         dict.__setitem__("classDictInit", null);
     }
 
+    /**
+     * __doc__reduce
+     */
     public static PyString __doc__reduce = new PyString(
     "reduce(function, sequence[, initial]) -> value\n\n" +
     "Apply a function of two arguments cumulatively to the items of a sequence,\n" +
@@ -31,6 +49,17 @@ public class _functools implements ClassDictInit {
     "of the sequence in the calculation, and serves as a default when the\n" +
     "sequence is empty.");
 
+    /**
+     * Reduce
+     * 
+     * @param f
+     *            f
+     * @param l
+     *            l
+     * @param z
+     *            z
+     * @return o
+     */
     public static PyObject reduce(PyObject f, PyObject l, PyObject z) {
         PyObject result = z;
         PyObject iter = Py.iter(l, "reduce() arg 2 must support iteration");
@@ -48,6 +77,15 @@ public class _functools implements ClassDictInit {
         return result;
     }
 
+    /**
+     * Reduce
+     * 
+     * @param f
+     *            f
+     * @param l
+     *            l
+     * @return o
+     */
     public static PyObject reduce(PyObject f, PyObject l) {
         return reduce(f, l, null);
     }

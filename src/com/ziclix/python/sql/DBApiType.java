@@ -24,6 +24,7 @@ public final class DBApiType extends PyInteger {
      * Constructor DBApiType
      *
      * @param type
+     *            type
      */
     public DBApiType(int type) {
         super(type);
@@ -33,6 +34,7 @@ public final class DBApiType extends PyInteger {
      * Constructor DBApiType
      *
      * @param type
+     *            tupe
      */
     public DBApiType(Integer type) {
         super(type.intValue());

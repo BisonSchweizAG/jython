@@ -1,6 +1,8 @@
 // Copyright (c) Corporation for National Research Initiatives
 package org.python.compiler;
 
+import static org.python.util.CodegenUtils.p;
+
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -10,11 +12,7 @@ import java.util.Set;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 import org.python.core.Py;
-import org.python.core.PyException;
 import org.python.util.Generic;
-
-import static org.python.util.CodegenUtils.p;
-import static org.python.util.CodegenUtils.sig;
 
 public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opcodes
 {
@@ -28,9 +26,13 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
     public String myClass;
 
     /**
-     * Creates a proxy class maker that produces classes named
-     * <code>org.python.proxies.(superclassName)</code> with <code>superclass</code> as an
-     * implemented interface or extended class, depending on the its type.
+     * Creates a proxy class maker that produces classes named <code>org.python.proxies.(superclassName)</code> with
+     * <code>superclass</code> as an implemented interface or extended class, depending on the its type.
+     * 
+     * @param superclassName
+     *            superclassName
+     * @param superclass
+     *            superclass
      *
      * @deprecated - Use {@link ProxyMaker#ProxyMaker(String, Class, Class[])}
      */
@@ -43,8 +45,15 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
     }
 
     /**
-     * Creates a proxy class maker that produces classes named <code>proxyClassName</code> that
-     * extends <code>superclass</code> and implements the interfaces in <code>interfaces</code>.
+     * Creates a proxy class maker that produces classes named <code>proxyClassName</code> that extends
+     * <code>superclass</code> and implements the interfaces in <code>interfaces</code>.
+     * 
+     * @param proxyClassName
+     *            proxyClassName
+     * @param superclass
+     *            superclass
+     * @param interfaces
+     *            interfaces
      */
     public ProxyMaker(String proxyClassName, Class<?> superclass, Class<?>... interfaces) {
         this.myClass = proxyClassName;
@@ -69,11 +78,35 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
         this.interfaces = interfaces;
     }
 
+    /**
+     * DoConstants
+     * 
+     * @throws Exception
+     *             exception
+     */
     public void doConstants() throws Exception {
         Code code = classfile.addMethod("<clinit>", makeSig("V"), Modifier.STATIC);
         code.return_();
     }
 
+    /**
+     * CallSuper
+     * 
+     * @param code
+     *            code
+     * @param name
+     *            name
+     * @param superclass
+     *            superclass
+     * @param parameters
+     *            parameters
+     * @param ret
+     *            ret
+     * @param doReturn
+     *            doReturn
+     * @throws Exception
+     *             exception
+     */
     public void callSuper(Code code,
                           String name,
                           String superclass,
@@ -287,18 +320,41 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
         }
     }
 
-
+    /**
+     * AddMethod
+     * 
+     * @param method
+     *            method
+     * @param access
+     *            access
+     * @throws Exception
+     *             exception
+     */
     public void addMethod(Method method, int access) throws Exception {
         addMethod(method.getName(), method.getReturnType(), method.getParameterTypes(),
                 method.getExceptionTypes(), access, method.getDeclaringClass());
     }
 
     /**
-     * Adds a method of the given name to the class being implemented. If
-     * <code>declaringClass</code> is null, the generated method will expect to find an object of
-     * the method's name in the Python object and call it. If it isn't null, if an object is found
-     * in the Python object, it'll be called. Otherwise the superclass will be called. No checking
-     * is done to guarantee that the superclass has a method with the same signature.
+     * Adds a method of the given name to the class being implemented. If <code>declaringClass</code> is null, the
+     * generated method will expect to find an object of the method's name in the Python object and call it. If it isn't
+     * null, if an object is found in the Python object, it'll be called. Otherwise the superclass will be called. No
+     * checking is done to guarantee that the superclass has a method with the same signature.
+     * 
+     * @param name
+     *            name
+     * @param ret
+     *            ret
+     * @param parameters
+     *            parameters
+     * @param exceptions
+     *            exceptions
+     * @param access
+     *            access
+     * @param declaringClass
+     *            declaringClass
+     * @throws Exception
+     *             exception
      */
     public void addMethod(String name,
             Class<?> ret,
@@ -313,17 +369,26 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
     /**
      * Generates and adds a proxy method to the proxy class
      *
-     * @param name of the java method
-     * @param pyName name of the python method to which the java method proxies (useful for clamped
-     *            objects)
-     * @param ret return type
-     * @param parameters parameter types
-     * @param exceptions throwable exception types
+     * @param name
+     *            of the java method
+     * @param pyName
+     *            name of the python method to which the java method proxies (useful for clamped objects)
+     * @param ret
+     *            return type
+     * @param parameters
+     *            parameter types
+     * @param exceptions
+     *            throwable exception types
      * @param access
+     *            access
      * @param declaringClass
-     * @param methodAnnotations method annotations
-     * @param parameterAnnotations parameter annotations
+     *            declaringClass
+     * @param methodAnnotations
+     *            method annotations
+     * @param parameterAnnotations
+     *            parameter annotations
      * @throws Exception
+     *             exception
      */
     public void addMethod(String name,
             String pyName,
@@ -401,6 +466,21 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
 
     /**
      * A constructor that is also a method (!)
+     * 
+     * @param pyName
+     *            pyName
+     * @param parameters
+     *            parameters
+     * @param exceptions
+     *            exceptions
+     * @param access
+     *            access
+     * @param declaringClass
+     *            declaringClass
+     * @param code
+     *            code
+     * @throws Exception
+     *             exception
      */
     public void addConstructorMethodCode(String pyName,
             Class<?>[] parameters,
@@ -596,6 +676,12 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
         code.areturn();
     }
 
+    /**
+     * AddClassDictInit
+     * 
+     * @throws Exception
+     *             exception
+     */
     public void addClassDictInit() throws Exception {
         // classDictInit method
         classfile.addInterface(mapClass(org.python.core.ClassDictInit.class));
@@ -614,12 +700,23 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
 
     /**
      * Builds this proxy and writes its bytecode to <code>out</code>.
+     * 
+     * @param out
+     *            out
+     * @throws Exception
+     *             exception
      */
     public void build(OutputStream out) throws Exception {
         build();
         classfile.write(out);
     }
 
+    /**
+     * Build
+     * 
+     * @throws Exception
+     *             exception
+     */
     public void build() throws Exception {
         names = Generic.set();
         namesAndSigs = Generic.set();
@@ -641,8 +738,13 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
     }
 
     /**
-     * Visits all methods declared on the given class and classes in its inheritance hierarchy.
-     * Methods visible to subclasses are added to <code>seen</code>.
+     * Visits all methods declared on the given class and classes in its inheritance hierarchy. Methods visible to
+     * subclasses are added to <code>seen</code>.
+     * 
+     * @param klass
+     *            klass
+     * @throws Exception
+     *             exception
      */
     protected void visitMethods(Class<?> klass) throws Exception {
         for (Method method : klass.getDeclaredMethods()) {
@@ -687,15 +789,25 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
     }
 
     /**
-     * Called for every method on the proxy's superclass and interfaces that can be overridden by
-     * the proxy class. If the proxy wants to perform Python lookup and calling,
-     * {@link #addMethod(Method, int)} or one of its more complex forms should be called. For
-     * abstract methods, {@code addMethod} must be called.
+     * Called for every method on the proxy's superclass and interfaces that can be overridden by the proxy class. If
+     * the proxy wants to perform Python lookup and calling, {@link #addMethod(Method, int)} or one of its more complex
+     * forms should be called. For abstract methods, {@code addMethod} must be called.
+     * 
+     * @param method
+     *            method
+     * @throws Exception
+     *             exception
      */
     protected void visitMethod(Method method) throws Exception {
         addMethod(method, method.getModifiers());
     }
 
+    /**
+     * VisitMethods
+     * 
+     * @throws Exception
+     *             exception
+     */
     protected void visitMethods() throws Exception {
         visitMethods(superclass);
         for (Class<?> iface : interfaces) {
@@ -708,7 +820,16 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
         }
     }
 
-    /** Adds a constructor that calls through to superclass. */
+    /**
+     * Adds a constructor that calls through to superclass.
+     * 
+     * @param parameters
+     *            parameters
+     * @param access
+     *            access
+     * @throws Exception
+     *             exception
+     */
     protected void addConstructor(Class<?>[] parameters, int access) throws Exception {
         String sig = makeSig(Void.TYPE, parameters);
         Code code = classfile.addMethod("<init>", sig, access);
@@ -716,8 +837,12 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
     }
 
     /**
-     * Called for every constructor on the proxy's superclass that can be overridden by
-     * the proxy class.
+     * Called for every constructor on the proxy's superclass that can be overridden by the proxy class.
+     * 
+     * @param constructor
+     *            constructor
+     * @throws Exception
+     *             exception
      */
     protected void visitConstructor(Constructor<?> constructor) throws Exception {
         /* Need a fancy constructor for the Java side of things */
@@ -725,9 +850,14 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
     }
 
     /**
-     * Adds a constructor that calls through to the superclass constructor with the same signature
-     * and leaves the returned Code open for more operations. The caller of this method must add a
-     * return to the Code.
+     * Adds a constructor that calls through to the superclass constructor with the same signature and leaves the
+     * returned Code open for more operations. The caller of this method must add a return to the Code.
+     * 
+     * @param constructor
+     *            constructor
+     * @return code
+     * @throws Exception
+     *             exception
      */
     protected Code addOpenConstructor(Constructor<?> constructor) throws Exception {
         String sig = makeSig(Void.TYPE, constructor.getParameterTypes());
@@ -737,8 +867,15 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
     }
 
     /**
-     * Calls __initProxy__ on this class with the given types of parameters, which must be
-     * available as arguments to the currently called method in the order of the parameters.
+     * Calls __initProxy__ on this class with the given types of parameters, which must be available as arguments to the
+     * currently called method in the order of the parameters.
+     * 
+     * @param parameters
+     *            parameters
+     * @param code
+     *            code
+     * @throws Exception
+     *             exception
      */
     protected void callInitProxy(Class<?>[] parameters, Code code) throws Exception {
         code.visitVarInsn(ALOAD, 0);
@@ -749,6 +886,9 @@ public class ProxyMaker extends ProxyCodeHelpers implements ClassConstants, Opco
 
     /**
      * Visits constructors from this proxy's superclass.
+     * 
+     * @throws Exception
+     *             exception
      */
     protected void visitConstructors() throws Exception {
         addConstructors(superclass);
