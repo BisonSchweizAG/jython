@@ -294,12 +294,17 @@ public abstract class BaseBytes extends PySequence implements List<PyInteger> {
     }
 
     /**
-     * Fill a strided slice of a byte array by copying character values from a String. These values
-     * have to be in the Python byte range 0 to 255.
+     * Fill a strided slice of a byte array by copying character values from a String. These values have to be in the
+     * Python byte range 0 to 255.
      *
-     * @param start index in this byte array at which the first character code lands
-     * @param value source of characters
-     * @throws PyException {@code ValueError} if any {@code value[i] > 255}
+     * @param start
+     *            index in this byte array at which the first character code lands
+     * @param step
+     *            step
+     * @param value
+     *            source of characters
+     * @throws PyException
+     *             {@code ValueError} if any {@code value[i] > 255}
      */
     protected void setBytes(int start, int step, String value) throws PyException {
         int n = value.length();
@@ -435,6 +440,10 @@ public abstract class BaseBytes extends PySequence implements List<PyInteger> {
          */
         int totalCount = 0;
 
+        /** Default constructor */
+        FragmentList() {
+        }
+
         /**
          * Load bytes into the container from the given iterable
          *
@@ -543,7 +552,7 @@ public abstract class BaseBytes extends PySequence implements List<PyInteger> {
     protected int offset = 0;
 
     /**
-     * Check that an index is within the range of the array, that is <tt>0&lt;=index&lt;size</tt>.
+     * Check that an index is within the range of the array, that is {@code 0&lt;=index&lt;size}.
      *
      * @param index to check
      * @throws PyException {@code IndexError} if the index is outside the array bounds
@@ -575,12 +584,14 @@ public abstract class BaseBytes extends PySequence implements List<PyInteger> {
     }
 
     /**
-     * Check that an integer is suitable for storage in a (Python) byte array, and convert it to the
-     * Java byte value that can be stored there. (Java bytes run -128..127 whereas Python bytes run
-     * 0..255.)
+     * Check that an integer is suitable for storage in a (Python) byte array, and convert it to the Java byte value
+     * that can be stored there. (Java bytes run -128..127 whereas Python bytes run 0..255.)
      *
-     * @param value to convert.
-     * @throws PyException {@code ValueError} if value&lt;0 or value&gt;255
+     * @param value
+     *            to convert.
+     * @return b
+     * @throws PyException
+     *             {@code ValueError} if value&lt;0 or value&gt;255
      */
     protected static final byte byteCheck(int value) throws PyException {
         if (value < 0 || value > 255) {
@@ -590,21 +601,23 @@ public abstract class BaseBytes extends PySequence implements List<PyInteger> {
     }
 
     /**
-     * Check that the value of an PyInteger is suitable for storage in a (Python) byte array, and
-     * convert it to the Java byte value that can be stored there. (Java bytes run -128..127 whereas
-     * Python bytes run 0..255.)
+     * Check that the value of an PyInteger is suitable for storage in a (Python) byte array, and convert it to the Java
+     * byte value that can be stored there. (Java bytes run -128..127 whereas Python bytes run 0..255.)
      *
-     * @param value to convert.
-     * @throws PyException {@code ValueError} if value&lt;0 or value&gt;255
+     * @param value
+     *            to convert.
+     * @return b
+     * @throws PyException
+     *             {@code ValueError} if value&lt;0 or value&gt;255
      */
     protected static final byte byteCheck(PyInteger value) throws PyException {
         return byteCheck(value.asInt());
     }
 
     /**
-     * Check that the type and value of a PyObject is suitable for storage in a (Python) byte array,
-     * and convert it to the Java byte value that can be stored there. (Java bytes run -128..127
-     * whereas Python bytes run 0..255.) Acceptable types are:
+     * Check that the type and value of a PyObject is suitable for storage in a (Python) byte array, and convert it to
+     * the Java byte value that can be stored there. (Java bytes run -128..127 whereas Python bytes run 0..255.)
+     * Acceptable types are:
      * <ul>
      * <li>PyInteger in range 0 to 255 inclusive</li>
      * <li>PyLong in range 0 to 255 inclusive</li>
@@ -612,9 +625,13 @@ public abstract class BaseBytes extends PySequence implements List<PyInteger> {
      * <li>PyString of length 1</li>
      * </ul>
      *
-     * @param value to convert.
-     * @throws PyException {@code TypeError} if not acceptable type
-     * @throws PyException {@code ValueError} if value&lt;0 or value&gt;255 or string length!=1
+     * @param value
+     *            to convert.
+     * @return b
+     * @throws PyException
+     *             {@code TypeError} if not acceptable type
+     * @throws PyException
+     *             {@code ValueError} if value&lt;0 or value&gt;255 or string length!=1
      */
     protected static final byte byteCheck(PyObject value) throws PyException {
         if (value.isIndex()) {
@@ -1302,12 +1319,13 @@ public abstract class BaseBytes extends PySequence implements List<PyInteger> {
         protected int[] skipTable = null;
 
         /**
-         * This method creates a compressed table of bad-character skips from the pattern. The entry
-         * for a given byte value tells us how far it is from the end of the pattern, being 0 for
-         * the actual last byte, or is equal to the length of the pattern if the byte does not occur
-         * in the pattern. The table is compressed in that only the least-significant bits of the
-         * byte index are used. In the case where 5 bits are used, the table is only 32 elements
-         * long, rather than (as it might be) 256 bytes, the number of distinct byte values.
+         * This method creates a compressed table of bad-character skips from the pattern. The entry for a given byte
+         * value tells us how far it is from the end of the pattern, being 0 for the actual last byte, or is equal to
+         * the length of the pattern if the byte does not occur in the pattern. The table is compressed in that only the
+         * least-significant bits of the byte index are used. In the case where 5 bits are used, the table is only 32
+         * elements long, rather than (as it might be) 256 bytes, the number of distinct byte values.
+         * 
+         * @return i
          */
         protected int[] calculateSkipTable() {
             int[] skipTable = new int[MASK + 1];
@@ -1366,9 +1384,13 @@ public abstract class BaseBytes extends PySequence implements List<PyInteger> {
 
         }
 
+        /** pattern */
         protected final PyBuffer pattern;
+        /** text */
         protected byte[] text = emptyStorage; // in case we forget to setText()
+        /** left */
         protected int left = 0; // Leftmost pattern position to use
+        /** right */
         protected int right = 0; // Rightmost pattern position + 1
 
         /**
@@ -1647,6 +1669,7 @@ public abstract class BaseBytes extends PySequence implements List<PyInteger> {
      */
     protected static class ByteSet {
 
+        /** map */
         protected final long[] map = new long[4];   // 256 bits
 
         /**
