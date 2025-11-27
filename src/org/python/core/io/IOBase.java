@@ -1,12 +1,13 @@
 /* Copyright (c) 2007-2012 Jython Developers */
 package org.python.core.io;
 
-import jnr.constants.platform.Errno;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.python.core.Py;
 import org.python.core.PyException;
+
+import jnr.constants.platform.Errno;
 
 /**
  * Base class for all I/O classes.
@@ -49,26 +50,31 @@ public abstract class IOBase {
      * <caption> Semantics</caption>
      * <tr>
      * <th>{@code whence}</th>
-     * <th align="left">Seek to</th>
+     * <th>Seek to</th>
      * <th>{@code pos}</th>
      * </tr>
      * <tr>
      * <th>0</th>
-     * <td>Start of stream (the default).</td><td>Should be &ge;0.</td>
+     * <td>Start of stream (the default).</td>
+     * <td>Should be &ge;0.</td>
      * </tr>
      * <tr>
      * <th>1</th>
-     * <td>Current position + {@code pos} </td><td>Either sign.</td>
+     * <td>Current position + {@code pos}</td>
+     * <td>Either sign.</td>
      * </tr>
      * <tr>
      * <th>2</th>
-     * <td>End of stream + {@code pos} </td><td>Usually &le;0.</td>
+     * <td>End of stream + {@code pos}</td>
+     * <td>Usually &le;0.</td>
      * </tr>
      * </table>
      * Returns the new absolute position.
      *
-     * @param pos a long position value
-     * @param whence an int whence value
+     * @param pos
+     *            a long position value
+     * @param whence
+     *            an int whence value
      * @return a long position value seeked to
      */
     public long seek(long pos, int whence) {
@@ -211,6 +217,8 @@ public abstract class IOBase {
 
     /**
      * Coerce this into an OutputStream if possible, or return null.
+     * 
+     * @return outputStream
      */
     public OutputStream asOutputStream() {
         return null;
@@ -218,6 +226,8 @@ public abstract class IOBase {
 
     /**
      * Coerce this into an InputStream if possible, or return null.
+     * 
+     * @return inputStream
      */
     public InputStream asInputStream() {
         return null;
