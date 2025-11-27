@@ -308,14 +308,13 @@ public class InternalFormat {
         }
 
         /**
-         * Pad the result so far (defined as the contents of {@link #result} from {@link #mark} to
-         * the end) using the alignment, target width and fill character defined in {@link #spec}.
-         * The action of padding will increase the length of this segment to the target width, if
-         * that is greater than the current length.
+         * Pad the result so far (defined as the contents of {@link #result} from {@link #mark} to the end) using the
+         * alignment, target width and fill character defined in {@link #spec}. The action of padding will increase the
+         * length of this segment to the target width, if that is greater than the current length.
          * <p>
-         * When the padding method has decided that that it needs to add n padding characters, it
-         * will affect {@link #start} or {@link #lenWhole} as follows.
-         * <table border style>
+         * When the padding method has decided that that it needs to add n padding characters, it will affect
+         * {@link #start} or {@link #lenWhole} as follows.
+         * <table border="1">
          * <caption>Effect of padding on {@link #start} or {@link #lenWhole}</caption>
          * <tr>
          * <th>align</th>
@@ -353,10 +352,10 @@ public class InternalFormat {
          * <td>+n</td>
          * </tr>
          * </table>
-         * Note that in the "pad after sign" mode, only the last number into the buffer receives the
-         * padding. This padding gets incorporated into the whole part of the number. (In other
-         * modes, the padding is around <code>result[mark:]</code>.) When this would not be
-         * appropriate, it is up to the client to disallow this (which <code>complex</code> does).
+         * Note that in the "pad after sign" mode, only the last number into the buffer receives the padding. This
+         * padding gets incorporated into the whole part of the number. (In other modes, the padding is around
+         * <code>result[mark:]</code>.) When this would not be appropriate, it is up to the client to disallow this
+         * (which <code>complex</code> does).
          *
          * @return this Formatter object
          */
