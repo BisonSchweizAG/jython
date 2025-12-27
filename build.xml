@@ -1482,10 +1482,6 @@ The text for an official release would continue like ...
             <arg value="network,subprocess"/>
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
-            <arg value="test_gc"/> <!-- intermittently fails/hangs (xenial) -->
-            <arg value="test_mailbox"/>
-            <arg value="test_py_compile"/> <!-- test_relative_path (on osx) -->
-            <arg value="test_select_new"/>
             <arg value="test_smtpnet"/>
         </exec>
     </target>
@@ -1503,9 +1499,6 @@ The text for an official release would continue like ...
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
             <arg value="test_jython_launcher"/> <!-- (on git bash) -->
-            <arg value="test_mailbox"/>
-            <arg value="test_os_jy"/> <!-- locale command (on git bash) -->
-            <arg value="test_select_new"/>
             <arg value="test_smtpnet"/>
         </exec>
     </target>
