@@ -161,6 +161,8 @@ public class PySystemState extends PyObject
     public PyList warnoptions = new PyList();
     public PyObject builtins;
     private static PyObject defaultPlatform = new PyShadowString("java", getNativePlatform());
+    private static boolean isTesting;
+
     public PyObject platform = defaultPlatform;
 
     public PyList meta_path;
@@ -1262,6 +1264,9 @@ public class PySystemState extends PyObject
         // Cause sys to export the console handler that was installed
         Py.defaultSystemState.__setattr__("_jy_console", Py.java2py(Py.getConsole()));
 
+        // set testing mode if required
+        setTesting(Boolean.parseBoolean(preProperties.getProperty("python.testing", "false")));
+
         return Py.defaultSystemState;
     }
 
@@ -1635,7 +1640,26 @@ public class PySystemState extends PyObject
     }
 
     private static boolean preventExit(PyObject exitStatus) {
-        return !isInteractive() && (Py.None.equals(exitStatus) || exitStatus instanceof PyInteger);
+        return !isInteractive() && !isTesting() && (Py.None.equals(exitStatus) || exitStatus instanceof PyInteger);
+    }
+
+    /**
+     * Get the testing mode
+     * 
+     * @return {@code true} if we are in testing mode, {@code false} otherwise
+     */
+    public static boolean isTesting() {
+        return isTesting;
+    }
+
+    /**
+     * Set the testing mode
+     * 
+     * @param testing
+     *            the new testing mode
+     */
+    public static void setTesting(boolean testing) {
+        isTesting = testing;
     }
 
     /**
