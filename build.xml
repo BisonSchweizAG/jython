@@ -218,9 +218,9 @@ An example ant.properties file:
             <!-- Other JARs (alphabetical) -->
             <filelist dir="${extlibs.dir}">
                 <file name="antlr-complete-3.5.3.jar" /> <!-- ANTLR 3 until we upgrade parsing -->
-                <file name="asm-9.9.jar" />
-                <file name="asm-commons-9.9.jar" />
-                <file name="asm-util-9.9.jar" />
+                <file name="asm-9.9.1.jar" />
+                <file name="asm-commons-9.9.1.jar" />
+                <file name="asm-util-9.9.1.jar" />
                 <file name="bcpkix-jdk18on-1.83.jar" />
                 <file name="bcprov-jdk18on-1.83.jar" />
                 <file name="commons-compress-1.27.1.jar"/>
@@ -806,9 +806,9 @@ The text for an official release would continue like ...
             <!-- pin to Antlr 3 until we upgrade parsing -->
             <zipfileset src="extlibs/antlr-runtime-3.5.3.jar"/>
             <rule pattern="org.antlr.runtime.**" result="org.python.antlr.runtime.@1"/>
-            <zipfileset src="extlibs/asm-9.9.jar" excludes="module-info.class"/>
-            <zipfileset src="extlibs/asm-commons-9.9.jar" excludes="module-info.class"/>
-            <zipfileset src="extlibs/asm-util-9.9.jar" excludes="module-info.class"/>
+            <zipfileset src="extlibs/asm-9.9.1.jar" excludes="module-info.class"/>
+            <zipfileset src="extlibs/asm-commons-9.9.1.jar" excludes="module-info.class"/>
+            <zipfileset src="extlibs/asm-util-9.9.1.jar" excludes="module-info.class"/>
             <rule pattern="org.objectweb.asm.**" result="org.python.objectweb.asm.@1"/>
             <zipfileset src="extlibs/bcpkix-jdk18on-1.83.jar" excludes="META-INF/**"/>
             <zipfileset src="extlibs/bcprov-jdk18on-1.83.jar" excludes="META-INF/**"/>

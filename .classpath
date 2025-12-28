@@ -10,9 +10,9 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="extlibs/ant-1.10.15.jar"/>
 	<classpathentry kind="lib" path="extlibs/antlr-complete-3.5.3.jar"/>
-	<classpathentry kind="lib" path="extlibs/asm-9.9.jar"/>
-	<classpathentry kind="lib" path="extlibs/asm-commons-9.9.jar"/>
-	<classpathentry kind="lib" path="extlibs/asm-util-9.9.jar"/>
+	<classpathentry kind="lib" path="extlibs/asm-9.9.1.jar"/>
+	<classpathentry kind="lib" path="extlibs/asm-commons-9.9.1.jar"/>
+	<classpathentry kind="lib" path="extlibs/asm-util-9.9.1.jar"/>
 	<classpathentry kind="lib" path="extlibs/bcpkix-jdk18on-1.83.jar"/>
 	<classpathentry kind="lib" path="extlibs/bcprov-jdk18on-1.83.jar"/>
 	<classpathentry kind="lib" path="extlibs/commons-compress-1.27.1.jar"/>
