@@ -40,7 +40,7 @@ or:
 - `ant`
 - `./dist/bin/jython -m test.regrtest -e`
 
-The former being executed on the github pipeline, but giving SSL handshake errors on the command line (`test_httplib`, `test_robotparser`, `test_ssl_jy`, `test_urllibnet`).
+The former being executed on the github pipeline, but - with `network` resource enabled - giving SSL handshake errors on the command line (`test_httplib`, `test_robotparser`, `test_ssl_jy`, `test_urllibnet`).
 
 The latter expected to give no errors on the command line.
 
