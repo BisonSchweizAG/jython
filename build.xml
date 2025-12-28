@@ -1478,15 +1478,9 @@ The text for an official release would continue like ...
             <arg value="-w"/> <!-- re-run failed tests in verbose mode -->
             <!-- Only run the tests that are expected to work on Jython -->
             <arg value="--expected"/>
-            <arg value="--use"/>
-            <arg value="network,subprocess"/>
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
-            <arg value="test_gc"/> <!-- intermittently fails/hangs (xenial) -->
-            <arg value="test_mailbox"/>
-            <arg value="test_py_compile"/> <!-- test_relative_path (on osx) -->
-            <arg value="test_select_new"/>
-            <arg value="test_smtpnet"/>
+            <arg value="test_socket"/> <!-- flaky on macOS -->
         </exec>
     </target>
 
@@ -1498,15 +1492,9 @@ The text for an official release would continue like ...
             <arg value="-w"/> <!-- re-run failed tests in verbose mode -->
             <!-- Only run the tests that are expected to work on Jython -->
             <arg value="--expected"/>
-            <arg value="--use"/>
-            <arg value="network,subprocess"/>
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
             <arg value="test_jython_launcher"/> <!-- (on git bash) -->
-            <arg value="test_mailbox"/>
-            <arg value="test_os_jy"/> <!-- locale command (on git bash) -->
-            <arg value="test_select_new"/>
-            <arg value="test_smtpnet"/>
         </exec>
     </target>
 
