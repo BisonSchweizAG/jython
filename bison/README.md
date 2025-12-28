@@ -28,12 +28,21 @@
 - PyString now can contain 8 bit Unicode characters (in both conversion directions)
 - fix (or mute) some regression tests
 - prevent System.exit(n) and sys.exit() from being called (the latter only in embedded mode)
+- a bit different github workflows
 
 # Running regrtest
-- run the following commands in a shell with JDK 21
+Run either the following commands:
+- `ant clean`
+- `ant -noinput -buildfile build.xml regrtest-ci`
+
+or:
 - `ant clean`
 - `ant`
 - `./dist/bin/jython -m test.regrtest -e`
+
+The former being executed on the github pipeline, but giving SSL handshake errors on the command line (`test_httplib`, `test_robotparser`, `test_ssl_jy`, `test_urllibnet`).
+
+The latter expected to give no errors on the command line.
 
 ## Running a single regrtest
 To execute - for example - `test_string.py`, the command line is as follows:
