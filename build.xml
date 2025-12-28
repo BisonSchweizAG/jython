@@ -1478,6 +1478,9 @@ The text for an official release would continue like ...
             <arg value="-w"/> <!-- re-run failed tests in verbose mode -->
             <!-- Only run the tests that are expected to work on Jython -->
             <arg value="--expected"/>
+            <!-- Exclude particular tests troublesome on the build bots -->
+            <arg value="--exclude"/>
+            <arg value="test_socket"/> <!-- flaky on macOS -->
         </exec>
     </target>
 
