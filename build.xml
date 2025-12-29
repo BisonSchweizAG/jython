@@ -270,6 +270,17 @@ An example ant.properties file:
         <condition property="os.family.windows">
             <os family="windows"/>
         </condition>
+        <condition property="os.family.mac">
+            <os family="mac"/>
+        </condition>
+        <condition property="os.family.ubuntu">
+            <and>
+                <os family="unix"/>
+                <not>
+                    <os family="mac"/>
+                </not>
+            </and>
+        </condition>
 
         <!-- Options we use when compiling (if not beaten to it: see *-preinit) -->
         <property name="build.compiler" value="modern" />
@@ -1467,10 +1478,21 @@ The text for an official release would continue like ...
     </target>
 
     <target name="regrtest-ci"
-            depends="developer-build, regrtest-unix-ci, regrtest-windows-ci"
+            depends="developer-build, regrtest-ubuntu-ci, regrtest-mac-ci, regrtest-windows-ci"
             description="run Python tests expected to work on Jython for CI"/>
 
-    <target name="regrtest-unix-ci" if="os.family.unix">
+    <target name="regrtest-ubuntu-ci" if="os.family.ubuntu">
+        <mkdir dir="${junit.reports}"/>
+        <exec executable="${dist.dir}/bin/jython" failonerror="true">
+            <env key="JAVA_OPTS" value="-Duser.language=en -Duser.region=US"/>
+            <arg value="${dist.dir}/Lib/test/regrtest.py"/>
+            <arg value="-w"/> <!-- re-run failed tests in verbose mode -->
+            <!-- Only run the tests that are expected to work on Jython -->
+            <arg value="--expected"/>
+        </exec>
+    </target>
+
+    <target name="regrtest-mac-ci" if="os.family.mac">
         <mkdir dir="${junit.reports}"/>
         <exec executable="${dist.dir}/bin/jython" failonerror="true">
             <env key="JAVA_OPTS" value="-Duser.language=en -Duser.region=US"/>
