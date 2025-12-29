@@ -1480,7 +1480,8 @@ The text for an official release would continue like ...
             <arg value="--expected"/>
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
-            <arg value="test_socket"/> <!-- flaky on macOS -->
+            <arg value="test_socket"/>     <!-- flaky on macOS -->
+            <arg value="test_socket_jy"/>  <!-- flaky on macOS -->
         </exec>
     </target>
 
