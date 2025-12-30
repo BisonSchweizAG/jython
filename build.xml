@@ -209,38 +209,38 @@ An example ant.properties file:
             <!-- Further database and Java EE-related JARs -->
             <filelist dir="${extlibs.dir}">
                 <file name="jakartaee-api-10.0.0.jar" />
-            	<file name="jdbc-15.0.0.2.jar" />
+            	<file name="jdbc-15.0.1.0.jar" />
                 <file name="mysql-connector-java-5.1.42-bin.jar" />
-            	<file name="ojdbc8-23.9.0.25.07.jar" />
+            	<file name="ojdbc8-23.26.0.0.0.jar" />
                 <file name="postgresql-42.1.1.jre7.jar" />
             </filelist>
 
             <!-- Other JARs (alphabetical) -->
             <filelist dir="${extlibs.dir}">
                 <file name="antlr-complete-3.5.3.jar" /> <!-- ANTLR 3 until we upgrade parsing -->
-                <file name="asm-9.9.jar" />
-                <file name="asm-commons-9.9.jar" />
-                <file name="asm-util-9.9.jar" />
-                <file name="bcpkix-jdk18on-1.82.jar" />
-                <file name="bcprov-jdk18on-1.82.jar" />
+                <file name="asm-9.9.1.jar" />
+                <file name="asm-commons-9.9.1.jar" />
+                <file name="asm-util-9.9.1.jar" />
+                <file name="bcpkix-jdk18on-1.83.jar" />
+                <file name="bcprov-jdk18on-1.83.jar" />
                 <file name="commons-compress-1.28.0.jar"/>
-                <file name="commons-io-2.20.0.jar"/>
+                <file name="commons-io-2.21.0.jar"/>
                 <file name="failureaccess-1.0.1.jar" />
-                <file name="guava-33.4.8-jre.jar" />
-                <file name="icu4j-77.1.jar" />
-                <file name="jffi-1.3.13.jar"/>
+                <file name="guava-33.5.0-jre.jar" />
+                <file name="icu4j-78.1.jar" />
+                <file name="jffi-1.3.14.jar"/>
                 <file name="java-sizeof-0.0.5.jar"/>
                 <file name="jnr-constants-0.10.4.jar"/>
-                <file name="jnr-ffi-2.2.16.jar"/>
+                <file name="jnr-ffi-2.2.18.jar"/>
                 <file name="jnr-netdb-1.2.0.jar"/>
-                <file name="jnr-posix-3.1.20.jar"/>
+                <file name="jnr-posix-3.1.21.jar"/>
                 <file name="jline-2.14.6.jar"/>
-                <file name="netty-buffer-4.2.7.Final.jar"/>
-                <file name="netty-codec-base-4.2.7.Final.jar"/>
-                <file name="netty-common-4.2.7.Final.jar"/>
-                <file name="netty-handler-4.2.7.Final.jar"/>
-                <file name="netty-resolver-4.2.7.Final.jar"/>
-                <file name="netty-transport-4.2.7.Final.jar"/>
+                <file name="netty-buffer-4.2.9.Final.jar"/>
+                <file name="netty-codec-base-4.2.9.Final.jar"/>
+                <file name="netty-common-4.2.9.Final.jar"/>
+                <file name="netty-handler-4.2.9.Final.jar"/>
+                <file name="netty-resolver-4.2.9.Final.jar"/>
+                <file name="netty-transport-4.2.9.Final.jar"/>
             </filelist>
         </path>
 
@@ -269,6 +269,17 @@ An example ant.properties file:
         </condition>
         <condition property="os.family.windows">
             <os family="windows"/>
+        </condition>
+        <condition property="os.family.mac">
+            <os family="mac"/>
+        </condition>
+        <condition property="os.family.ubuntu">
+            <and>
+                <os family="unix"/>
+                <not>
+                    <os family="mac"/>
+                </not>
+            </and>
         </condition>
 
         <!-- Options we use when compiling (if not beaten to it: see *-preinit) -->
@@ -806,33 +817,33 @@ The text for an official release would continue like ...
             <!-- pin to Antlr 3 until we upgrade parsing -->
             <zipfileset src="extlibs/antlr-runtime-3.5.3.jar"/>
             <rule pattern="org.antlr.runtime.**" result="org.python.antlr.runtime.@1"/>
-            <zipfileset src="extlibs/asm-9.9.jar" excludes="module-info.class"/>
-            <zipfileset src="extlibs/asm-commons-9.9.jar" excludes="module-info.class"/>
-            <zipfileset src="extlibs/asm-util-9.9.jar" excludes="module-info.class"/>
+            <zipfileset src="extlibs/asm-9.9.1.jar" excludes="module-info.class"/>
+            <zipfileset src="extlibs/asm-commons-9.9.1.jar" excludes="module-info.class"/>
+            <zipfileset src="extlibs/asm-util-9.9.1.jar" excludes="module-info.class"/>
             <rule pattern="org.objectweb.asm.**" result="org.python.objectweb.asm.@1"/>
-            <zipfileset src="extlibs/bcpkix-jdk18on-1.82.jar" excludes="META-INF/**"/>
-            <zipfileset src="extlibs/bcprov-jdk18on-1.82.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/bcpkix-jdk18on-1.83.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/bcprov-jdk18on-1.83.jar" excludes="META-INF/**"/>
             <rule pattern="org.bouncycastle.**" result="org.python.bouncycastle.@1"/>
             <zipfileset src="extlibs/commons-compress-1.28.0.jar" excludes="META-INF/versions/9/module-info.class"/>
             <rule pattern="org.apache.commons.compress.**" result="org.python.apache.commons.compress.@1"/>
-            <zipfileset src="extlibs/commons-io-2.20.0.jar" excludes="META-INF/versions/9/module-info.class"/>
+            <zipfileset src="extlibs/commons-io-2.21.0.jar" excludes="META-INF/versions/9/module-info.class"/>
             <rule pattern="org.apache.commons.io.**" result="org.python.apache.commons.io.@1"/>
             <zipfileset src="extlibs/failureaccess-1.0.1.jar"/>
-            <zipfileset src="extlibs/guava-33.4.8-jre.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/guava-33.5.0-jre.jar" excludes="META-INF/**"/>
             <rule pattern="com.google.**" result="org.python.google.@1"/>
-            <zipfileset src="extlibs/icu4j-77.1.jar"/>
+            <zipfileset src="extlibs/icu4j-78.1.jar"/>
             <rule pattern="com.ibm.icu.**" result="org.python.icu.@1"/>
-            <zipfileset src="extlibs/netty-buffer-4.2.7.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-buffer-4.2.9.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
-            <zipfileset src="extlibs/netty-codec-base-4.2.7.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-codec-base-4.2.9.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
-            <zipfileset src="extlibs/netty-common-4.2.7.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-common-4.2.9.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
-            <zipfileset src="extlibs/netty-handler-4.2.7.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-handler-4.2.9.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
-            <zipfileset src="extlibs/netty-resolver-4.2.7.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-resolver-4.2.9.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
-            <zipfileset src="extlibs/netty-transport-4.2.7.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-transport-4.2.9.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
             <zipfileset src="${extlibs.dir}/java-sizeof-0.0.5.jar"/>
             <rule pattern="com.carrotsearch.sizeof.**" result="org.python.sizeof.@1"/>
@@ -859,11 +870,11 @@ The text for an official release would continue like ...
             <zipfileset src="extlibs/jffi-x86_64-SunOS.jar"/>
             <zipfileset src="extlibs/jffi-x86_64-Windows.jar"/>
             <!-- remainder of JNR, JFFI -->
-            <zipfileset src="extlibs/jffi-1.3.13.jar"/>
+            <zipfileset src="extlibs/jffi-1.3.14.jar"/>
             <zipfileset src="${extlibs.dir}/jnr-constants-0.10.4.jar"/>
-            <zipfileset src="${extlibs.dir}/jnr-ffi-2.2.16.jar"/>
+            <zipfileset src="${extlibs.dir}/jnr-ffi-2.2.18.jar"/>
             <zipfileset src="${extlibs.dir}/jnr-netdb-1.2.0.jar"/>
-            <zipfileset src="${extlibs.dir}/jnr-posix-3.1.20.jar"/>
+            <zipfileset src="${extlibs.dir}/jnr-posix-3.1.21.jar"/>
             <zipfileset src="extlibs/xercesImpl-2.12.2.jar"
                 excludes="META-INF/services/*, org/w3c/**"/>
             <rule pattern="org.apache.xml.**" result="org.python.apache.xml.@1"/>
@@ -1467,10 +1478,10 @@ The text for an official release would continue like ...
     </target>
 
     <target name="regrtest-ci"
-            depends="developer-build, regrtest-unix-ci, regrtest-windows-ci"
+            depends="developer-build, regrtest-ubuntu-ci, regrtest-mac-ci, regrtest-windows-ci"
             description="run Python tests expected to work on Jython for CI"/>
 
-    <target name="regrtest-unix-ci" if="os.family.unix">
+    <target name="regrtest-ubuntu-ci" if="os.family.ubuntu">
         <mkdir dir="${junit.reports}"/>
         <exec executable="${dist.dir}/bin/jython" failonerror="true">
             <env key="JAVA_OPTS" value="-Duser.language=en -Duser.region=US"/>
@@ -1478,15 +1489,21 @@ The text for an official release would continue like ...
             <arg value="-w"/> <!-- re-run failed tests in verbose mode -->
             <!-- Only run the tests that are expected to work on Jython -->
             <arg value="--expected"/>
-            <arg value="--use"/>
-            <arg value="network,subprocess"/>
+        </exec>
+    </target>
+
+    <target name="regrtest-mac-ci" if="os.family.mac">
+        <mkdir dir="${junit.reports}"/>
+        <exec executable="${dist.dir}/bin/jython" failonerror="true">
+            <env key="JAVA_OPTS" value="-Duser.language=en -Duser.region=US"/>
+            <arg value="${dist.dir}/Lib/test/regrtest.py"/>
+            <arg value="-w"/> <!-- re-run failed tests in verbose mode -->
+            <!-- Only run the tests that are expected to work on Jython -->
+            <arg value="--expected"/>
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
-            <arg value="test_gc"/> <!-- intermittently fails/hangs (xenial) -->
-            <arg value="test_mailbox"/>
-            <arg value="test_py_compile"/> <!-- test_relative_path (on osx) -->
-            <arg value="test_select_new"/>
-            <arg value="test_smtpnet"/>
+            <arg value="test_socket"/>     <!-- flaky on macOS -->
+            <arg value="test_socket_jy"/>  <!-- flaky on macOS -->
         </exec>
     </target>
 
@@ -1498,15 +1515,10 @@ The text for an official release would continue like ...
             <arg value="-w"/> <!-- re-run failed tests in verbose mode -->
             <!-- Only run the tests that are expected to work on Jython -->
             <arg value="--expected"/>
-            <arg value="--use"/>
-            <arg value="network,subprocess"/>
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
-            <arg value="test_jython_launcher"/> <!-- (on git bash) -->
-            <arg value="test_mailbox"/>
-            <arg value="test_os_jy"/> <!-- locale command (on git bash) -->
-            <arg value="test_select_new"/>
-            <arg value="test_smtpnet"/>
+            <arg value="test_pep277"/>           <!-- UnicodeDecode errors on windows -->
+            <arg value="test_jython_launcher"/>  <!-- (on git bash) -->
         </exec>
     </target>
 

@@ -3,12 +3,13 @@ package org.python.modules.jffi;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
 import org.python.core.Py;
 import org.python.core.PyNewWrapper;
 import org.python.core.PyObject;
 import org.python.core.PyType;
-import org.python.core.Untraversable;
 import org.python.core.Traverseproc;
+import org.python.core.Untraversable;
 import org.python.core.Visitproc;
 import org.python.expose.ExposeAsSuperclass;
 import org.python.expose.ExposedGet;
@@ -16,33 +17,55 @@ import org.python.expose.ExposedMethod;
 import org.python.expose.ExposedNew;
 import org.python.expose.ExposedType;
 
+/**
+ * CType
+ */
 @ExposedType(name = "jffi.Type", base = PyObject.class)
 public abstract class CType extends PyObject {
+    /** TYPE */
     public static final PyType TYPE = PyType.fromClass(CType.class);
+
     static {
         TYPE.fastGetDict().__setitem__("Array", Array.TYPE);
         TYPE.fastGetDict().__setitem__("Pointer", Pointer.TYPE);
     }
+
+    /** VOID */
     public static final CType VOID = primitive(NativeType.VOID);
+    /** BOOL */
     public static final CType BOOL = primitive(NativeType.BOOL);
+    /** BYTE */
     public static final CType BYTE = primitive(NativeType.BYTE);
+    /** UBYTE */
     public static final CType UBYTE = primitive(NativeType.UBYTE);
+    /** SHORT */
     public static final CType SHORT = primitive(NativeType.SHORT);
+    /** USHORT */
     public static final CType USHORT = primitive(NativeType.USHORT);
+    /** INT */
     public static final CType INT = primitive(NativeType.INT);
+    /** UINT */
     public static final CType UINT = primitive(NativeType.UINT);
+    /** LONGLONG */
     public static final CType LONGLONG = primitive(NativeType.LONGLONG);
+    /** ULONGLONG */
     public static final CType ULONGLONG = primitive(NativeType.ULONGLONG);
+    /** LONG */
     public static final CType LONG = primitive(NativeType.LONG);
+    /** ULONG */
     public static final CType ULONG = primitive(NativeType.ULONG);
+    /** FLOAT */
     public static final CType FLOAT = primitive(NativeType.FLOAT);
+    /** DOUBLE */
     public static final CType DOUBLE = primitive(NativeType.DOUBLE);
+    /** POINTER */
     public static final CType POINTER = primitive(NativeType.POINTER);
+    /** STRING */
     public static final CType STRING = primitive(NativeType.STRING);
 
     final NativeType nativeType;
 
-    /** The <tt>MemoryOp</tt> used to read/write items of this type */
+    /** The {@code MemoryOp} used to read/write items of this type */
     private final MemoryOp memoryOp;
 
     CType(NativeType type, MemoryOp memoryOp) {
@@ -50,6 +73,11 @@ public abstract class CType extends PyObject {
         this.memoryOp = memoryOp;
     }
 
+    /**
+     * GetNativeType
+     * 
+     * @return type
+     */
     public NativeType getNativeType() {
         return nativeType;
     }
@@ -60,19 +88,39 @@ public abstract class CType extends PyObject {
         return memoryOp;
     }
 
+    /**
+     * Alignment
+     * 
+     * @return i
+     */
     public final int alignment() {
         return jffiType().alignment();
     }
 
+    /**
+     * Size
+     * 
+     * @return i
+     */
     public final int size() {
         return jffiType().size();
     }    
 
+    /**
+     * Pysize
+     * 
+     * @return o
+     */
     @ExposedMethod(names={"size"})
     public final PyObject pysize() {
         return Py.newInteger(size());
     }
 
+    /**
+     * Pyalignment
+     * 
+     * @return o
+     */
     @ExposedMethod(names={"alignment"})
     public final PyObject pyalignment() {
         return Py.newInteger(alignment());

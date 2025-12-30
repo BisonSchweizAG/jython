@@ -23,67 +23,62 @@ import org.python.core.PyUnicode;
 import org.python.core.buffer.SimpleStringBuffer;
 
 /**
- * The <tt>binascii.java</tt> module contains a number of methods to convert between binary and
- * various ASCII-encoded binary representations. Normally, you will not use these modules directly
- * but use wrapper modules like <tt>uu</tt> or <tt>hexbin</tt> instead, this module solely exists
- * because bit-manipulation of large amounts of data is slow in Python.
+ * The {@code binascii.java} module contains a number of methods to convert between binary and various ASCII-encoded
+ * binary representations. Normally, you will not use these modules directly but use wrapper modules like {@code uu} or
+ * {@code hexbin} instead, this module solely exists because bit-manipulation of large amounts of data is slow in
+ * Python.
  *
  * <P>
- * The <tt>binascii.java</tt> module defines the following functions:
+ * The {@code binascii.java} module defines the following functions:
  *
  * <dl>
- * <dt><b><tt>a2b_uu</tt></b> (string)</dt>
- * <dd>Convert a single line of uuencoded data back to binary and return the binary data. Lines
- * normally contain 45 (binary) bytes, except for the last line. Line data may be followed by
- * whitespace.</dd>
+ * <dt><b>{@code a2b_uu}</b> (string)</dt>
+ * <dd>Convert a single line of uuencoded data back to binary and return the binary data. Lines normally contain 45
+ * (binary) bytes, except for the last line. Line data may be followed by whitespace.</dd>
  *
- * <dt><b><tt>b2a_uu</tt></b> (data)</dt>
- * <dd>Convert binary data to a line of ASCII characters, the return value is the converted line,
- * including a newline char. The length of <i>data</i> should be at most 45.</dd>
+ * <dt><b>{@code b2a_uu}</b> (data)</dt>
+ * <dd>Convert binary data to a line of ASCII characters, the return value is the converted line, including a newline
+ * char. The length of <i>data</i> should be at most 45.</dd>
  *
- * <dt><b><tt>a2b_base64</tt></b> (string)</dt>
- * <dd>Convert a block of base64 data back to binary and return the binary data. More than one line
- * may be passed at a time.</dd>
+ * <dt><b>{@code a2b_base64}</b> (string)</dt>
+ * <dd>Convert a block of base64 data back to binary and return the binary data. More than one line may be passed at a
+ * time.</dd>
  *
- * <dt><b><tt>b2a_base64</tt></b> (data)</dt>
- * <dd>Convert binary data to a line of ASCII characters in base64 coding. The return value is the
- * converted line, including a newline char. The length of <i>data</i> should be at most 57 to
- * adhere to the base64 standard.</dd>
+ * <dt><b>{@code b2a_base64}</b> (data)</dt>
+ * <dd>Convert binary data to a line of ASCII characters in base64 coding. The return value is the converted line,
+ * including a newline char. The length of <i>data</i> should be at most 57 to adhere to the base64 standard.</dd>
  *
- * <dt><b><tt>a2b_hqx</tt></b> (string)</dt>
- * <dd>Convert binhex4 formatted ASCII data to binary, without doing RLE-decompression. The string
- * should contain a complete number of binary bytes, or (in case of the last portion of the binhex4
- * data) have the remaining bits zero.</dd>
+ * <dt><b>{@code a2b_hqx}</b> (string)</dt>
+ * <dd>Convert binhex4 formatted ASCII data to binary, without doing RLE-decompression. The string should contain a
+ * complete number of binary bytes, or (in case of the last portion of the binhex4 data) have the remaining bits
+ * zero.</dd>
  *
- * <dt><b><tt>rledecode_hqx</tt></b> (data)</dt>
- * <dd>Perform RLE-decompression on the data, as per the binhex4 standard. The algorithm uses
- * <tt>0x90</tt> after a byte as a repeat indicator, followed by a count. A count of <tt>0</tt>
- * specifies a byte value of <tt>0x90</tt>. The routine returns the decompressed data, unless data
- * input data ends in an orphaned repeat indicator, in which case the <tt>Incomplete</tt> exception
- * is raised.</dd>
+ * <dt><b>{@code rledecode_hqx}</b> (data)</dt>
+ * <dd>Perform RLE-decompression on the data, as per the binhex4 standard. The algorithm uses {@code 0x90} after a byte
+ * as a repeat indicator, followed by a count. A count of {@code 0} specifies a byte value of {@code 0x90}. The routine
+ * returns the decompressed data, unless data input data ends in an orphaned repeat indicator, in which case the
+ * {@code Incomplete} exception is raised.</dd>
  *
- * <dt><b><tt>rlecode_hqx</tt></b> (data)</dt>
+ * <dt><b>{@code rlecode_hqx}</b> (data)</dt>
  * <dd>Perform binhex4 style RLE-compression on <i>data</i> and return the result.</dd>
  *
- * <dt><b><tt>b2a_hqx</tt></b> (data)</dt>
- * <dd>Perform hexbin4 binary-to-ASCII translation and return the resulting string. The argument
- * should already be RLE-coded, and have a length divisible by 3 (except possibly the last
- * fragment).</dd>
+ * <dt><b>{@code b2a_hqx}</b> (data)</dt>
+ * <dd>Perform hexbin4 binary-to-ASCII translation and return the resulting string. The argument should already be
+ * RLE-coded, and have a length divisible by 3 (except possibly the last fragment).</dd>
  *
- * <dt><b><tt>crc_hqx</tt></b> (data, crc)</dt>
- * <dd>Compute the binhex4 crc value of <i>data</i>, starting with an initial <i>crc</i> and
- * returning the result.</dd>
+ * <dt><b>{@code crc_hqx}</b> (data, crc)</dt>
+ * <dd>Compute the binhex4 crc value of <i>data</i>, starting with an initial <i>crc</i> and returning the result.</dd>
  *
- * <dt><b><tt>Error</tt></b></dt>
+ * <dt><b>{@code Error}</b></dt>
  * <dd>Exception raised on errors. These are usually programming errors.</dd>
  *
- * <dt><b><tt>Incomplete</tt></b></dt>
- * <dd>Exception raised on incomplete data. These are usually not programming errors, but may be
- * handled by reading a little more data and trying again.</dd>
+ * <dt><b>{@code Incomplete}</b></dt>
+ * <dd>Exception raised on incomplete data. These are usually not programming errors, but may be handled by reading a
+ * little more data and trying again.</dd>
  * </dl>
  *
- * The module is a line-by-line conversion of the original binasciimodule.c written by Jack Jansen,
- * except that all mistakes and errors are my own.
+ * The module is a line-by-line conversion of the original binasciimodule.c written by Jack Jansen, except that all
+ * mistakes and errors are my own.
  *
  * @author Finn Bock, bckfnn@pipmail.dknet.dk
  * @version binascii.java,v 1.6 1999/02/20 11:37:07 fb Exp
@@ -91,13 +86,25 @@ import org.python.core.buffer.SimpleStringBuffer;
  */
 public class binascii {
 
+    /** __doc__ */
     public static String __doc__ = "Conversion between binary data and ASCII";
 
+    /** Error */
     public static final PyObject Error = Py.makeClass("Error", Py.Exception, exceptionNamespace());
 
+    /** Incomplete */
     public static final PyObject Incomplete =
             Py.makeClass("Incomplete", Py.Exception, exceptionNamespace());
 
+    /** Default constructor */
+    binascii() {
+    }
+
+    /**
+     * ExceptionNamespace
+     * 
+     * @return o
+     */
     public static PyObject exceptionNamespace() {
         PyObject dict = new PyStringMap();
         dict.__setitem__("__module__", new PyString("binascii"));
@@ -225,13 +232,17 @@ public class binascii {
     };
     //@formatter:on
 
+    /** __doc__a2b_uu */
     public static PyString __doc__a2b_uu =
             new PyString("(ascii) -> bin. Decode a line of uuencoded data");
 
     /**
-     * Convert a single line of uuencoded data back to binary and return the binary data. Lines
-     * normally contain 45 (binary) bytes, except for the last line. Line data may be followed by
-     * whitespace.
+     * Convert a single line of uuencoded data back to binary and return the binary data. Lines normally contain 45
+     * (binary) bytes, except for the last line. Line data may be followed by whitespace.
+     * 
+     * @param text
+     *            text
+     * @return s
      */
     public static PyString a2b_uu(PyObject text) {
 
@@ -302,11 +313,16 @@ public class binascii {
         }
     }
 
+    /** __doc__b2a_uu */
     public static PyString __doc__b2a_uu = new PyString("(bin) -> ascii. Uuencode line of data");
 
     /**
-     * Convert binary data to a line of ASCII characters, the return value is the converted line,
-     * including a newline char. The length of <i>data</i> should be at most 45.
+     * Convert binary data to a line of ASCII characters, the return value is the converted line, including a newline
+     * char. The length of <i>data</i> should be at most 45.
+     * 
+     * @param data
+     *            data
+     * @return s
      */
     public static PyString b2a_uu(PyObject data) {
 
@@ -371,12 +387,17 @@ public class binascii {
         return ret;
     }
 
+    /** __doc__a2b_base64 */
     public static PyString __doc__a2b_base64 =
             new PyString("(ascii) -> bin. Decode a line of base64 data");
 
     /**
-     * Convert a block of base64 data back to binary and return the binary data. More than one line
-     * may be passed at a time.
+     * Convert a block of base64 data back to binary and return the binary data. More than one line may be passed at a
+     * time.
+     * 
+     * @param text
+     *            text
+     * @return s
      */
     public static PyString a2b_base64(PyObject text) {
 
@@ -440,12 +461,17 @@ public class binascii {
         }
     }
 
+    /** __doc__b2a_base64 */
     public static PyString __doc__b2a_base64 =
             new PyString("(bin) -> ascii. Base64-code line of data");
 
     /**
-     * Convert binary data to a line of ASCII characters in base64 coding. The return value is the
-     * converted line, including a newline char.
+     * Convert binary data to a line of ASCII characters in base64 coding. The return value is the converted line,
+     * including a newline char.
+     * 
+     * @param data
+     *            data
+     * @return s
      */
     public static PyString b2a_base64(PyObject data) {
 
@@ -489,12 +515,17 @@ public class binascii {
         }
     }
 
+    /** __doc__a2b_hqx */
     public static PyString __doc__a2b_hqx = new PyString("ascii -> bin, done. Decode .hqx coding");
 
     /**
-     * Convert binhex4 formatted ASCII data to binary, without doing RLE-decompression. The string
-     * should contain a complete number of binary bytes, or (in case of the last portion of the
-     * binhex4 data) have the remaining bits zero.
+     * Convert binhex4 formatted ASCII data to binary, without doing RLE-decompression. The string should contain a
+     * complete number of binary bytes, or (in case of the last portion of the binhex4 data) have the remaining bits
+     * zero.
+     * 
+     * @param text
+     *            text
+     * @return tuple
      */
     public static PyTuple a2b_hqx(PyObject text) {
 
@@ -544,9 +575,16 @@ public class binascii {
         }
     }
 
+    /** __doc__rlecode_hqx */
     public static PyString __doc__rlecode_hqx = new PyString("Binhex RLE-code binary data");
 
-    /** Perform binhex4 style RLE-compression on <i>data</i> and return the result. */
+    /**
+     * Perform binhex4 style RLE-compression on <i>data</i> and return the result.
+     * 
+     * @param data
+     *            data
+     * @return s
+     */
     static public PyString rlecode_hqx(PyObject data) {
 
         try (PyBuffer inBuf = getByteBuffer(data)) {
@@ -586,12 +624,16 @@ public class binascii {
         }
     }
 
+    /** __doc__b2a_hqx */
     public static PyString __doc__b2a_hqx = new PyString("Encode .hqx data");
 
     /**
-     * Perform hexbin4 binary-to-ASCII translation and return the resulting string. The argument
-     * should already be RLE-coded, and have a length divisible by 3 (except possibly the last
-     * fragment).
+     * Perform hexbin4 binary-to-ASCII translation and return the resulting string. The argument should already be
+     * RLE-coded, and have a length divisible by 3 (except possibly the last fragment).
+     * 
+     * @param data
+     *            data
+     * @return s
      */
     public static PyString b2a_hqx(PyObject data) {
 
@@ -625,14 +667,18 @@ public class binascii {
         }
     }
 
+    /** __doc__rledecode_hqx */
     public static PyString __doc__rledecode_hqx = new PyString("Decode hexbin RLE-coded string");
 
     /**
-     * Perform RLE-decompression on the data, as per the binhex4 standard. The algorithm uses
-     * <tt>0x90</tt> after a byte as a repeat indicator, followed by a count. A count of <tt>0</tt>
-     * specifies a byte value of <tt>0x90</tt>. The routine returns the decompressed data, unless
-     * data input data ends in an orphaned repeat indicator, in which case the <tt>Incomplete</tt>
-     * exception is raised.
+     * Perform RLE-decompression on the data, as per the binhex4 standard. The algorithm uses {@code 0x90} after a byte
+     * as a repeat indicator, followed by a count. A count of {@code 0} specifies a byte value of {@code 0x90}. The
+     * routine returns the decompressed data, unless data input data ends in an orphaned repeat indicator, in which case
+     * the {@code Incomplete} exception is raised.
+     * 
+     * @param data
+     *            data
+     * @return s
      */
     static public PyString rledecode_hqx(PyObject data) {
 
@@ -706,12 +752,18 @@ public class binascii {
         }
     }
 
+    /** __doc__crc_hqx */
     public static PyString __doc__crc_hqx =
             new PyString("(data, oldcrc) -> newcrc. Compute hqx CRC incrementally");
 
     /**
-     * Compute the binhex4 crc value of <i>data</i>, starting with an initial <i>crc</i> and
-     * returning the result.
+     * Compute the binhex4 crc value of <i>data</i>, starting with an initial <i>crc</i> and returning the result.
+     * 
+     * @param data
+     *            data
+     * @param crc
+     *            crc
+     * @return i
      */
     public static int crc_hqx(PyObject data, int crc) {
         try (PyBuffer buf = getByteBuffer(data)) {
@@ -782,10 +834,26 @@ public class binascii {
     };
     //@formatter:on
 
+    /**
+     * Crc32
+     * 
+     * @param bp
+     *            bp
+     * @return i
+     */
     public static int crc32(PyObject bp) {
         return crc32(bp, 0);
     }
 
+    /**
+     * Crc32
+     * 
+     * @param data
+     *            data
+     * @param long_crc
+     *            long_crc
+     * @return i
+     */
     public static int crc32(PyObject data, long long_crc) {
 
         int crc = ~(int) long_crc;
@@ -807,10 +875,18 @@ public class binascii {
 
     private static char[] hexdigit = "0123456789abcdef".toCharArray();
 
+    /** __doc__b2a_hex */
     public static PyString __doc__b2a_hex =
             new PyString("b2a_hex(data) -> s; Hexadecimal representation of binary data.\n" + "\n"
                     + "This function is also available as \"hexlify()\".");
 
+    /**
+     * B2a_hex
+     * 
+     * @param data
+     *            data
+     * @return s
+     */
     public static PyString b2a_hex(PyObject data) {
 
         try (PyBuffer dataBuf = getByteBuffer(data)) {
@@ -832,16 +908,31 @@ public class binascii {
         }
     }
 
+    /**
+     * Hexlify
+     * 
+     * @param argbuf
+     *            argbuf
+     * @return s
+     */
     public static PyString hexlify(PyObject argbuf) {
         return b2a_hex(argbuf);
     }
 
+    /** a2b_hex$doc */
     public static PyString a2b_hex$doc =
             new PyString("a2b_hex(hexstr) -> s; Binary data of hexadecimal representation.\n" + "\n"
                     + "hexstr must contain an even number of hex digits "
                     + "(upper or lower case).\n"
                     + "This function is also available as \"unhexlify()\"");
 
+    /**
+     * A2b_hex
+     * 
+     * @param hexstr
+     *            hexstr
+     * @return s
+     */
     public static PyString a2b_hex(PyObject hexstr) {
 
         try (PyBuffer buf = getByteBuffer(hexstr)) {
@@ -872,6 +963,13 @@ public class binascii {
         }
     }
 
+    /**
+     * Unhexlify
+     * 
+     * @param argbuf
+     *            argbuf
+     * @return s
+     */
     public static PyString unhexlify(PyObject argbuf) {
         return a2b_hex(argbuf);
     }
@@ -885,6 +983,7 @@ public class binascii {
         return sb;
     }
 
+    /** __doc__a2b_qp */
     final public static PyString __doc__a2b_qp = new PyString("Decode a string of qp-encoded data");
 
     private static boolean getIntFlagAsBool(ArgParser ap, int index, int dflt, String errMsg) {
@@ -899,6 +998,15 @@ public class binascii {
         }
     }
 
+    /**
+     * A2b_qp
+     * 
+     * @param arg
+     *            arg
+     * @param kws
+     *            kws
+     * @return s
+     */
     public static PyString a2b_qp(PyObject[] arg, String[] kws) {
         ArgParser ap = new ArgParser("a2b_qp", arg, kws, new String[] {"s", "header"});
 
@@ -941,6 +1049,7 @@ public class binascii {
         }
     }
 
+    /** __doc__b2a_qp */
     final public static PyString __doc__b2a_qp =
             new PyString("b2a_qp(data, quotetabs=0, istext=1, header=0) -> s;\n"
                     + "Encode a string using quoted-printable encoding.\n\n"
@@ -948,6 +1057,15 @@ public class binascii {
                     + "space at end of lines is.  When istext is not set, \r and \n (CR/LF) are\n"
                     + "both encoded.  When quotetabs is set, space and tabs are encoded.");
 
+    /**
+     * B2a_qp
+     * 
+     * @param arg
+     *            arg
+     * @param kws
+     *            kws
+     * @return s
+     */
     public static PyString b2a_qp(PyObject[] arg, String[] kws) {
         ArgParser ap = new ArgParser("b2a_qp", arg, kws,
                 new String[] {"s", "quotetabs", "istext", "header"});
