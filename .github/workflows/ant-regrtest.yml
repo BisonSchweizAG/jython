@@ -1,6 +1,6 @@
 # Run ant regrtest on Jython 2.7 (GitHub action)
 
-name: ant regrtest 2.7
+name: Ant
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
   regrtest:
     strategy:
       matrix:
-        os: [macos-15-intel, ubuntu-latest]
+        os: [macos-15-intel, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - run: echo "Branch ${{ github.ref }} of repository ${{ github.repository }}."
