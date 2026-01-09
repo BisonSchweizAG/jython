@@ -104,12 +104,6 @@ generateGrammarSource {
 }
 
 
-
-tasks.withType(Javadoc) {
-  options.addStringOption('Xdoclint:none', '-quiet')
-}
-
-
 sourcesJar {
   dependsOn generateGrammarSource
 }
@@ -436,6 +430,136 @@ task copyTestLib(type: Copy, dependsOn: mergePythonLib, description: 'Copy merge
 
 // Attach this task to processResources
 processTestResources.dependsOn(copyTestLib)
+
+
+
+
+// ---------------- Jython-Compile Python --------------------------------------
+
+/*
+ * Compile the Python modules to .class files for the JAR. Whereas Jython runs
+ * happily with a concrete Lib folder, creating and caching the .class files,
+ * when Jython is supplied as a JAR, we prefer to compile the class files once
+ * in advance.
+ */
+
+configurations {
+  pycompile.extendsFrom(implementation)
+}
+
+dependencies {
+  // Jython as built so far should be on the path of the jycompile (Ant) task
+  pycompile files("$buildDir/classes/java/main")
+  pycompile files("$buildDir/resources/main")
+}
+
+// A (Gradle) task to run the Ant task 'jycompile' (not pycompile).
+task pycompile(group: 'Custom', description: 'Compile the Python modules to .class files for the JAR') {
+
+  // Compiler depends on rest of Jython being fully assembled in 'classes'
+  dependsOn classes
+  // Note that classes depends on processResources (Java plug-in).
+
+  // Allow Gradle to infer the need to regenerate the outputs
+  inputs.dir project.ext.buildLibDir
+  outputs.dir project.ext.compiledLibDir
+
+  def inputsDir = project.ext.buildLibDir
+  def outputsDir = project.ext.compiledLibDir
+
+  doFirst {
+    /*
+     * Define an Ant task called 'jycompile' in the project's AntBuilder.
+     * We can't define it until JythoncAntTask has been compiled, so this
+     * must happen during the execution of the task (early).
+     */
+     ant.taskdef(
+       name: 'jycompile',
+       classname: 'org.python.util.JycompileAntTask',
+       classpath: configurations.pycompile.asPath
+     )
+  }
+
+  doLast {
+    /*
+     * Now use the 'jycompile' Ant task to compile the Python source we
+     * supply to users. The exclusions have been copied from build.xml,
+     * and also this comment:
+      <!-- One might think that the exclusion of lib2to3/tests/** is
+         recursive, but one would be wrong ;) It's actually only
+         two levels, so for now the workaround is also to include
+         data/myfixes/**
+
+         This exclusion for lib2to3/tests/ in general is necessary
+         because data/infinite_recursion.py is not compileable by
+         Jython - it's too large and will exceed Java method
+         limits for the top level script; nor is
+         data/py3_test_grammar.py - it's Python 3. Meanwhile
+         refactor.get_all_fix_names depends on having *.py, not
+         exclusively $py.class, files available in
+         lib2to3/tests/data/myfixes/**. -->
+     */
+    def exclusions = ['test/**', 'lib2to3/tests/**', 'lib2to3/tests/data/myfixes/**']
+    ant.jycompile(
+      srcdir: inputsDir,
+      destdir: outputsDir,
+      excludes: exclusions.join(',')  // Yes, it's that way round :o
+    )
+  }
+}
+
+
+
+
+// ---------------- Building the JARs ------------------------------------------
+
+/*
+ * The default behaviour of the Java plug-in is to make a JAR of the classes in
+ * the "main" source set and its resources. Having carefully substituted/added
+ * exposed classes in the assembled classes directory, and having prepared the
+ * (compiled) stdlib as a resource, this is close to what we need, with a few
+ * adjustments as noted.
+ */
+jar {
+
+  // Ensure that compiled stdlib is part of the resources to JAR.
+  dependsOn pycompile
+
+  // It is important for import that X$py.class be newer than X.py
+  preserveFileTimestamps = true
+
+  // We don't JAR the expose tool itself
+  exclude 'org/python/expose/generate/**'
+
+  // Build a custom manifest
+  manifest {
+    // These attribute values are based on inspecting the ant build
+    attributes ([
+      'Main-Class': 'org.python.util.jython',
+      'Built-By': 'build.gradle',
+      'Automatic-Module-Name': 'org.python.jython.bison'
+    ])
+
+    attributes( [ // Build-Info section
+      'version': project.version,
+      'build-compiler': 'modern',
+      'jdk-target-version': java.targetCompatibility,
+      'debug': compileJava.options.debug,
+      'informix': false,
+      'oracle': false
+    ], 'Build-Info' )
+  }
+}
+
+
+
+
+tasks.withType(Javadoc) {
+  options.addStringOption('Xdoclint:none', '-quiet')
+  mustRunAfter(pycompile)
+}
+
+
 
 
 
