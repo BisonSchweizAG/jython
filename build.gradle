@@ -86,6 +86,10 @@ tasks.withType(Javadoc) {
 }
 
 
+sourcesJar {
+  dependsOn generateGrammarSource
+}
+
 
 
 // tasks for 2.7.bison:
