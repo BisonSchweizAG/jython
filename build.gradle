@@ -11,8 +11,11 @@ repositories {
 
 buildDir = file('build2')
 ext {
-    antlrSrcDir = "$buildDir/gensrc/"
-    antlrGenDir = "$antlrSrcDir/org/python/antlr"
+  antlrSrcDir = "$buildDir/gensrc/"
+  antlrGenDir = "$antlrSrcDir/org/python/antlr"
+  // Intermediate locations for compiled classes
+  unexposedDir = "$buildDir/unexposed"
+  exposedDir = "$buildDir/exposed"
 }
 
 
@@ -76,10 +79,6 @@ generateGrammarSource {
 }
 
 
-tasks.withType(JavaCompile).configureEach {
-  dependsOn generateGrammarSource
-}
-
 
 tasks.withType(Javadoc) {
   options.addStringOption('Xdoclint:none', '-quiet')
@@ -89,6 +88,83 @@ tasks.withType(Javadoc) {
 sourcesJar {
   dependsOn generateGrammarSource
 }
+
+
+compileJava {
+  dependsOn generateGrammarSource
+  // Divert compiled classes to intermediate location pre-exposure.
+  destinationDirectory = file(unexposedDir)
+
+  // should only warn about finalization and PythonParser
+  options.compilerArgs = ['-Xlint:deprecation']
+
+  // when activating unchecked, please make sure that only (more )PythonParser and finalization warnings pop up
+//  options.compilerArgs = ['-Xlint:deprecation', '-Xlint:unchecked']
+}
+
+// ---------------- Expose Task ------------------------------------------------
+
+/*
+ * The exposer operates between the output of compileJava (unexposed directory)
+ * and a second intermediate location (exposed directory). These two the
+ * mergeExposed task will finally combine in the Gradle-standard classes
+ * directory used as input by the jar task.
+ */
+configurations {
+  expose.extendsFrom(implementation)
+}
+
+dependencies {
+  // The expose (Ant) task depends on classes compiled to here:
+  expose files(unexposedDir)
+}
+
+// A (Gradle) task to run the Ant task 'expose'.
+task expose (group: 'Custom', dependsOn: compileJava) {
+
+  description = 'Expose Java types to Python using their annotations.'
+
+  // Allow Gradle to infer the need to regenreate the outputs
+  inputs.files(fileTree("${project.ext.unexposedDir}/org/python"))
+  outputs.dir(project.ext.exposedDir)
+
+  def exposedDir = project.ext.exposedDir
+  def unexposedDir = project.ext.unexposedDir
+
+  doLast {
+    /*
+     * Define an Ant task called 'expose' in the project's AntBuilder.
+     * We can't define it until ExposeTask has been compiled.
+     */
+    ant.taskdef(
+      name: 'expose',
+      classname: 'org.python.expose.generate.ExposeTask',
+      classpath: configurations.expose.asPath
+     )
+
+    // Use the Gradle-conventional directory structure (not the legacy one).
+    ant.expose(
+      srcdir: file(unexposedDir),
+      destdir: mkdir(file(exposedDir)),
+      includesfile: file('CoreExposed.includes')
+    )
+  }
+}
+
+// Task to merge the exposed and unexposed classes
+task mergeExposed(group: 'Custom', type:Copy, dependsOn: expose) {
+  description = 'Copy exposed Java types to classes.'
+  // Exposed version will take precedence
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+  from file(exposedDir)
+  from file(unexposedDir)
+  into sourceSets.main.output.classesDirs.singleFile
+}
+
+// Attach to the classes task the placing of all compiled and exposed classes.
+classes.dependsOn(mergeExposed)
+
+
 
 
 
