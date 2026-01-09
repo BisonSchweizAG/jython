@@ -1,3 +1,26 @@
+/*
+ * Gradle build for Jython. See also settings.gradle.
+ *
+ * This is an attempt to build a distributable JAR using Gradle that could be
+ * cited as a dependency by other Gradle or Maven projects, when they use the
+ * Jython interpreter from Java (under JSR-223 or directly).
+ *
+ * At present, the build is additional to the Ant build that remains the
+ * primary and reliable support for development, for test, and to build the
+ * Jython installers.
+ *
+ * The delivered jar should contain only Jython project material (Java classes
+ * and the Python library) while the many JARs Jython depends on will be cited
+ * in the accompanying metadata as dependencies.
+ *
+ * The Jython source structure does not follow the standard convention for
+ * Gradle. This script deals with that without changing it, but it uses a build
+ * directory (build2) entirely separate from Ant's, in which generated and
+ * compiled material is posted conformant with Gradle conventions. This means
+ * that the later tasks Gradle provides (test and jar) do not need so much
+ * customisation.
+ */
+
 plugins {
   id 'java-library'
   id 'antlr'
@@ -48,8 +71,9 @@ java {
 import java.text.SimpleDateFormat
 
 
-// update this to your needs - generateVersionInfo() will eventually add a '-SNAPSHOT'
+// update the version to your needs - generateVersionInfo() will eventually add a '-SNAPSHOT'
 version = '2.7.19'
+group = 'org.python'
 
 
 dependencies {
@@ -130,6 +154,32 @@ compileJava {
 //  options.compilerArgs = ['-Xlint:deprecation', '-Xlint:unchecked']
 }
 
+
+// ---------------- Resource Processing ----------------------------------------
+
+/*
+ * Jython brings several files we could treat as resources, but they do not sit
+ * in the Gradle-conventional 'main/resources' directory, rather are in the
+ * project root or rub shoulders with the java source. Pick them individually.
+ *
+ * Several tasks defined below declare that processResources depends on them,
+ * with the objective that at the end of processResources all generated
+ * resources and the stdlib (but not the compiled stdlib) should be in place
+ * in $buildDir/resources/main.
+ */
+processResources {
+  from(file('.')) {
+    include 'LICENSE.txt'
+  }
+  from(file('src')) {
+    include 'META-INF/**'
+    include 'org/python/modules/ucnhash.dat'
+    include 'com/ziclix/python/sql/resource/zxJDBCMessages.properties'
+  }
+}
+
+
+
 // ---------------- Expose Task ------------------------------------------------
 
 /*
@@ -190,13 +240,9 @@ task mergeExposed(group: 'Custom', type:Copy, dependsOn: expose) {
 }
 
 
-// --------- search for classes.dependsOn
 
 // Attach to the classes task the placing of all compiled and exposed classes.
 classes.dependsOn(mergeExposed)
-
-
-
 
 
 
@@ -747,33 +793,3 @@ test {
   }
 
 }
-
-
-
-
-
-
-
-// tasks for 2.7.bison:
-//➜  jython git:(2.7.bison) ./gradlew build --dry-run
-//Starting a Gradle Daemon (subsequent builds will be faster)
-//:generateGrammarSource SKIPPED
-//:compileJava SKIPPED
-//:expose SKIPPED
-//:mergeExposed SKIPPED
-//:mergePythonLib SKIPPED
-//:copyLib SKIPPED
-//:generateVersionInfo SKIPPED
-//:processResources SKIPPED
-//:classes SKIPPED
-//:pycompile SKIPPED
-//:jar SKIPPED
-//:assemble SKIPPED
-//:generateTestGrammarSource SKIPPED
-//:compileTestJava SKIPPED
-//:copyTestLib SKIPPED
-//:processTestResources SKIPPED
-//:testClasses SKIPPED
-//:test SKIPPED
-//:check SKIPPED
-//:build SKIPPED
