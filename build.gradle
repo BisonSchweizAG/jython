@@ -97,6 +97,14 @@ sourceSets {
       srcDirs = ['src', antlrSrcDir]
     }
   }
+
+  test {  // Non-standard locations must be specified explicitly
+    java {
+      srcDirs = ['tests/java']
+      // Reference to proprietary libraries not supplied
+      exclude 'com/ziclix/python/sql/**'
+    }
+  }
 }
 
 
@@ -664,6 +672,81 @@ publishing {
 // Ensure version computation/branding precedes any publication we use.
 publish.dependsOn(generateVersionInfo)
 
+
+
+
+// ---------------- Java unit tests --------------------------------------------
+
+ext {
+  //distDir = relativePath("$buildDir/assembly")
+  testSourceDir = relativePath('tests/java')
+}
+
+
+dependencies {
+  // Put the exposed classes on the path of the test tasks
+  testImplementation files(expose)
+}
+
+// Ensure exposed classes are ahead of standard path
+sourceSets.test {
+  compileClasspath  = files(expose.outputs) + compileClasspath
+  runtimeClasspath = files(expose.outputs) + runtimeClasspath
+  // println "runtimeClasspath = ${runtimeClasspath.asPath}"
+}
+
+compileTestJava {
+  dependsOn expose
+  dependsOn pycompile
+  options.debug = project.compileJava.options.debug
+  options.compilerArgs = ['-Xlint:deprecation', '-Xlint:unchecked']
+}
+
+test {
+
+  dependsOn copyLib
+
+  // Stop on first test failure
+  failFast = true
+
+  // Properties as defined in Ant target javatest-basepath
+  // XXX Not sure of all that python.home is used for in tests.
+  systemProperty 'python.home', file(copyLib.destinationDir).parent
+  systemProperty 'python.test.source.dir', project.ext.testSourceDir
+  // Place cache outside the targets for jar task
+  systemProperty 'python.cachedir', "${project.buildDir}/cachedir"
+  // Logging level: default is message=INFO
+  //systemProperty 'python.verbose', 'CONFIG'
+
+  include '**/*Test*'
+
+  // Exclude based on Ant target javatest-basepath
+  exclude '**/InterpTestCase'
+  exclude '**/jythonTest*'            // Must run interactively
+  exclude 'org/python/antlr/**'
+  exclude 'org/python/tests/imp/**'   // See build.xml:importest
+
+  // Some additional exclusions or else the task fails
+
+  // FIXME: leaves stdin/out/err as PyFileWriter that has no fileno()
+  // causing _ioTest to fail.
+  exclude '**/jsr223/*'
+
+  // FIXME: Tests that hard-code directory paths (use a symbol):
+  exclude 'org/python/compiler/custom_proxymaker/**'
+  exclude 'org/python/compiler/JavaMakerSmokeTest.class'
+
+  // FIXME: Failing test finds project root from test class location
+  exclude 'org/python/core/PySystemState_registry_Test.class'
+
+  // FIXME: Fails as sys._jy_console not set when run under Gradle
+  exclude 'org/python/util/InterpreterTest.class'
+
+  doFirst {
+    println "systemProperties = $systemProperties"
+  }
+
+}
 
 
 
