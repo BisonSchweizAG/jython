@@ -11,6 +11,7 @@ repositories {
 
 buildDir = file('build2')
 ext {
+  buildDate = new Date()
   antlrSrcDir = "$buildDir/gensrc/"
   antlrGenDir = "$antlrSrcDir/org/python/antlr"
   // Intermediate locations for compiled classes
@@ -24,6 +25,13 @@ java {
   withSourcesJar()
   withJavadocJar()
 }
+
+
+import java.text.SimpleDateFormat
+
+
+// update this to your needs - generateVersionInfo() will eventually add a '-SNAPSHOT'
+version = '2.7.19'
 
 
 dependencies {
@@ -161,8 +169,160 @@ task mergeExposed(group: 'Custom', type:Copy, dependsOn: expose) {
   into sourceSets.main.output.classesDirs.singleFile
 }
 
+
+// --------- search for classes.dependsOn
+
 // Attach to the classes task the placing of all compiled and exposed classes.
 classes.dependsOn(mergeExposed)
+
+
+
+
+
+
+// ---------------- Version-related file generation ----------------------------
+
+/*
+ * Write the information that org.python.Version reads from
+ * org/python/version.properties in the class file structure. The inputs to
+ * this are: information from Git (git command required); project.version;
+ * and project.ext.buildDate. The task works quite hard to decode
+ * project.version, which must have the correct form, to deduce whether you
+ * really intend this to be a release. If anything comes after the release
+ * number, typically it's a '+' sign, the version becomes a snapshot.
+ *
+ * ! ATTN:
+ * Updating project.version will become illegal with Gradle 10, therefore
+ * SNAPSHOT publications will have wrong names. 
+ */
+task generateVersionInfo(type: WriteProperties, description: 'Write the version information as properties') {
+
+  destinationFile = file("${processResources.destinationDir}/org/python/version.properties")
+  comment = ' Jython version information (from build.gradle)'
+
+  def projectVersion = project.version
+  def buildDate = project.ext.buildDate
+
+  // Create the properties when the task runs. But do it before the write!
+  doFirst {
+
+    /*
+     * Query Git for version and tagging. The git commands are exactly
+     * those used by CPython to create constants configure.ac, but do not
+     * correspond very well to their names.
+     */
+
+    // Not much like a branch. Used only if git_tag is blank.
+    def branch = 'git name-rev --name-only HEAD'.execute().text.split('\n', 2)[0]
+    property('jython.build.git_branch', branch)
+    println "  jython.build.git_branch = ${branch}"
+
+    // When tagged, the result is "tags/vX.Y.Zrc9", or whatever.
+    // When not, tagged it is the (short) revision number.
+    def tag = 'git describe --all --always --dirty'.execute().text.split('\n', 2)[0]
+    property('jython.build.git_tag', tag)
+    println "  jython.build.git_tag = ${tag}"
+
+    // Revision number (short = 7 hex digits)
+    def ident = 'git rev-parse --short HEAD'.execute().text.split('\n', 2)[0]
+    property('jython.build.git_version', ident)
+    println "  jython.build.git_version = ${ident}"
+
+    /*
+     * Decompose the version string into elements for Jython to access as
+     * properties. (The Ant build.xml requires them to be set in parts, but
+     * we can work it out from project.version.)
+     */
+    // <major>.<minor>(.<micro>)(<release><serial>)?(+|-<snapshot>)?
+    def versionRegex = /(\d+)\.(\d+)(\.(\d+))?((a|b|rc)(\d+))?(\+|-(\w+))?/
+    def versionMatcher = projectVersion =~ versionRegex
+    if (versionMatcher.count != 1) {
+      throw new IllegalArgumentException("Cannot parse project version string '${project.version}'")
+    }
+    // In principle it could match more than once: take the leftmost
+    def versionResult = versionMatcher[0]
+
+    // <major>.<minor> means <major>.<minor>.0
+    String major = versionResult[1]
+    String minor = versionResult[2]
+    String micro = versionResult[3] ? versionResult[4] : '0'
+
+    // Convert the optional <release><serial> to numbers
+    int level = 0, serial = 0
+    if (versionResult[5]) {
+      // This is some kind of pre-final release (unless snapshot)
+      serial = versionResult[7] as int
+      switch (versionResult[6]) {
+        case 'a': level = 0xa; break // ALPHA release
+        case 'b': level = 0xb; break // BETA release
+        case 'rc': level = 0xc; break // release candidate
+      }
+    } else {
+      // Not marked as a/b/rc so ostensibly a final release.
+      level = 0xf
+    }
+
+    // Convert optional +|-<word> to -DEV or -SNAPSHOT suffix or empty string
+    String snapshotSuffix = versionResult[8];
+    if (snapshotSuffix == '+') {
+      snapshotSuffix = "-SNAPSHOT"
+    }
+
+    /*
+     * Work out if it looks like a release, or adjust project.version. This logic prevents us
+     * releasing from a polluted repo (similar to logic in the Ant build.xml).
+     */
+    def L = [0:'', 10:'a', 11:'b', 12:'rc', 15:'']
+    String release = "$major.$minor.$micro${L[level]}${serial?:''}"
+
+    if (snapshotSuffix == null) {
+      // The version is named correctly for a release. Make safety checks on the repo.
+      String expectTag = "tags/v$release"
+      String message = null;
+      if (tag.endsWith('-dirty')) {
+        message = 'Version-controlled files have been edited since the last commit'
+      } else if (tag != expectTag) {
+        message = "Change set $ident is not tagged $expectTag."
+      } else {
+        // Query Git for status: non-empty if uncontrolled (unignored) files.
+        String gitStatus = 'git status --porcelain'.execute().text
+        if (gitStatus.trim().length() > 0) {
+          message = 'Workspace contains uncontrolled files'
+        }
+      }
+      // If a message was set for any reason, fall back to a snapshot.
+      if (message == null) {
+        // Repository state is good for a full build.
+        snapshotSuffix = ''
+      } else {
+        // Some reason found not to build the release.
+        println "$message - build is a snapshot."
+        snapshotSuffix = '-SNAPSHOT'
+      }
+    }
+
+    // Rebuild the version with the snapshot suffix, even if not given originally.
+    def actualProjectVersion = release + snapshotSuffix
+    println "This build is for v${actualProjectVersion}."
+
+    property('jython.version', actualProjectVersion)
+    property('jython.major_version', major)
+    property('jython.minor_version', minor)
+    property('jython.micro_version', micro)
+    property('jython.release_level', level)
+    property('jython.release_serial', serial)
+
+    /*
+     * Time-stamp the build. In the time part, the ':' gets escaped to '\:', consistent with Properties.store(), unlike the Ant build.
+     */
+    property('jython.build.time', (new SimpleDateFormat('HH:mm:ss')).format(buildDate))
+    property('jython.build.date', (new SimpleDateFormat('MMM d yyyy')).format(buildDate))
+  }
+}
+
+// Attach this task to processResources
+processResources.dependsOn(generateVersionInfo)
+
 
 
 
