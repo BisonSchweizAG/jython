@@ -58,20 +58,20 @@ class ProcessTestCase(unittest.TestCase):
     #
     def test_call_seq(self):
         # call() function with sequence argument
-        rc = subprocess.call([sys.executable, "-c",
+        rc = subprocess.call([sys.executable, '-Dpython.testing=true', "-c",
                               "import sys; sys.exit(47)"])
         self.assertEqual(rc, 47)
 
     def test_check_call_zero(self):
         # check_call() function with zero return code
-        rc = subprocess.check_call([sys.executable, "-c",
+        rc = subprocess.check_call([sys.executable, '-Dpython.testing=true', "-c",
                                     "import sys; sys.exit(0)"])
         self.assertEqual(rc, 0)
 
     def test_check_call_nonzero(self):
         # check_call() function with non-zero return code
         try:
-            subprocess.check_call([sys.executable, "-c",
+            subprocess.check_call([sys.executable, '-Dpython.testing=true', "-c",
                                    "import sys; sys.exit(47)"])
         except subprocess.CalledProcessError, e:
             self.assertEqual(e.returncode, 47)
@@ -82,7 +82,7 @@ class ProcessTestCase(unittest.TestCase):
         # call() function with keyword args
         newenv = os.environ.copy()
         newenv["FRUIT"] = "banana"
-        rc = subprocess.call([sys.executable, "-c",
+        rc = subprocess.call([sys.executable, '-Dpython.testing=true', "-c",
                           'import sys, os;' \
                           'sys.exit(os.getenv("FRUIT")=="banana")'],
                         env=newenv)
@@ -113,7 +113,7 @@ class ProcessTestCase(unittest.TestCase):
         self.assertEqual(p.stderr, None)
 
     def test_executable(self):
-        p = subprocess.Popen(["somethingyoudonthave",
+        p = subprocess.Popen(["somethingyoudonthave", '-Dpython.testing=true',
                               "-c", "import sys; sys.exit(47)"],
                              executable=sys.executable)
         p.wait()
@@ -121,7 +121,7 @@ class ProcessTestCase(unittest.TestCase):
 
     def test_stdin_pipe(self):
         # stdin redirection
-        p = subprocess.Popen([sys.executable, "-c",
+        p = subprocess.Popen([sys.executable, '-Dpython.testing=true', "-c",
                          'import sys; sys.exit(sys.stdin.read() == "pear")'],
                         stdin=subprocess.PIPE)
         p.stdin.write("pear")
@@ -135,7 +135,7 @@ class ProcessTestCase(unittest.TestCase):
         d = tf.fileno()
         os.write(d, "pear")
         os.lseek(d, 0, 0)
-        p = subprocess.Popen([sys.executable, "-c",
+        p = subprocess.Popen([sys.executable, '-Dpython.testing=true', "-c",
                          'import sys; sys.exit(sys.stdin.read() == "pear")'],
                          stdin=d)
         p.wait()
@@ -146,7 +146,7 @@ class ProcessTestCase(unittest.TestCase):
         tf = tempfile.TemporaryFile()
         tf.write("pear")
         tf.seek(0)
-        p = subprocess.Popen([sys.executable, "-c",
+        p = subprocess.Popen([sys.executable, '-Dpython.testing=true', "-c",
                          'import sys; sys.exit(sys.stdin.read() == "pear")'],
                          stdin=tf)
         p.wait()
@@ -243,7 +243,7 @@ class ProcessTestCase(unittest.TestCase):
     def test_stdout_filedes_of_stdout(self):
         # stdout is set to 1 (#1531862).
         cmd = r"import sys, os; sys.exit(os.write(sys.stdout.fileno(), '.\n'))"
-        rc = subprocess.call([sys.executable, "-c", cmd],
+        rc = subprocess.call([sys.executable, '-Dpython.testing=true', "-c", cmd],
                              stdout=sys.__stdout__.fileno())
         self.assertEquals(rc, 2)
 
@@ -274,7 +274,7 @@ class ProcessTestCase(unittest.TestCase):
         self.assertEqual(p.stdout.read(), "orange")
 
     def test_communicate_stdin(self):
-        p = subprocess.Popen([sys.executable, "-c",
+        p = subprocess.Popen([sys.executable, '-Dpython.testing=true', "-c",
                               'import sys; sys.exit(sys.stdin.read() == "pear")'],
                              stdin=subprocess.PIPE)
         p.communicate("pear")
@@ -313,7 +313,7 @@ class ProcessTestCase(unittest.TestCase):
 
     def test_communicate_returns(self):
         # communicate() should return None if no redirection is active
-        p = subprocess.Popen([sys.executable, "-c",
+        p = subprocess.Popen([sys.executable, '-Dpython.testing=true', "-c",
                               "import sys; sys.exit(47)"])
         (stdout, stderr) = p.communicate()
         self.assertEqual(stdout, None)
@@ -565,7 +565,7 @@ class ProcessTestCase(unittest.TestCase):
             # args is a string
             f, fname = self.mkstemp()
             os.write(f, "#!/bin/sh\n")
-            os.write(f, "exec %s -c 'import sys; sys.exit(47)'\n" %
+            os.write(f, "exec %s -Dpython.testing=true -c 'import sys; sys.exit(47)'\n" %
                         sys.executable)
             os.close(f)
             os.chmod(fname, 0700)
@@ -578,11 +578,11 @@ class ProcessTestCase(unittest.TestCase):
             # invalid arguments should raise ValueError
             self.assertRaises(ValueError, subprocess.call,
                               [sys.executable,
-                               "-c", "import sys; sys.exit(47)"],
+                               '-Dpython.testing=true', "-c", "import sys; sys.exit(47)"],
                               startupinfo=47)
             self.assertRaises(ValueError, subprocess.call,
                               [sys.executable,
-                               "-c", "import sys; sys.exit(47)"],
+                               '-Dpython.testing=true', "-c", "import sys; sys.exit(47)"],
                               creationflags=47)
 
         def test_shell_sequence(self):
@@ -607,7 +607,7 @@ class ProcessTestCase(unittest.TestCase):
             # call() function with string argument on UNIX
             f, fname = self.mkstemp()
             os.write(f, "#!/bin/sh\n")
-            os.write(f, "exec %s -c 'import sys; sys.exit(47)'\n" %
+            os.write(f, "exec %s -Dpython.testing=true -c 'import sys; sys.exit(47)'\n" %
                         sys.executable)
             os.close(f)
             os.chmod(fname, 0700)
@@ -632,7 +632,7 @@ class ProcessTestCase(unittest.TestCase):
             # Since Python is a console process, it won't be affected
             # by wShowWindow, but the argument should be silently
             # ignored
-            subprocess.call([sys.executable, "-c", "import sys; sys.exit(0)"],
+            subprocess.call([sys.executable, '-Dpython.testing=true', "-c", "import sys; sys.exit(0)"],
                         startupinfo=startupinfo)
 
         def test_creationflags(self):
@@ -647,17 +647,17 @@ class ProcessTestCase(unittest.TestCase):
             # invalid arguments should raise ValueError
             self.assertRaises(ValueError, subprocess.call,
                               [sys.executable,
-                               "-c", "import sys; sys.exit(47)"],
+                               '-Dpython.testing=true', "-c", "import sys; sys.exit(47)"],
                               preexec_fn=lambda: 1)
             self.assertRaises(ValueError, subprocess.call,
                               [sys.executable,
-                               "-c", "import sys; sys.exit(47)"],
+                               '-Dpython.testing=true', "-c", "import sys; sys.exit(47)"],
                               stdout=subprocess.PIPE,
                               close_fds=True)
 
         def test_close_fds(self):
             # close file descriptors
-            rc = subprocess.call([sys.executable, "-c",
+            rc = subprocess.call([sys.executable, '-Dpython.testing=true', "-c",
                                   "import sys; sys.exit(47)"],
                                   close_fds=True)
             self.assertEqual(rc, 47)
@@ -683,7 +683,7 @@ class ProcessTestCase(unittest.TestCase):
         def test_call_string(self):
             # call() function with string argument on Windows
             rc = subprocess.call(sys.executable +
-                                 ' -c "import sys; sys.exit(47)"')
+                                 ' -Dpython.testing=true -c "import sys; sys.exit(47)"')
             self.assertEqual(rc, 47)
 
 
@@ -708,15 +708,15 @@ class ProcessTestCase(unittest.TestCase):
             # invalid arguments should raise ValueError
             self.assertRaises(ValueError, subprocess.call,
                               [sys.executable,
-                               "-c", "import sys; sys.exit(47)"],
+                               '-Dpython.testing=true', "-c", "import sys; sys.exit(47)"],
                               startupinfo=47)
             self.assertRaises(ValueError, subprocess.call,
                               [sys.executable,
-                               "-c", "import sys; sys.exit(47)"],
+                               '-Dpython.testing=true', "-c", "import sys; sys.exit(47)"],
                               creationflags=47)
             self.assertRaises(ValueError, subprocess.call,
                               [sys.executable,
-                               "-c", "import sys; sys.exit(47)"],
+                               '-Dpython.testing=true', "-c", "import sys; sys.exit(47)"],
                               preexec_fn=lambda: 1)
             # invalid command line args should raise TypeError
             self.assertRaises(TypeError, subprocess.call,
@@ -725,8 +725,6 @@ class ProcessTestCase(unittest.TestCase):
 
 
 def test_main():
-    # Spawning many new jython processes takes a long time
-    test_support.requires('subprocess')
     test_support.run_unittest(ProcessTestCase)
     if hasattr(test_support, "reap_children"):
         test_support.reap_children()
