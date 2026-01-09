@@ -17,6 +17,23 @@ ext {
   // Intermediate locations for compiled classes
   unexposedDir = "$buildDir/unexposed"
   exposedDir = "$buildDir/exposed"
+  // The standard library may safely be assembled in-place as a resource
+  pythonLibDir = "$buildDir/python/Lib/"
+  buildLibDir = "$buildDir/resources/main/Lib/"
+  buildTestLibDir = "$buildDir/resources/test/Lib/"
+  compiledLibDir = "$buildDir/resources/main/Lib/"
+  compiledTestLibDir = "$buildDir/resources/test/Lib/"
+  // test folders
+  libPython = 'lib-python/2.7'
+  libJython = 'Lib'
+  libTestSpecs = [
+    'distutils/tests/',
+    'email/test/',
+    'json/tests/',
+    'lib2to3/tests/',
+    'unittest/test/',
+    'test/'
+  ]
 }
 
 
@@ -322,6 +339,104 @@ task generateVersionInfo(type: WriteProperties, description: 'Write the version 
 
 // Attach this task to processResources
 processResources.dependsOn(generateVersionInfo)
+
+
+
+
+
+
+// ---------------- Copy Python Library ----------------------------------------
+
+/*
+ * The default behaviour of the Java plug-in is to make a JAR of the classes in
+ * the "main" source set. We need a more complex assembly that provides users
+ * with exposed classes instead of their plain counterparts, and also various
+ * configuration files and the Python library.
+ *
+ * These copies include the tests, so we can test things :), but a subsequent
+ * JarTask of the build should exclude them as necessary. (Not yet implemented.)
+ */
+
+
+interface Injected {
+  @Inject FileSystemOperations getFs()
+}
+
+/*
+ * Copy the Python standard library. We take this from a distribution of
+ * CPython, but take only the files specified in CPythonLib.includes.
+ * The Jython version of the standard library will be copied to the same place.
+ * Files from the Jython library having the same name (relative path) as one
+ * in CPythonLib.includes thereby take precedence.
+ */
+task mergePythonLib(type: Copy, description: 'Merge lib-python and Jython Lib') {
+
+  def injected = project.objects.newInstance(Injected)
+
+  // There might be a way using a collection of File rather than actual copy.
+  into pythonLibDir
+
+  // Copy Jython Lib, with precedence over CPython files of the same name
+  duplicatesStrategy = DuplicatesStrategy.INCLUDE
+  from libJython
+  exclude '**/*.class'
+
+  // Allow Gradle to infer the need to regenerate the outputs
+  inputs.dir libJython
+  inputs.dir libPython
+  inputs.file file('CPythonLib.includes')
+
+  doFirst {
+    // Select the CPython stdlib files by making a list.
+    def cPythonLibIncludes = []
+    // Read list from CPythonLib.includes, stripping comments and spaces.
+    file('CPythonLib.includes').eachLine { line ->
+      def trimmed = line.split('#', 2)[0].trim()
+      if (trimmed.length() > 0) {
+        cPythonLibIncludes << trimmed
+      }
+    }
+    // Copy the subset as specified by the list
+    injected.fs.copy {
+      into pythonLibDir
+      duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+      from libPython
+      include cPythonLibIncludes
+      exclude '**/*.pyc', '**/*.pyd'
+    }
+  }
+}
+
+/*
+ * Copy from the merge location into the main resources, excluding material
+ * only needed for tests.
+ */
+task copyLib(type: Copy, dependsOn: mergePythonLib, description: 'Copy merged Python library (main excluding tests)') {
+  into buildLibDir
+  from pythonLibDir
+  exclude '**/*.pyc', '**/*.pyd', '**/*.class'
+  // Exclude tests and test material
+  exclude libTestSpecs
+}
+
+// Attach this task to processResources
+processResources.dependsOn(copyLib)
+
+/*
+ * Copy from the merge location into the test resopurces, including only
+ * that extra material needed for tests.
+ */
+task copyTestLib(type: Copy, dependsOn: mergePythonLib, description: 'Copy merged Python library (tests only)') {
+  into buildTestLibDir
+  from pythonLibDir
+  exclude '**/*.pyd', '**/*.class' // test material includes .pyc files
+  // Include only tests and test material
+  include libTestSpecs
+}
+
+// Attach this task to processResources
+processTestResources.dependsOn(copyTestLib)
+
 
 
 
