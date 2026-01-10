@@ -29,6 +29,7 @@
 - fix (or mute) some regression tests
 - prevent System.exit(n) and sys.exit() from being called (the latter only in embedded mode)
 - a bit different github workflows
+- use the latest gradle wrapper
 
 # Running regrtest
 Run either the following commands:
@@ -84,5 +85,4 @@ See `bison/regrtest.log`
 - prepare for the next version by increasing the patch version in `build.gradle`
 
 # TODO
-- rewrite the `build.gradle` for running with Gradle 9.x
 - replace `finalize()`

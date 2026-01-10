@@ -610,6 +610,7 @@ jar {
 
 
 tasks.withType(Javadoc) {
+  // when activating doclint, make sure there are no javadoc errors (there are too many warnings)
   options.addStringOption('Xdoclint:none', '-quiet')
   mustRunAfter(pycompile)
 }
