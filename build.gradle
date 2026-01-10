@@ -640,11 +640,6 @@ publishing {
 
       from components.java
 
-      // Also provide the source.
-      artifact sourcesJar
-      // Also provide the docs. (Some javadoc errors currently.)
-      artifact javadocJar
-
       // version evaluation takes place in the configuration phase - way before generateVersionInfo runs
 
       pom {
