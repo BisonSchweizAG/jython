@@ -29,6 +29,7 @@
 - fix (or mute) some regression tests
 - prevent System.exit(n) and sys.exit() from being called (the latter only in embedded mode)
 - a bit different github workflows
+- use the latest gradle wrapper
 
 # Running regrtest
 Run either the following commands:
@@ -59,14 +60,14 @@ To execute - for example - `test_string.py`, the command line is as follows:
 ## `2.7.bison` Tip Results
 See `bison/regrtest.log`
 
-# Artifactory publishing of a SNAPSHOT (Note: maven snapshot publishing currently not perfect)
+# Artifactory publishing of a SNAPSHOT (Note: maven SNAPSHOT publishing currently not perfect)
 - make sure that `-Xlint:unchecked` only spits out warnings in `PythonParser.java`
 - `./gradlew clean publish`
-- copy `build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x-SNAPSHOT.pom`
+- copy `/build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x.pom` to `/build2/libs/jython-2.7.x-SNAPSHOT.pom`
 - rename `/build2/libs/jython-2.7.x.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT.jar`
 - rename `/build2/libs/jython-2.7.x-sources.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT-sources.jar`
-- rename `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar`
-- deploy `jython-2.7.x-SNAPSHOT.pom`
+- rename `/build2/libs/jython-2.7.x-javadoc.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar`
+- deploy `/build2/libs/jython-2.7.x-SNAPSHOT.pom`
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT.jar` (adjust the `Group ID` to `org.python`)
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT-sources.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `sources`)
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `javadoc`)
@@ -84,5 +85,4 @@ See `bison/regrtest.log`
 - prepare for the next version by increasing the patch version in `build.gradle`
 
 # TODO
-- rewrite the `build.gradle` for running with Gradle 9.x
 - replace `finalize()`
