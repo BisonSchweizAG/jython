@@ -34,10 +34,8 @@ public class bz2 implements ClassDictInit {
     public static PyString compress(PyString data, int compresslevel) {
         PyString returnData = null;
 
-        try {
-            ByteArrayOutputStream compressedArray = new ByteArrayOutputStream();
-            BZip2CompressorOutputStream bzbuf = new BZip2CompressorOutputStream(
-                    compressedArray);
+        try (ByteArrayOutputStream compressedArray = new ByteArrayOutputStream();
+                        BZip2CompressorOutputStream bzbuf = new BZip2CompressorOutputStream(compressedArray)) {
 
             bzbuf.write(data.toBytes());
             bzbuf.finish();
@@ -57,13 +55,9 @@ public class bz2 implements ClassDictInit {
         if (data.toString().equals("")) {
             return Py.EmptyString;
         }
-        try {
-            ByteArrayInputStream inputArray = new ByteArrayInputStream(
-                    data.toBytes());
-            BZip2CompressorInputStream bzbuf = new BZip2CompressorInputStream(
-                    inputArray);
-
-            ByteArrayOutputStream outputArray = new ByteArrayOutputStream();
+        try (ByteArrayInputStream inputArray = new ByteArrayInputStream(data.toBytes());
+                        BZip2CompressorInputStream bzbuf = new BZip2CompressorInputStream(inputArray);
+                        ByteArrayOutputStream outputArray = new ByteArrayOutputStream()) {
 
             final byte[] buffer = new byte[8192];
             int n = 0;
@@ -72,10 +66,6 @@ public class bz2 implements ClassDictInit {
             }
 
             returnString = new PyString(outputArray.toString("iso-8859-1"));
-
-            outputArray.close();
-            bzbuf.close();
-            inputArray.close();
         } catch (IOException e) {
             throw Py.ValueError(e.getMessage());
         }

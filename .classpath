@@ -15,7 +15,7 @@
 	<classpathentry kind="lib" path="extlibs/asm-util-9.9.1.jar"/>
 	<classpathentry kind="lib" path="extlibs/bcpkix-jdk18on-1.83.jar"/>
 	<classpathentry kind="lib" path="extlibs/bcprov-jdk18on-1.83.jar"/>
-	<classpathentry kind="lib" path="extlibs/commons-compress-1.28.0.jar"/>
+	<classpathentry kind="lib" path="extlibs/commons-compress-1.29.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="extlibs/commons-io-2.21.0.jar"/>
 	<classpathentry kind="lib" path="extlibs/guava-33.5.0-jre.jar"/>
 	<classpathentry kind="lib" path="extlibs/icu4j-78.1.jar"/>
