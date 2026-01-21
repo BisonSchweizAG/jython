@@ -31,6 +31,22 @@
 - a bit different github workflows
 - use the latest gradle wrapper
 
+# Pull Requests
+Renovations triggered by dependabot result in a new dependabot branch with pull request.
+Only changes regarding the gradle build are part of the pull request.
+Changes to the corresponding Ant build have to be applied accordingly.
+
+- local checkout of the pull request branch
+- run gradle build locally with `./gradlew build`
+- download the new lib versions (e.g. from mvnrepository.com) and copy locally into `extlibs` folder
+- search and replace lib version references (e.g. build.xml, extlib.xml, .classpath) with new versions
+- delete old libs from `extlibs`
+- run ant build:
+```
+	ant clean
+	ant -noinput -buildfile build.xml regrtest-ci
+```
+
 # Running regrtest
 Run either the following commands:
 - `ant clean`
