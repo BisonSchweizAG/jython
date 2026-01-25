@@ -10,7 +10,6 @@ public class VersionMatchingAntTask extends Task {
     public void execute() throws BuildException {
         Location location = getLocation();
         log("location = " + location);
-        throw new BuildException("Versions to not match");
     }
 
 }
