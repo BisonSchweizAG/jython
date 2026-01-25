@@ -792,6 +792,16 @@ The text for an official release would continue like ...
          </cc>
     </target>
 
+	<target name="version_check" depends="compile">
+        <taskdef name="versionmatching" classname="org.python.util.VersionMatchingAntTask">
+            <classpath>
+                <path refid="main.classpath" />
+                <pathelement path="${compile.dir}" />
+            </classpath>
+        </taskdef>
+		<versionmatching/>
+    </target>
+	
     <target name="expose" depends="compile">
         <taskdef name="expose" classname="org.python.expose.generate.ExposeTask">
             <classpath>
@@ -928,7 +938,7 @@ The text for an official release would continue like ...
         </jar>
     </target>
 
-    <target name="jar" depends="compile, expose"
+    <target name="jar" depends="compile, version_check, expose"
             description="build the jython-dev.jar (requiring main classpath and Lib to use).">
 
         <typedef name="nameunion" classname="org.python.util.NameUnionAntType">
