@@ -9,6 +9,7 @@ import static org.python.util.VersionMatchingAntTask.checkAntArtefact;
 import static org.python.util.VersionMatchingAntTask.unquote;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -73,6 +74,7 @@ public class VersionMatchingAntTaskTest {
         } catch (BuildException be) {
             assertEquals("Missing artefact name format for 'rev_unknown'", be.getMessage());
         }
+        assertEquals("ant-1.10.15.jar", calculateGradleArtefact("rev_ant", "1.10.15"));
         assertEquals("antlr-complete-5.4.3.jar", calculateGradleArtefact("rev_antlr", "5.4.3"));
         assertEquals("asm-9.8.7.jar", calculateGradleArtefact("rev_asm", "9.8.7"));
         assertEquals("bcpkix-jdk18on-8.7.6.jar", calculateGradleArtefact("rev_bouncycastle", "8.7.6"));
@@ -111,21 +113,16 @@ public class VersionMatchingAntTaskTest {
         }
     }
 
-    private void setLocationToBuildXml() {
+    private void setLocationToBuildXml() throws URISyntaxException {
         // in test mode, we need to set the location to the build.xml file
         URL actualURL = VersionMatchingAntTask.class.getResource("VersionMatchingAntTask.class");
         assertNotNull(actualURL);
-        Path actualPath = Paths.get(actualURL.getFile());
-        Path repo = actualPath.getParent().getParent().getParent().getParent().getParent().getParent();
-        Path buildXml = repo.resolve("build.xml");
-        if (exists(buildXml)) {
-            // this is the Eclipse location
-        } else {
-            repo = repo.getParent().getParent();
-            buildXml = repo.resolve("build.xml");
-            // this is the gradle command line location
-            assertTrue(exists(buildXml));
+        Path actualPath = Paths.get(actualURL.toURI());
+        while (actualPath != null && !actualPath.getFileName().toString().equals("jython")) {
+            actualPath = actualPath.getParent();
         }
+        Path buildXml = actualPath.resolve("build.xml");
+        assertTrue(exists(buildXml));
         task.setLocation(new Location(buildXml.toString()));
     }
 
