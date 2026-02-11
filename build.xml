@@ -236,12 +236,12 @@ An example ant.properties file:
                 <file name="jnr-netdb-1.2.0.jar"/>
                 <file name="jnr-posix-3.1.21.jar"/>
                 <file name="jline-2.14.6.jar"/>
-                <file name="netty-buffer-4.2.9.Final.jar"/>
-                <file name="netty-codec-base-4.2.9.Final.jar"/>
-                <file name="netty-common-4.2.9.Final.jar"/>
-                <file name="netty-handler-4.2.9.Final.jar"/>
-                <file name="netty-resolver-4.2.9.Final.jar"/>
-                <file name="netty-transport-4.2.9.Final.jar"/>
+                <file name="netty-buffer-4.2.10.Final.jar"/>
+                <file name="netty-codec-base-4.2.10.Final.jar"/>
+                <file name="netty-common-4.2.10.Final.jar"/>
+                <file name="netty-handler-4.2.10.Final.jar"/>
+                <file name="netty-resolver-4.2.10.Final.jar"/>
+                <file name="netty-transport-4.2.10.Final.jar"/>
             </filelist>
         </path>
 
@@ -802,7 +802,7 @@ The text for an official release would continue like ...
         </taskdef>
 		<versionmatching/>
     </target>
-	
+
     <target name="expose" depends="compile">
         <taskdef name="expose" classname="org.python.expose.generate.ExposeTask">
             <classpath>
@@ -844,17 +844,17 @@ The text for an official release would continue like ...
             <rule pattern="com.google.**" result="org.python.google.@1"/>
             <zipfileset src="extlibs/icu4j-78.2.jar"/>
             <rule pattern="com.ibm.icu.**" result="org.python.icu.@1"/>
-            <zipfileset src="extlibs/netty-buffer-4.2.9.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-buffer-4.2.10.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
-            <zipfileset src="extlibs/netty-codec-base-4.2.9.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-codec-base-4.2.10.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
-            <zipfileset src="extlibs/netty-common-4.2.9.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-common-4.2.10.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
-            <zipfileset src="extlibs/netty-handler-4.2.9.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-handler-4.2.10.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
-            <zipfileset src="extlibs/netty-resolver-4.2.9.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-resolver-4.2.10.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
-            <zipfileset src="extlibs/netty-transport-4.2.9.Final.jar" excludes="META-INF/**"/>
+            <zipfileset src="extlibs/netty-transport-4.2.10.Final.jar" excludes="META-INF/**"/>
             <rule pattern="io.netty.**" result="org.python.netty.@1"/>
             <zipfileset src="${extlibs.dir}/java-sizeof-0.0.5.jar"/>
             <rule pattern="com.carrotsearch.sizeof.**" result="org.python.sizeof.@1"/>

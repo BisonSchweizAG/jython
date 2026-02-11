@@ -40,7 +40,7 @@ Changes to the corresponding Ant build have to be applied accordingly.
 - local checkout of the pull request branch
 - run gradle build locally with `./gradlew build`
 - download the new lib versions (e.g. from mvnrepository.com) and copy locally into `extlibs` folder
-- search and replace lib version references (e.g. build.xml, extlib.xml, .classpath) with new versions
+- search and replace lib version references (e.g. build.xml, extlib.xml, .classpath, b/.idea/libraries/extlibs.xml) with new versions
 - delete old libs from `extlibs`
 - run ant build:
 ```
