@@ -29,6 +29,7 @@
 - fix (or mute) some regression tests
 - prevent System.exit(n) and sys.exit() from being called (the latter only in embedded mode)
 - a bit different github workflows
+- the ant build fails if build.xml has different versions than build.gradle
 - use the latest gradle wrapper
 
 # Pull Requests
@@ -46,6 +47,10 @@ Changes to the corresponding Ant build have to be applied accordingly.
 	ant clean
 	ant -noinput -buildfile build.xml regrtest-ci
 ```
+
+**When manually creating a pull request:**
+
+Please make sure to adjust the target repository (`BisonSchweizAG/jython`) and the target branch (`2.7.bison`). Otherwise a pull request to the upstream repository (`jython/jython`) will be created.
 
 # Running regrtest
 Run either the following commands:
