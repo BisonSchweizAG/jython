@@ -16,7 +16,7 @@ jobs:
   regrtest:
     strategy:
       matrix:
-        os: [macos-15-intel, ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - run: echo "Branch ${{ github.ref }} of repository ${{ github.repository }}."
