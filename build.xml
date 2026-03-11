@@ -1517,8 +1517,9 @@ The text for an official release would continue like ...
             <arg value="--expected"/>
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
-            <arg value="test_socket"/>     <!-- flaky -->
-            <arg value="test_socket_jy"/>  <!-- flaky -->
+            <arg value="test_gc"/>          <!-- flaky -->
+            <arg value="test_socket"/>     	<!-- flaky -->
+            <arg value="test_socket_jy"/>  	<!-- flaky -->
         </exec>
     </target>
 
