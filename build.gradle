@@ -259,7 +259,7 @@ classes.dependsOn(mergeExposed)
  *
  * ! ATTN:
  * Updating project.version will become illegal with Gradle 10, therefore
- * SNAPSHOT publications will have wrong names. 
+ * SNAPSHOT publications will have wrong names.
  */
 task generateVersionInfo(type: WriteProperties, description: 'Write the version information as properties') {
 
@@ -706,7 +706,7 @@ publishing {
     // Staging area where ant -f maven/build.xml will look.
     maven {
       name = 'stagingRepo'
-      url = "file://${buildDir}/stagingRepo"
+      url = layout.buildDirectory.dir("stagingRepo").get().asFile.toURI()
     }
   }
 }
