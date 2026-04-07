@@ -88,9 +88,9 @@ public class VersionMatchingAntTaskTest {
         assertEquals("jffi-1.3.15.jar", calculateGradleArtefact("rev_jffi", "1.3.15"));
         assertEquals("jline-2.14.6.jar", calculateGradleArtefact("rev_jline", "2.14.6"));
         assertEquals("jnr-constants-0.10.4.jar", calculateGradleArtefact("rev_jnr_constants", "0.10.4"));
-        assertEquals("jnr-ffi-2.2.18.jar", calculateGradleArtefact("rev_jnr_ffi", "2.2.18"));
+        assertEquals("jnr-ffi-2.2.19.jar", calculateGradleArtefact("rev_jnr_ffi", "2.2.19"));
         assertEquals("jnr-netdb-1.2.3.jar", calculateGradleArtefact("rev_jnr_netdb", "1.2.3"));
-        assertEquals("jnr-posix-3.20.10.jar", calculateGradleArtefact("rev_jnr_posix", "3.20.10"));
+        assertEquals("jnr-posix-3.1.22.jar", calculateGradleArtefact("rev_jnr_posix", "3.1.22"));
         assertEquals("junit-4.13.2.jar", calculateGradleArtefact("rev_junit", "4.13.2"));
         assertEquals("netty-buffer-5.4.3.Final.jar", calculateGradleArtefact("rev_netty", "5.4.3.Final"));
         assertEquals("ojdbc8-23.26.1.2.3.jar", calculateGradleArtefact("rev_oracle", "23.26.1.2.3"));
