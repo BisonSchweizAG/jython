@@ -8,7 +8,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="extlibs/ant-1.10.15.jar"/>
+	<classpathentry kind="lib" path="extlibs/ant-1.10.17.jar"/>
 	<classpathentry kind="lib" path="extlibs/antlr-complete-3.5.3.jar"/>
 	<classpathentry kind="lib" path="extlibs/asm-9.9.1.jar"/>
 	<classpathentry kind="lib" path="extlibs/asm-commons-9.9.1.jar"/>
