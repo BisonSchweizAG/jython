@@ -30,7 +30,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Set up Ant
-        uses: cedx/setup-ant@v2
+        uses: cedx/setup-ant@v6
         with:
           version: '1.10.17'
 
