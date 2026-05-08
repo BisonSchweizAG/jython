@@ -42,7 +42,7 @@ Changes to the corresponding Ant build have to be applied accordingly.
 - download the new lib versions (e.g. from mvnrepository.com) and copy locally into `extlibs` folder
 - search and replace lib version references (e.g. build.xml, extlibs.xml, .classpath) with new versions
 - delete old libs from `extlibs`
-- check (update) ant version in .github/workflows/ant-regertest.yml
+- check (update) ant version in .github/workflows/ant-regrtest.yml
 - run ant build:
 ```
 	ant clean
