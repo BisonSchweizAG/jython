@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      issues: write
+      pull-requests: write
+      checks: write
 
     steps:
     - uses: actions/checkout@v6
@@ -31,3 +34,11 @@ jobs:
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
+
+    # Remember: the build directory for our gradle build is called 'build2'
+    - name: Upload Test Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: junit-test-results
+        path: build2/reports/tests/test/
