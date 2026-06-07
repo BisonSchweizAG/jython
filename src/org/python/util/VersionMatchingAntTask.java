@@ -28,7 +28,7 @@ public class VersionMatchingAntTask extends Task {
         ARTEFACT_NAME_FORMATS.put("rev_guava", "guava-%s.jar");
         ARTEFACT_NAME_FORMATS.put("rev_icu4j", "icu4j-%s.jar");
         ARTEFACT_NAME_FORMATS.put("rev_informix", "jdbc-%s.jar");
-        ARTEFACT_NAME_FORMATS.put("rev_jakartaee_api", "jakartaee-api-%s.jar");
+        ARTEFACT_NAME_FORMATS.put("rev_jakarta_servlet_api", "jakarta.servlet-api-%s.jar");
         ARTEFACT_NAME_FORMATS.put("rev_java_sizeof", "java-sizeof-%s.jar");
         ARTEFACT_NAME_FORMATS.put("rev_jffi", "jffi-%s.jar");
         ARTEFACT_NAME_FORMATS.put("rev_jline", "jline-%s.jar");

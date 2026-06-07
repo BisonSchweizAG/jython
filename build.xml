@@ -208,7 +208,7 @@ An example ant.properties file:
         <path id="main.classpath">
             <!-- Further database and Java EE-related JARs -->
             <filelist dir="${extlibs.dir}">
-                <file name="jakartaee-api-10.0.0.jar"/>
+                <file name="jakarta.servlet-api-6.1.0.jar"/>
             	<file name="jdbc-15.0.1.2.jar"/>
                 <file name="mysql-connector-java-5.1.42-bin.jar"/>
             	<file name="ojdbc8-23.26.2.0.0.jar"/>
@@ -1228,7 +1228,7 @@ The text for an official release would continue like ...
                 <exclude name="extlibs/asm*.jar" />
                 <exclude name="extlibs/jarjar*.jar" />
                 <exclude name="extlibs/junit*.jar" />
-                <exclude name="extlibs/jakartaee-api*.jar" />
+                <exclude name="extlibs/jakarta.servlet-api*.jar" />
                 <exclude name="extlibs/stringtemplate*.jar" />
                 <exclude name="extlibs/xerces*.jar" />
             </fileset>
