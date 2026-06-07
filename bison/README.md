@@ -3,7 +3,8 @@
 - import existing eclipse project
 - switch Text File Encoding to UTF-8
 - run the `antlr-gen` (Ant) launch configuration
-- [overridden by Oomph settings in a bison eclipse:] Java -> Compiler -> Errors/Warnings -> Incomplete 'switch' cases on enum: Warning (instead of Error)
+- [need to be adjusted after installing a new eclipse version:] 
+     Java -> Compiler -> Errors/Warnings -> Incomplete 'switch' cases on enum: Warning (instead of Error)
 - [overridden by Oomph settings in a bison eclipse:] Java -> Code Style -> Formatter: import `bison/formatting/Jython-like.xml`
 - [overridden by Oomph settings in a bison eclipse:] Java -> Editor -> Save Actions: format edited lines
 
@@ -27,12 +28,44 @@
 - PyString now can contain 8 bit Unicode characters (in both conversion directions)
 - fix (or mute) some regression tests
 - prevent System.exit(n) and sys.exit() from being called (the latter only in embedded mode)
+- a bit different github workflows
+- the ant build fails if build.xml has different versions than build.gradle
+- use the latest gradle wrapper
+
+# Pull Requests
+Renovations triggered by dependabot result in a new dependabot branch with pull request.
+Only changes regarding the gradle build are part of the pull request.
+Changes to the corresponding Ant build have to be applied accordingly.
+
+- local checkout of the pull request branch
+- run gradle build locally with `./gradlew build`
+- download the new lib versions (e.g. from mvnrepository.com) and copy locally into `extlibs` folder
+- search and replace lib version references (e.g. build.xml, extlibs.xml, .classpath) with new versions
+- delete old libs from `extlibs`
+- check (update) ant version in .github/workflows/ant-regrtest.yml
+- run ant build:
+```
+	ant clean
+	ant -noinput -buildfile build.xml regrtest-ci
+```
+
+**When manually creating a pull request:**
+
+Please make sure to adjust the target repository (`BisonSchweizAG/jython`) and the target branch (`2.7.bison`). Otherwise a pull request to the upstream repository (`jython/jython`) will be created.
 
 # Running regrtest
-- run the following commands in a shell with JDK 21
+Run either the following commands:
+- `ant clean`
+- `ant -noinput -buildfile build.xml regrtest-ci`
+
+or:
 - `ant clean`
 - `ant`
 - `./dist/bin/jython -m test.regrtest -e`
+
+The former being executed on the github pipeline, but - with `network` resource enabled - giving SSL handshake errors on the command line (`test_httplib`, `test_robotparser`, `test_ssl_jy`, `test_urllibnet`).
+
+The latter expected to give no errors on the command line.
 
 ## Running a single regrtest
 To execute - for example - `test_string.py`, the command line is as follows:
@@ -49,18 +82,20 @@ To execute - for example - `test_string.py`, the command line is as follows:
 ## `2.7.bison` Tip Results
 See `bison/regrtest.log`
 
-# Artifactory publishing of a SNAPSHOT (Note: maven snapshot publishing currently not perfect)
+# Artifactory publishing of a SNAPSHOT (Note: maven SNAPSHOT publishing currently not perfect)
+- make sure that `-Xlint:unchecked` only spits out warnings in `PythonParser.java`
 - `./gradlew clean publish`
-- copy `build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x-SNAPSHOT.pom`
+- copy `/build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x.pom` to `/build2/libs/jython-2.7.x-SNAPSHOT.pom`
 - rename `/build2/libs/jython-2.7.x.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT.jar`
 - rename `/build2/libs/jython-2.7.x-sources.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT-sources.jar`
-- rename `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar`
-- deploy `jython-2.7.x-SNAPSHOT.pom`
+- rename `/build2/libs/jython-2.7.x-javadoc.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar`
+- deploy `/build2/libs/jython-2.7.x-SNAPSHOT.pom`
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT.jar` (adjust the `Group ID` to `org.python`)
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT-sources.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `sources`)
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `javadoc`)
 
 # Artifactory publishing of a final version
+- make sure that `-Xlint:unchecked` only spits out warnings in `PythonParser.java`
 - make sure your local copy is clean (`git status` should display `nothing to commit, working tree clean`)
 - `git tag -a v2.7.x -m "Jython version 2.7.x"`
 - `git push origin v2.7.x`
@@ -72,5 +107,4 @@ See `bison/regrtest.log`
 - prepare for the next version by increasing the patch version in `build.gradle`
 
 # TODO
-- try to fix compilation warnings
 - replace `finalize()`

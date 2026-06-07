@@ -317,7 +317,9 @@ class TestCase(object):
             finally:
                 result.stopTest(self)
             return
+        from org.python.core import PySystemState
         try:
+            PySystemState.setTesting(True)
             success = False
             try:
                 self.setUp()
@@ -375,6 +377,7 @@ class TestCase(object):
                 stopTestRun = getattr(result, 'stopTestRun', None)
                 if stopTestRun is not None:
                     stopTestRun()
+            PySystemState.setTesting(False)
 
     def doCleanups(self):
         """Execute all cleanup functions. Normally called for you after

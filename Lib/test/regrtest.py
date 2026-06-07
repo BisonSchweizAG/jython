@@ -518,6 +518,8 @@ def main(tests=None, testdir=None, verbose=0, quiet=False,
     if memo:
         savememo(memo, good, failures, bad, skips, skipped, allran, resource_denieds)
 
+    from org.python.core import PySystemState
+    PySystemState.setTesting(True)
     sys.exit(surprises > 0)
 
 

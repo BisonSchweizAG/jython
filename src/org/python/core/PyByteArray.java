@@ -334,7 +334,7 @@ public class PyByteArray extends BaseBytes implements BufferProtocol {
 
     /**
      * Returns a <code>PyByteArray</code> that repeats this sequence the given number of times, as
-     * in the implementation of <tt>__mul__</tt> for strings.
+     * in the implementation of {@code __mul__} for strings.
      *
      * @param count the number of times to repeat this.
      * @return this byte array repeated count times.
@@ -348,7 +348,7 @@ public class PyByteArray extends BaseBytes implements BufferProtocol {
 
     /**
      * Replace the contents of this <code>PyByteArray</code> with the given number of repeats of the
-     * original contents, as in the implementation of <tt>__mul__</tt> for strings.
+     * original contents, as in the implementation of {@code __mul__} for strings.
      *
      * @param count the number of times to repeat this.
      */
@@ -436,7 +436,6 @@ public class PyByteArray extends BaseBytes implements BufferProtocol {
      * </pre>
      *
      * Results in <code>a=bytearray(b'abAdBfChDjElmnopqrst')</code>.
-     * <p>
      *
      * @param start the position of the first element.
      * @param stop one more than the position of the last element.
@@ -752,12 +751,15 @@ public class PyByteArray extends BaseBytes implements BufferProtocol {
     }
 
     /**
-     * Convenience method to build (but not throw) a <code>ValueError</code> PyException with the
-     * message "attempt to assign {type} of size {valueSize} to extended slice of size {sliceSize}"
+     * Convenience method to build (but not throw) a <code>ValueError</code> PyException with the message "attempt to
+     * assign {type} of size {valueSize} to extended slice of size {sliceSize}"
      *
      * @param valueType
-     * @param valueSize size of sequence being assigned to slice
-     * @param sliceSize size of slice expected to receive
+     *            valueType
+     * @param valueSize
+     *            size of sequence being assigned to slice
+     * @param sliceSize
+     *            size of slice expected to receive
      * @return PyException (ValueError) as detailed
      */
     public static PyException SliceSizeError(String valueType, int valueSize, int sliceSize) {
@@ -928,6 +930,8 @@ public class PyByteArray extends BaseBytes implements BufferProtocol {
 
     /**
      * Returns the number of bytes actually allocated.
+     * 
+     * @return i
      */
     public int __alloc__() {
         return bytearray___alloc__();

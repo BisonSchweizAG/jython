@@ -170,14 +170,14 @@ class HelperFunctionsTests(unittest.TestCase):
         self.assertIn(usersite, sys.path)
 
         env = os.environ.copy()
-        rc = subprocess.call([sys.executable, '-c',
+        rc = subprocess.call([sys.executable, '-Dpython.testing=true', '-c',
             'import sys; sys.exit(%r in sys.path)' % usersite],
             env=env)
         self.assertEqual(rc, 1, "%r is not in sys.path (sys.exit returned %r)"
                 % (usersite, rc))
 
         env = os.environ.copy()
-        rc = subprocess.call([sys.executable, '-s', '-c',
+        rc = subprocess.call([sys.executable, '-s', '-Dpython.testing=true', '-c',
             'import sys; sys.exit(%r in sys.path)' % usersite],
             env=env)
         self.assertEqual(rc, 0)
@@ -187,14 +187,14 @@ class HelperFunctionsTests(unittest.TestCase):
         if not is_jython:
             env = os.environ.copy()
             env["PYTHONNOUSERSITE"] = "1"
-            rc = subprocess.call([sys.executable, '-c',
+            rc = subprocess.call([sys.executable, '-Dpython.testing=true', '-c',
                 'import sys; sys.exit(%r in sys.path)' % usersite],
                 env=env)
             self.assertEqual(rc, 0)
 
             env = os.environ.copy()
             env["PYTHONUSERBASE"] = "/tmp"
-            rc = subprocess.call([sys.executable, '-c',
+            rc = subprocess.call([sys.executable, '-Dpython.testing=true', '-c',
                 'import sys, site; sys.exit(site.USER_BASE.startswith("/tmp"))'],
                 env=env)
             self.assertEqual(rc, 1)
