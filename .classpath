@@ -13,8 +13,8 @@
 	<classpathentry kind="lib" path="extlibs/asm-9.10.1.jar"/>
 	<classpathentry kind="lib" path="extlibs/asm-commons-9.10.1.jar"/>
 	<classpathentry kind="lib" path="extlibs/asm-util-9.10.1.jar"/>
-	<classpathentry kind="lib" path="extlibs/bcpkix-jdk18on-1.84.jar"/>
-	<classpathentry kind="lib" path="extlibs/bcprov-jdk18on-1.84.jar"/>
+	<classpathentry kind="lib" path="extlibs/bcpkix-jdk18on-1.85.jar"/>
+	<classpathentry kind="lib" path="extlibs/bcprov-jdk18on-1.85.jar"/>
 	<classpathentry kind="lib" path="extlibs/commons-compress-1.28.0.jar"/>
 	<classpathentry kind="lib" path="extlibs/commons-io-2.22.0.jar"/>
 	<classpathentry kind="lib" path="extlibs/guava-33.6.0-jre.jar"/>
