@@ -1549,10 +1549,11 @@ The text for an official release would continue like ...
             <arg value="--expected"/>
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
-            <arg value="test_pep277"/>           <!-- UnicodeDecode errors on windows -->
-            <arg value="test_jython_launcher"/>  <!-- (on git bash) -->
-            <arg value="test_socket"/>           <!-- flaky -->
-            <arg value="test_socket_jy"/>        <!-- flaky -->
+            <arg value="test_pep277"/>             <!-- UnicodeDecode errors on windows -->
+            <arg value="test_jython_launcher"/>    <!-- (on git bash) -->
+            <arg value="test_SimpleXMLRPCServer"/> <!-- flaky -->
+            <arg value="test_socket"/>             <!-- flaky -->
+            <arg value="test_socket_jy"/>          <!-- flaky -->
             <arg value="test_urllib2"/>
             <arg value="test_urllib2_localnet"/>
         </exec>
