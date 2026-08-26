@@ -13,7 +13,7 @@ import org.python.core.PyString;
 
 /**
  * Python bz2 module
- * 
+ *
  */
 public class bz2 implements ClassDictInit {
 
@@ -40,7 +40,7 @@ public class bz2 implements ClassDictInit {
                     compressedArray);
 
             bzbuf.write(data.toBytes());
-            bzbuf.finish();
+            bzbuf.close();
 
             returnData = new PyString(compressedArray.toString("iso-8859-1"));
             compressedArray.close();
