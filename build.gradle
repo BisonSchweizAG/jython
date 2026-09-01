@@ -99,7 +99,7 @@ java {
 import java.text.SimpleDateFormat
 
 
-// update the version to your needs 
+// update the version to your needs
 // generateVersionInfo() will eventually add a '-SNAPSHOT' (but too late for gradle publication)
 version = '2.7.19'
 group = 'org.python'
