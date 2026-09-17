@@ -173,6 +173,10 @@ An example ant.properties file:
         <property name="junit.dir" value="${reports.dir}/junit" />
         <property name="junit.reports" value="${junit.dir}/raw" />
 
+        <!-- Resources for regrtest (network,subprocess or subprocess for local runs without external network) -->
+        <property name="regrtest.use" value="network,subprocess" />
+        <property name="regrtest.use.local" value="subprocess" />
+
         <!-- Artefacts for publication. -->
         <property name="pubs.dir" value="${basedir}/publications" />
     </target>
@@ -251,6 +255,7 @@ An example ant.properties file:
             <filelist dir="${extlibs.dir}">
                 <!-- Pin to 4.13.2 until dependency on hamcrest classes resolved. -->
                 <file name="junit-4.13.2.jar"/>
+                <file name="hamcrest-core-1.3.jar"/>
             </filelist>
             <pathelement location="${exposed.dir}" />
             <pathelement location="${compile.dir}" />
@@ -1268,9 +1273,16 @@ The text for an official release would continue like ...
     <target name="test" depends="clean-test, javatest, launchertest, regrtest, modjytest"
         description="run all the tests"/>
 
+    <target name="test-local" depends="clean-test, javatest, launchertest, regrtest-local, modjytest"
+        description="run all the tests locally (without network dependencies)"/>
+
     <target name="test-built"
             depends="init, clean-test, javatest-built, launchertest-built, regrtest-built, modjytest-built"
             description="run all the tests against an existing built dist without rebuilding"/>
+
+    <target name="test-built-local"
+            depends="init, clean-test, javatest-built, launchertest-built, regrtest-built-local, modjytest-built"
+            description="run all the tests against an existing built dist without rebuilding (without network dependencies)"/>
 
     <target name="singlejavatest" depends="compile-test, expose"
         description="run a single JUnit test (specify with -Dtest=classname)">
@@ -1481,20 +1493,55 @@ The text for an official release would continue like ...
             <arg value="-j"/>
             <arg value="${junit.reports}"/>
             <arg value="--use"/>
-            <arg value="network,subprocess"/>
+            <arg value="${regrtest.use}"/>
         </exec>
     </target>
 
     <target name="regrtest-windows" if="os.family.windows">
         <mkdir dir="${junit.reports}"/>
         <exec executable="${dist.dir}/bin/jython.exe" failonerror="true">
+            <env key="JAVA_OPTS" value="-Duser.language=en -Duser.region=US"/>
             <arg value="${dist.dir}/Lib/test/regrtest.py"/>
             <!-- Only run the tests that are expected to work on Jython -->
             <arg value="--expected"/>
             <arg value="-j"/>
             <arg value="${junit.reports}"/>
             <arg value="--use"/>
-            <arg value="network,subprocess"/>
+            <arg value="${regrtest.use}"/>
+        </exec>
+    </target>
+
+    <target name="regrtest-local" depends="developer-build, regrtest-built-local"
+        description="run Python tests expected to work on Jython locally (without network dependencies)"/>
+
+    <target name="regrtest-built-local" depends="init, regrtest-unix-local, regrtest-windows-local"
+        description="run Python tests against an existing built dist locally (without network dependencies)"/>
+
+    <target name="regrtest-unix-local" if="os.family.unix">
+        <mkdir dir="${junit.reports}"/>
+        <exec executable="${dist.dir}/bin/jython" failonerror="true">
+            <env key="JAVA_OPTS" value="-Duser.language=en -Duser.region=US"/>
+            <arg value="${dist.dir}/Lib/test/regrtest.py"/>
+            <!-- Only run the tests that are expected to work on Jython -->
+            <arg value="--expected"/>
+            <arg value="-j"/>
+            <arg value="${junit.reports}"/>
+            <arg value="--use"/>
+            <arg value="${regrtest.use.local}"/>
+        </exec>
+    </target>
+
+    <target name="regrtest-windows-local" if="os.family.windows">
+        <mkdir dir="${junit.reports}"/>
+        <exec executable="${dist.dir}/bin/jython.exe" failonerror="true">
+            <env key="JAVA_OPTS" value="-Duser.language=en -Duser.region=US"/>
+            <arg value="${dist.dir}/Lib/test/regrtest.py"/>
+            <!-- Only run the tests that are expected to work on Jython -->
+            <arg value="--expected"/>
+            <arg value="-j"/>
+            <arg value="${junit.reports}"/>
+            <arg value="--use"/>
+            <arg value="${regrtest.use.local}"/>
         </exec>
     </target>
 
@@ -1511,7 +1558,7 @@ The text for an official release would continue like ...
             <arg value="${junit.reports}"/>
             <!-- <arg value="-v"/> -->
             <arg value="--use"/>
-            <arg value="network,subprocess"/>
+            <arg value="${regrtest.use}"/>
             <!-- Only run the tests specified in the named file -->
             <arg value="--fromfile"/>
             <arg value="${basedir}/regr.tests"/>
@@ -1521,12 +1568,13 @@ The text for an official release would continue like ...
     <target name="regrtest-windows-file" if="os.family.windows">
         <mkdir dir="${junit.reports}"/>
         <exec executable="${dist.dir}/bin/jython.exe" failonerror="true">
+            <env key="JAVA_OPTS" value="-Duser.language=en -Duser.region=US"/>
             <arg value="${dist.dir}/Lib/test/regrtest.py"/>
             <arg value="--junit-xml"/>
             <arg value="${junit.reports}"/>
             <!-- <arg value="-v"/> -->
             <arg value="--use"/>
-            <arg value="network,subprocess"/>
+            <arg value="${regrtest.use}"/>
             <!-- Only run the tests specified in the named file -->
             <arg value="--fromfile"/>
             <arg value="${basedir}/regr.tests"/>
@@ -1546,7 +1594,7 @@ The text for an official release would continue like ...
             <!-- Only run the tests that are expected to work on Jython -->
             <arg value="--expected"/>
             <arg value="--use"/>
-            <arg value="network,subprocess"/>
+            <arg value="${regrtest.use}"/>
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
             <arg value="test_socket"/>      <!-- flaky (address already in use) -->
@@ -1564,7 +1612,7 @@ The text for an official release would continue like ...
             <!-- Only run the tests that are expected to work on Jython -->
             <arg value="--expected"/>
             <arg value="--use"/>
-            <arg value="network,subprocess"/>
+            <arg value="${regrtest.use}"/>
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
             <arg value="test_gc"/>          <!-- flaky -->
@@ -1583,7 +1631,67 @@ The text for an official release would continue like ...
             <!-- Only run the tests that are expected to work on Jython -->
             <arg value="--expected"/>
             <arg value="--use"/>
-            <arg value="network,subprocess"/>
+            <arg value="${regrtest.use}"/>
+            <!-- Exclude particular tests troublesome on the build bots -->
+            <arg value="--exclude"/>
+        	<arg value="test_pep277"/>      <!-- UnicodeDecode errors on windows -->
+            <arg value="test_socket"/>      <!-- flaky (address already in use) -->
+            <arg value="test_socket_jy"/>   <!-- flaky (address already in use) -->
+            <arg value="test_ssl_jy"/>      <!-- currently fails due 'No subject alternative names present' -->
+        </exec>
+    </target>
+
+    <target name="regrtest-ci-local"
+            depends="developer-build, regrtest-ubuntu-ci-local, regrtest-mac-ci-local, regrtest-windows-ci-local"
+            description="run Python tests expected to work on Jython for CI locally (without network dependencies)"/>
+
+    <target name="regrtest-ubuntu-ci-local" if="os.family.ubuntu">
+        <mkdir dir="${junit.reports}"/>
+        <exec executable="${dist.dir}/bin/jython" failonerror="true">
+            <env key="JAVA_OPTS" value="-Duser.language=en -Duser.region=US"/>
+            <arg value="${dist.dir}/Lib/test/regrtest.py"/>
+            <arg value="-w"/> <!-- re-run failed tests in verbose mode -->
+            <!-- Only run the tests that are expected to work on Jython -->
+            <arg value="--expected"/>
+            <arg value="--use"/>
+            <arg value="${regrtest.use.local}"/>
+            <!-- Exclude particular tests troublesome on the build bots -->
+            <arg value="--exclude"/>
+            <arg value="test_socket"/>      <!-- flaky (address already in use) -->
+            <arg value="test_socket_jy"/>   <!-- flaky (address already in use) -->
+            <arg value="test_ssl_jy"/>      <!-- currently fails due 'No subject alternative names present' -->
+        </exec>
+    </target>
+
+    <target name="regrtest-mac-ci-local" if="os.family.mac">
+        <mkdir dir="${junit.reports}"/>
+        <exec executable="${dist.dir}/bin/jython" failonerror="true">
+            <env key="JAVA_OPTS" value="-Duser.language=en -Duser.region=US"/>
+            <arg value="${dist.dir}/Lib/test/regrtest.py"/>
+            <arg value="-w"/> <!-- re-run failed tests in verbose mode -->
+            <!-- Only run the tests that are expected to work on Jython -->
+            <arg value="--expected"/>
+            <arg value="--use"/>
+            <arg value="${regrtest.use.local}"/>
+            <!-- Exclude particular tests troublesome on the build bots -->
+            <arg value="--exclude"/>
+            <arg value="test_gc"/>          <!-- flaky -->
+            <arg value="test_socket"/>      <!-- flaky (address already in use) -->
+            <arg value="test_socket_jy"/>   <!-- flaky (address already in use) -->
+            <arg value="test_ssl_jy"/>      <!-- currently fails due 'No subject alternative names present' -->
+        </exec>
+    </target>
+
+    <target name="regrtest-windows-ci-local" if="os.family.windows">
+        <mkdir dir="${junit.reports}"/>
+        <exec executable="${dist.dir}/bin/jython.exe" failonerror="true">
+            <env key="JAVA_OPTS" value="-Duser.language=en -Duser.region=US"/>
+            <arg value="${dist.dir}/Lib/test/regrtest.py"/>
+            <arg value="-w"/> <!-- re-run failed tests in verbose mode -->
+            <!-- Only run the tests that are expected to work on Jython -->
+            <arg value="--expected"/>
+            <arg value="--use"/>
+            <arg value="${regrtest.use.local}"/>
             <!-- Exclude particular tests troublesome on the build bots -->
             <arg value="--exclude"/>
         	<arg value="test_pep277"/>      <!-- UnicodeDecode errors on windows -->

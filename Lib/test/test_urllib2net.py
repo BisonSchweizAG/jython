@@ -15,6 +15,8 @@ def _retry_thrice(func, exc, *args, **kwargs):
         try:
             return func(*args, **kwargs)
         except exc, last_exc:
+            if getattr(last_exc, 'code', None) == 407:
+                raise test_support.ResourceDenied("Proxy authentication required: %s" % last_exc)
             continue
         except:
             raise
@@ -96,17 +98,18 @@ class CloseSocketTest(unittest.TestCase):
         # underlying socket
 
         # delve deep into response to fetch socket._socketobject
-        response = _urlopen_with_retry(test_support.TEST_HTTP_URL)
-        abused_fileobject = response.fp
-        self.assertIs(abused_fileobject.__class__, socket._fileobject)
-        httpresponse = abused_fileobject._sock
-        self.assertIs(httpresponse.__class__, httplib.HTTPResponse)
-        fileobject = httpresponse.fp
-        self.assertIs(fileobject.__class__, socket._fileobject)
+        with test_support.transient_internet(test_support.TEST_HTTP_URL):
+            response = _urlopen_with_retry(test_support.TEST_HTTP_URL)
+            abused_fileobject = response.fp
+            self.assertIs(abused_fileobject.__class__, socket._fileobject)
+            httpresponse = abused_fileobject._sock
+            self.assertIs(httpresponse.__class__, httplib.HTTPResponse)
+            fileobject = httpresponse.fp
+            self.assertIs(fileobject.__class__, socket._fileobject)
 
-        self.assertTrue(not fileobject.closed)
-        response.close()
-        self.assertTrue(fileobject.closed)
+            self.assertTrue(not fileobject.closed)
+            response.close()
+            self.assertTrue(fileobject.closed)
 
 class OtherNetworkTests(unittest.TestCase):
     def setUp(self):
@@ -181,15 +184,17 @@ class OtherNetworkTests(unittest.TestCase):
                     "http://www.pythontest.net/index.html#frag")
 
     def test_fileno(self):
-        req = urllib2.Request(test_support.TEST_HTTP_URL)
-        opener = urllib2.build_opener()
-        res = opener.open(req)
-        try:
-            res.fileno()
-        except AttributeError:
-            self.fail("HTTPResponse object should return a valid fileno")
-        finally:
-            res.close()
+        url = test_support.TEST_HTTP_URL
+        with test_support.transient_internet(url):
+            req = urllib2.Request(url)
+            opener = urllib2.build_opener()
+            res = opener.open(req)
+            try:
+                res.fileno()
+            except AttributeError:
+                self.fail("HTTPResponse object should return a valid fileno")
+            finally:
+                res.close()
 
     def test_custom_headers(self):
         url = test_support.TEST_HTTP_URL

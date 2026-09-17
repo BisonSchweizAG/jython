@@ -22,6 +22,10 @@ def _open_with_retry(func, host, *args, **kwargs):
         try:
             return func(host, *args, **kwargs)
         except IOError, last_exc:
+            if getattr(last_exc, 'args', None) and len(last_exc.args) > 1 and last_exc.args[1] == 407:
+                raise test_support.ResourceDenied("Proxy authentication required: %s" % (last_exc,))
+            if isinstance(last_exc, test_support.ResourceDenied):
+                raise
             continue
         except:
             raise
@@ -62,6 +66,14 @@ class urlopenNetworkTests(unittest.TestCase):
     connections.
 
     """
+
+    TIMEOUT = 10.0
+
+    def setUp(self):
+        socket.setdefaulttimeout(self.TIMEOUT)
+
+    def tearDown(self):
+        socket.setdefaulttimeout(None)
 
     def urlopen(self, *args):
         return _open_with_retry(urllib.urlopen, *args)
@@ -114,11 +126,18 @@ class urlopenNetworkTests(unittest.TestCase):
 
     def test_getcode(self):
         # test getcode() with the fancy opener to get 404 error codes
-        open_url = urllib.FancyURLopener().open(URL + "/XXXinvalidXXX")
+        try:
+            open_url = urllib.FancyURLopener().open(URL + "/XXXinvalidXXX")
+        except IOError, e:
+            if getattr(e, 'args', None) and len(e.args) > 1 and e.args[1] == 407:
+                raise test_support.ResourceDenied("Proxy authentication required: %s" % (e,))
+            raise
         try:
             code = open_url.getcode()
         finally:
             open_url.close()
+        if code == 407 and _external_http_proxy_configured():
+            raise test_support.ResourceDenied("Proxy authentication required for invalid URL request")
         self.assertEqual(code, 404)
 
     @unittest.skipIf(test_support.is_jython, "Sockets cannot be used as file descriptors")
@@ -164,6 +183,14 @@ class urlopenNetworkTests(unittest.TestCase):
 class urlretrieveNetworkTests(unittest.TestCase):
     """Tests urllib.urlretrieve using the network."""
 
+    TIMEOUT = 10.0
+
+    def setUp(self):
+        socket.setdefaulttimeout(self.TIMEOUT)
+
+    def tearDown(self):
+        socket.setdefaulttimeout(None)
+
     def urlretrieve(self, *args):
         return _open_with_retry(urllib.urlretrieve, *args)
 
@@ -206,6 +233,10 @@ class urlretrieveNetworkTests(unittest.TestCase):
         file_location, fileheaders = self.urlretrieve(URL)
         os.unlink(file_location)
         datevalue = fileheaders.getheader('Date')
+        if datevalue is None:
+            if _external_http_proxy_configured():
+                raise test_support.ResourceDenied("Date header missing from proxy response")
+            self.fail('Date header missing from response headers')
         dateformat = '%a, %d %b %Y %H:%M:%S GMT'
         try:
             time.strptime(datevalue, dateformat)

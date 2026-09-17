@@ -806,6 +806,8 @@ class FancyURLopener(URLopener):
 
     def prompt_user_passwd(self, host, realm):
         """Override this in a GUI environment!"""
+        if sys.stdin is None or not getattr(sys.stdin, 'isatty', lambda: False)():
+            return None, None
         import getpass
         try:
             user = raw_input("Enter username for %s at %s: " % (realm,
@@ -813,7 +815,7 @@ class FancyURLopener(URLopener):
             passwd = getpass.getpass("Enter password for %s in %s at %s: " %
                 (user, realm, host))
             return user, passwd
-        except KeyboardInterrupt:
+        except (KeyboardInterrupt, EOFError):
             print
             return None, None
 
