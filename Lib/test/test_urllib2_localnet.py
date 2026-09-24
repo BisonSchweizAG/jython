@@ -236,7 +236,7 @@ class BaseTestCase(unittest.TestCase):
 
 
 class ProxyAuthTests(BaseTestCase):
-    URL = "http://localhost"
+    URL = "http://proxy.test.invalid"
 
     USER = "tester"
     PASSWD = "test123"
@@ -244,6 +244,9 @@ class ProxyAuthTests(BaseTestCase):
 
     def setUp(self):
         super(ProxyAuthTests, self).setUp()
+        self.env = test_support.EnvironmentVarGuard()
+        for var in ('http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY', 'no_proxy', 'NO_PROXY'):
+            self.env.unset(var)
         self.digest_auth_handler = DigestAuthHandler()
         self.digest_auth_handler.set_users({self.USER: self.PASSWD})
         self.digest_auth_handler.set_realm(self.REALM)
@@ -259,6 +262,7 @@ class ProxyAuthTests(BaseTestCase):
         self.opener = urllib2.build_opener(handler, self.proxy_digest_handler)
 
     def tearDown(self):
+        self.env.__exit__(None, None, None)
         self.server.stop()
         super(ProxyAuthTests, self).tearDown()
 
