@@ -67,7 +67,7 @@ To execute - for example - `test_string.py`, the command line is as follows:
 - on Windows: `dist\bin\jython.exe`
 
 
-# Artifactory publishing of a SNAPSHOT (Note: SNAPSHOT publishing does not work currently)
+# Artifactory publishing of a SNAPSHOT (Note: maven SNAPSHOT publishing currently not perfect)
 - make sure that `-Xlint:unchecked` only spits out warnings in `PythonParser.java`
 - `./gradlew clean publish`
 - copy `/build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x.pom` to `/build2/libs/jython-2.7.x-SNAPSHOT.pom`
