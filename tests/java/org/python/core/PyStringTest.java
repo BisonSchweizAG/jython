@@ -1,14 +1,14 @@
 package org.python.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /** Odd tests of the Python {@code str} implementation that are best done from Java. */
-public class PyStringTest {
+class PyStringTest {
 
     private static final String RIGHT_SINGLE_QUOTATION_MARK = "\u2019"; // needs more than 8 bits
     private static final String JEANNE_DARC = "Jeanne d" + RIGHT_SINGLE_QUOTATION_MARK + "Arc";
@@ -20,14 +20,14 @@ public class PyStringTest {
      * {@code IllegalArgumentException} that quotes a safely-escaped version of the string.
      */
     @Test
-    public void preventNonBytePyString() {
+    void preventNonBytePyString() {
         try {
             new PyString(JEANNE_DARC);
             fail("Expected an IllegalArgumentException which was not thrown");
         } catch (IllegalArgumentException iae) {
             String m = iae.getMessage();
-            assertTrue("Expected right single quotation mark not to fit into 8 bits of a PyString",
-                            m.contains("Jeanne d\\u2019Arc"));
+            assertTrue(m.contains("Jeanne d\\u2019Arc"),
+                            "Expected right single quotation mark not to fit into 8 bits of a PyString");
         }
     }
 

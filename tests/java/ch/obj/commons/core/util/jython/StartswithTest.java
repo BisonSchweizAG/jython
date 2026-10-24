@@ -1,14 +1,14 @@
 package ch.obj.commons.core.util.jython;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.python.core.PyBoolean;
 import org.python.util.PythonInterpreter;
 
-public class StartswithTest {
+class StartswithTest {
 
     // variable name
     private static final String RESULT = "result";
@@ -23,7 +23,7 @@ public class StartswithTest {
     }
 
     @Test
-    public void testUmlautStartswithUmlaut() {
+    void testUmlautStartswithUmlaut() {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             interpreter.exec(umlautStartswithUmlaut());
             assertResultBoolean(true, interpreter);
@@ -40,7 +40,7 @@ public class StartswithTest {
     }
 
     @Test
-    public void testMixedUnicodeStartswithUmlaut() {
+    void testMixedUnicodeStartswithUmlaut() {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             interpreter.exec(mixedUnicodeStartswithUmlaut());
             assertResultBoolean(true, interpreter);
@@ -57,7 +57,7 @@ public class StartswithTest {
     }
 
     @Test
-    public void testUnicodeStartswithUnicode() {
+    void testUnicodeStartswithUnicode() {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             interpreter.exec(unicodeStartswithUnicode());
             assertResultBoolean(true, interpreter);
@@ -74,7 +74,7 @@ public class StartswithTest {
     }
 
     @Test
-    public void testUmlautStartswithUnicode() {
+    void testUmlautStartswithUnicode() {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             interpreter.exec(umlautStartswithUnicode());
             assertResultBoolean(false, interpreter);
@@ -91,7 +91,7 @@ public class StartswithTest {
     }
 
     @Test
-    public void testUnicodeStartswithUmlaut() {
+    void testUnicodeStartswithUmlaut() {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             interpreter.exec(unicodeStartswithUmlaut());
             assertResultBoolean(false, interpreter);
@@ -103,9 +103,9 @@ public class StartswithTest {
         if (resultObject instanceof PyBoolean) {
             PyBoolean result = (PyBoolean) resultObject;
             if (expected) {
-                assertTrue("result:", result.getBooleanValue());
+                assertTrue(result.getBooleanValue(), "result:");
             } else {
-                assertFalse("result:", result.getBooleanValue());
+                assertFalse(result.getBooleanValue(), "result:");
             }
         } else {
             fail("expected result to be Boolean but was " + resultObject.getClass().getName());

@@ -1,14 +1,15 @@
 package ch.obj.commons.core.util.jython;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import org.python.core.PyBoolean;
 import org.python.util.PythonInterpreter;
 
-public class EndswithTest {
+class EndswithTest {
 
     // variable name
     private static final String RESULT = "result";
@@ -23,7 +24,7 @@ public class EndswithTest {
     }
 
     @Test
-    public void testUmlautEndswithUmlaut() {
+    void testUmlautEndswithUmlaut() {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             interpreter.exec(umlautEndswithUmlaut());
             assertResultBoolean(true, interpreter);
@@ -40,7 +41,7 @@ public class EndswithTest {
     }
 
     @Test
-    public void testUnicodeEndswithUnicode() {
+    void testUnicodeEndswithUnicode() {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             interpreter.exec(unicodeEndswithUnicode());
             assertResultBoolean(true, interpreter);
@@ -57,7 +58,7 @@ public class EndswithTest {
     }
 
     @Test
-    public void testUmlautEndswithUnicode() {
+    void testUmlautEndswithUnicode() {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             interpreter.exec(umlautEndswithUnicode());
             assertResultBoolean(false, interpreter);
@@ -74,7 +75,7 @@ public class EndswithTest {
     }
 
     @Test
-    public void testUnicodeEndswithUmlaut() {
+    void testUnicodeEndswithUmlaut() {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             interpreter.exec(unicodeEndswithUmlaut());
             assertResultBoolean(false, interpreter);
@@ -86,9 +87,9 @@ public class EndswithTest {
         if (resultObject instanceof PyBoolean) {
             PyBoolean result = (PyBoolean) resultObject;
             if (expected) {
-                assertTrue("result:", result.getBooleanValue());
+                assertTrue(result.getBooleanValue(), "result:");
             } else {
-                assertFalse("result:", result.getBooleanValue());
+                assertFalse(result.getBooleanValue(), "result:");
             }
         } else {
             fail("expected result to be Boolean but was " + resultObject.getClass().getName());
