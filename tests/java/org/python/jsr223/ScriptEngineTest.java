@@ -319,7 +319,7 @@ public class ScriptEngineTest extends TestCase {
         String repr = (String)pythonEngine.eval("repr(locals())");
         // locals() contains builtins as of 2.7.0, so we need to selectively test
         Assert.assertTrue(repr.contains("'a': 4"));
-        Assert.assertTrue(repr.contains("'b': u'hi'"));
+        Assert.assertTrue(repr.contains("'b': u'hi'") || repr.contains("'b': 'hi'"));
     }
 
     public void testScope_iter() throws ScriptException {
