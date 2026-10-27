@@ -118,6 +118,12 @@ public final class PyScriptEngineScope extends PyObject {
         return result;
     }
 
+    @ExposedMethod
+    @Override
+    public PyString __repr__() {
+        return new PyString(toString());
+    }
+
     @Override
     public String toString() {
         return getDictionary().toString();

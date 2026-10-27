@@ -1014,9 +1014,13 @@ def transient_internet(resource_name, timeout=30.0, errnos=()):
 
     def filter_error(err):
         n = getattr(err, 'errno', None)
+        code = getattr(err, 'code', None)
+        args = getattr(err, 'args', None)
         if (isinstance(err, socket.timeout) or
             (isinstance(err, socket.gaierror) and n in gai_errnos) or
-            n in captured_errnos):
+            n in captured_errnos or
+            code == 407 or
+            (isinstance(args, (tuple, list)) and len(args) > 1 and args[1] == 407)):
             if not verbose:
                 sys.stderr.write(denied.args[0] + "\n")
             raise denied

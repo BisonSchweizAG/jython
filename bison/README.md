@@ -40,7 +40,7 @@ Changes to the corresponding Ant build have to be applied accordingly.
 - local checkout of the pull request branch
 - run gradle build locally with `./gradlew build`
 - download the new lib versions (e.g. from mvnrepository.com) and copy locally into `extlibs` folder
-- search and replace lib version references (e.g. build.xml, extlibs.xml, .classpath) with new versions
+- search and replace lib version references (build.xml, extlibs.xml, .classpath, tests/modjy/build.xml, gradle/wrapper/gradle-wrapper.properties, etc.) with new versions
 - delete old libs from `extlibs`
 - check (update) ant version in .github/workflows/ant-regrtest.yml
 - run ant build:
@@ -82,13 +82,11 @@ To execute - for example - `test_string.py`, the command line is as follows:
 ## `2.7.bison` Tip Results
 See `bison/regrtest.log`
 
-# Artifactory publishing of a SNAPSHOT (Note: maven SNAPSHOT publishing currently not perfect)
+# Artifactory publishing of a SNAPSHOT
 - make sure that `-Xlint:unchecked` only spits out warnings in `PythonParser.java`
 - `./gradlew clean publish`
-- copy `/build2/stagingRepo/org/python/jython/2.7.x/jython-2.7.x.pom` to `/build2/libs/jython-2.7.x-SNAPSHOT.pom`
-- rename `/build2/libs/jython-2.7.x.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT.jar`
-- rename `/build2/libs/jython-2.7.x-sources.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT-sources.jar`
-- rename `/build2/libs/jython-2.7.x-javadoc.jar` to `/build2/libs/jython-2.7.x-SNAPSHOT-javadoc.jar`
+- rename `/build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `/build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-SNAPSHOT.pom`
+- copy `/build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-SNAPSHOT.pom` to `/build2/libs/jython-2.7.x-SNAPSHOT.pom`
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT.pom`
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT.jar` (adjust the `Group ID` to `org.python`)
 - deploy `/build2/libs/jython-2.7.x-SNAPSHOT-sources.jar` (adjust the `Group ID` to `org.python`, set `Classifier` to `sources`)
