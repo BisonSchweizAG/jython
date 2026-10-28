@@ -49,7 +49,7 @@ public class VersionMatchingAntTaskTest {
     public void testParseAntArtefacts() throws IOException {
         Set<String> antArtefacts = task.parseAntArtefacts();
         assertNotNull(antArtefacts);
-        assertEquals(32, antArtefacts.size());
+        assertEquals(33, antArtefacts.size());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class VersionMatchingAntTaskTest {
         assertEquals("commons-compress-78.1.jar", calculateGradleArtefact("rev_commons_compress", "78.1"));
         assertEquals("commons-io-1.2.3.4.jar", calculateGradleArtefact("rev_commons_io", "1.2.3.4"));
         assertEquals("guava-33.3.3-jre.jar", calculateGradleArtefact("rev_guava", "33.3.3-jre"));
-        assertEquals("icu4j-78.7.jar", calculateGradleArtefact("rev_icu4j", "78.7"));
+        assertEquals("icu4j-79.1.jar", calculateGradleArtefact("rev_icu4j", "79.1"));
         assertEquals("jdbc-15.3.2.1.jar", calculateGradleArtefact("rev_informix", "15.3.2.1"));
         assertEquals("jakarta.servlet-api-6.1.0.jar", calculateGradleArtefact("rev_jakarta_servlet_api", "6.1.0"));
         assertEquals("java-sizeof-0.1.2.jar", calculateGradleArtefact("rev_java_sizeof", "0.1.2"));
@@ -106,9 +106,9 @@ public class VersionMatchingAntTaskTest {
         checkAntArtefact("junit-4.jar", antArtefacts);
         checkAntArtefact("asm-9.8.7.jar", antArtefacts);
         try {
-            checkAntArtefact("icu4j-78.1.jar", antArtefacts);
+            checkAntArtefact("icu4j-79.1.jar", antArtefacts);
         } catch (BuildException be) {
-            assertEquals("Gradle artefact 'icu4j-78.1.jar' is missing from build.xml. Please synchronize extlibs and build.xml with libs.versions.toml.",
+            assertEquals("Gradle artefact 'icu4j-79.1.jar' is missing from build.xml. Please synchronize extlibs and build.xml with libs.versions.toml.",
                             be.getMessage());
         }
     }

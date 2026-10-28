@@ -19,6 +19,7 @@
 *.iml
 *.iws
 .idea/
+!/b/.idea/libraries/extlibs.xml
 
 # Eclipse files
 .externalToolBuilders/*

@@ -304,6 +304,8 @@ class NetworkTestCase(unittest.TestCase):
             parser = robotparser.RobotFileParser(
                 "http://www.pythontest.net/robots.txt")
             parser.read()
+            if getattr(parser, 'errcode', None) == 407:
+                raise support.ResourceDenied("Proxy authentication required")
             self.assertTrue(
                 parser.can_fetch("*", "http://www.pythontest.net/"))
             self.assertFalse(
