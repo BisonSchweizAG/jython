@@ -3,10 +3,9 @@
 - import existing eclipse project
 - switch Text File Encoding to UTF-8
 - run the `antlr-gen` (Ant) launch configuration
-- [need to be adjusted after installing a new eclipse version:] 
-     Java -> Compiler -> Errors/Warnings -> Incomplete 'switch' cases on enum: Warning (instead of Error)
-- [overridden by Oomph settings in a bison eclipse:] Java -> Code Style -> Formatter: import `bison/formatting/Jython-like.xml`
-- [overridden by Oomph settings in a bison eclipse:] Java -> Editor -> Save Actions: format edited lines
+- Java -> Compiler -> Errors/Warnings -> Incomplete 'switch' cases on enum: Warning (instead of Error)
+- (overridden by Oomph settings in a bison eclipse): Java -> Code Style -> Formatter: import `bison/formatting/Jython-like.xml`
+- (overridden by Oomph settings in a bison eclipse): Java -> Editor -> Save Actions: format edited lines
 
 
 # Hint how to run unit tests from within Eclipse
@@ -20,7 +19,6 @@
 - build with JDK 21 - source and target compatibility are `JavaVersion.VERSION_21`
 - artifact name is `jython` (instead of `jython.slim`)
 - add an automatic module name `org.python.jython.bison`
-- newer gradle version
 - newer external libraries
 - remove jline import from Py.java (to allow jline being excluded from ear)
 - replace `AccessControlException`
@@ -42,12 +40,9 @@ Changes to the corresponding Ant build have to be applied accordingly.
 - download the new lib versions (e.g. from mvnrepository.com) and copy locally into `extlibs` folder
 - search and replace lib version references (build.xml, extlibs.xml, .classpath, tests/modjy/build.xml, gradle/wrapper/gradle-wrapper.properties, etc.) with new versions
 - delete old libs from `extlibs`
-- check (update) ant version in .github/workflows/ant-regrtest.yml
-- run ant build:
-```
-	ant clean
-	ant -noinput -buildfile build.xml regrtest-ci
-```
+- check (update) ant version in `.github/workflows/ant-regrtest.yml`
+- `ant clean`
+- `ant -noinput -buildfile build.xml regrtest-ci`
 
 **When manually creating a pull request:**
 
@@ -62,25 +57,15 @@ or:
 - `ant clean`
 - `ant`
 - `./dist/bin/jython -m test.regrtest -e`
+- on Windows: `dist\bin\jython.exe`
 
-The former being executed on the github pipeline, but - with `network` resource enabled - giving SSL handshake errors on the command line (`test_httplib`, `test_robotparser`, `test_ssl_jy`, `test_urllibnet`).
-
-The latter expected to give no errors on the command line.
+The former being executed on the github pipeline, configured with more resources enabled `network, subprocess`.
 
 ## Running a single regrtest
 To execute - for example - `test_string.py`, the command line is as follows:
 - `./dist/bin/jython -m test.test_string`
+- on Windows: `dist\bin\jython.exe`
 
-## `master` on JDK 21 Results
-```
-383 tests OK.
-6 tests skipped:
-    test_codecmaps_hk test_curses test_smtpnet test_subprocess
-    test_urllib2net test_urllibnet
-```
-
-## `2.7.bison` Tip Results
-See `bison/regrtest.log`
 
 # Artifactory publishing of a SNAPSHOT
 - make sure that `-Xlint:unchecked` only spits out warnings in `PythonParser.java`
