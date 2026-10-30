@@ -29,6 +29,7 @@
 - a bit different github workflows
 - the ant build fails if build.xml has different versions than build.gradle
 - use the latest gradle wrapper
+- use a recent version of jline
 
 # Pull Requests
 Renovations triggered by dependabot result in a new dependabot branch with pull request.
@@ -66,6 +67,15 @@ To execute - for example - `test_string.py`, the command line is as follows:
 - `./dist/bin/jython -m test.test_string`
 - on Windows: `dist\bin\jython.exe`
 
+# Sanity Check
+- `ant clean`
+- `ant full-build`
+- `cd dist`
+- `java -jar jython-standalone.jar` und das Konsolenhandling überprüfen
+- `java -jar jython-installer.jar`
+  - Installer durchdrücken
+  - Im neu erstellten Verzeichnis ins `bin` Unterverzeichnis wechseln
+  - `./jython` (oder `jython.exe`) aufrufen, und das Konsolenhandling überprüfen
 
 # Artifactory publishing of a SNAPSHOT
 - make sure that `-Xlint:unchecked` only spits out warnings in `PythonParser.java`
