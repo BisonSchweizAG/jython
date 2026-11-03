@@ -71,11 +71,13 @@ To execute - for example - `test_string.py`, the command line is as follows:
 - `ant clean`
 - `ant full-build`
 - `cd dist`
-- `java -jar jython-standalone.jar` und das Konsolenhandling überprüfen
+- `java -jar jython-standalone.jar`
+  - check the console behaviour
 - `java -jar jython-installer.jar`
-  - Installer durchdrücken
-  - Im neu erstellten Verzeichnis ins `bin` Unterverzeichnis wechseln
-  - `./jython` (oder `jython.exe`) aufrufen, und das Konsolenhandling überprüfen
+  - finish the installer wizard
+  - `cd` to the `bin` directory of the newly created folder
+  - `./jython` (or `jython.exe`)  
+    - check the console behaviour
 
 # Artifactory publishing of a SNAPSHOT
 - make sure that `-Xlint:unchecked` only spits out warnings in `PythonParser.java`
