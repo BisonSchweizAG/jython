@@ -80,7 +80,7 @@ public class VersionMatchingAntTaskTest {
         assertEquals("bcpkix-jdk18on-8.7.6.jar", calculateGradleArtefact("rev_bouncycastle", "8.7.6"));
         assertEquals("commons-compress-78.1.jar", calculateGradleArtefact("rev_commons_compress", "78.1"));
         assertEquals("commons-io-1.2.3.4.jar", calculateGradleArtefact("rev_commons_io", "1.2.3.4"));
-        assertEquals("guava-33.3.3-jre.jar", calculateGradleArtefact("rev_guava", "33.3.3-jre"));
+        assertEquals("guava-33.8.0-jre.jar", calculateGradleArtefact("rev_guava", "33.8.0-jre"));
         assertEquals("icu4j-79.1.jar", calculateGradleArtefact("rev_icu4j", "79.1"));
         assertEquals("jdbc-15.3.2.1.jar", calculateGradleArtefact("rev_informix", "15.3.2.1"));
         assertEquals("jakarta.servlet-api-6.1.0.jar", calculateGradleArtefact("rev_jakarta_servlet_api", "6.1.0"));
