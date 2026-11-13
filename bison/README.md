@@ -80,7 +80,7 @@ To execute - for example - `test_string.py`, the command line is as follows:
     - check the console behaviour
 
 # Artifactory publishing of a SNAPSHOT
-- make sure that `-Xlint:unchecked` only spits out warnings in `PythonParser.java`
+- make sure that `-Xlint:unchecked` only spits out warnings in `PythonParser.java` (-> build.gradle)
 - `./gradlew clean publish`
 - rename `/build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-yyymmdd.hhmmss-1.pom` to `/build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-SNAPSHOT.pom`
 - copy `/build2/stagingRepo/org/python/jython/2.7.x-SNAPSHOT/jython-2.7.x-SNAPSHOT.pom` to `/build2/libs/jython-2.7.x-SNAPSHOT.pom`
