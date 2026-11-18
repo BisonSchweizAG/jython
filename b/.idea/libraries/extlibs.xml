@@ -6,8 +6,8 @@
       <root url="jar://$PROJECT_DIR$/extlibs/asm-9.11.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/extlibs/asm-commons-9.11.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/extlibs/asm-util-9.11.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/extlibs/bcpkix-jdk18on-1.86.jar!/" />
-      <root url="jar://$PROJECT_DIR$/extlibs/bcprov-jdk18on-1.86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/extlibs/bcpkix-jdk18on-1.87.jar!/" />
+      <root url="jar://$PROJECT_DIR$/extlibs/bcprov-jdk18on-1.87.jar!/" />
       <root url="jar://$PROJECT_DIR$/extlibs/commons-compress-1.28.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/extlibs/commons-io-2.22.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/extlibs/guava-33.8.0-jre.jar!/" />
@@ -36,7 +36,7 @@
       <root url="jar://$PROJECT_DIR$/extlibs/jffi-x86_64-OpenBSD.jar!/" />
       <root url="jar://$PROJECT_DIR$/extlibs/jffi-x86_64-SunOS.jar!/" />
       <root url="jar://$PROJECT_DIR$/extlibs/jffi-x86_64-Windows.jar!/" />
-      <root url="jar://$PROJECT_DIR$/extlibs/jline-4.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/extlibs/jline-4.7.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/extlibs/jnr-constants-0.11.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/extlibs/jnr-ffi-2.3.7.jar!/" />
       <root url="jar://$PROJECT_DIR$/extlibs/jnr-netdb-1.2.0.jar!/" />
