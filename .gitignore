@@ -21,6 +21,9 @@
 .idea/
 !/b/.idea/libraries/extlibs.xml
 
+# AI artifacts
+.junie/
+
 # Eclipse files
 .externalToolBuilders/*
 .pydevproject
