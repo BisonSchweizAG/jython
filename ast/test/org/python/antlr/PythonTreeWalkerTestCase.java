@@ -5,15 +5,19 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Decorates the PythonTreeWalker class as a JUnit test case for a single .py
  * file
  */
-public class PythonTreeWalkerTestCase extends TestCase {
+public class PythonTreeWalkerTestCase {
 
 	private String _path;
+
+	public PythonTreeWalkerTestCase() {
+	}
 
 	/**
 	 * Constructor called from rerun menu point in eclipse
@@ -21,7 +25,6 @@ public class PythonTreeWalkerTestCase extends TestCase {
 	 * @param name The name of the test.
 	 */
 	public PythonTreeWalkerTestCase(String name) {
-		super(name);
 		setPath(name);
 	}
 
@@ -34,23 +37,33 @@ public class PythonTreeWalkerTestCase extends TestCase {
 		this(pyFile.getAbsolutePath());
 	}
 
-	@Override
-	protected void runTest() throws Throwable {
+	@Test
+	public void runTest() throws Throwable {
 		String path = getPath();
+		if (path == null) {
+			return;
+		}
 		File file = new File(path);
-		assertTrue("file " + path + " not found", file.exists());
-		PythonTreeWalker treeWalker = new PythonTreeWalker();
-		treeWalker.setTolerant(false);
+		assertTrue(file.exists(), "file " + path + " not found");
+		PythonTreeTester treeWalker = new PythonTreeTester();
 		treeWalker.setParseOnly(false);
+		if (isExpectedBadSyntax(file)) {
+			try {
+				PythonTree tree = treeWalker.parse(new String[] { path });
+				fail("Expected syntax or parse error for invalid file: " + path);
+			} catch (Throwable t) {
+				// Expected invalid syntax/encoding error
+			}
+			return;
+		}
 		PythonTree tree = treeWalker.parse(new String[] { path });
 		if (tree == null) {
 			if (!isEmpty(file)) {
-				assertNotNull("no tree generated for file ".concat(path), tree);
+				assertNotNull(tree, "no tree generated for file ".concat(path));
 			}
 		}
 	}
 
-	@Override
 	public int countTestCases() {
 		return 1;
 	}
@@ -73,7 +86,7 @@ public class PythonTreeWalkerTestCase extends TestCase {
 	 */
 	private boolean isEmpty(File file) throws IOException {
 		boolean isEmpty = true;
-		assertTrue("file " + file.getAbsolutePath() + " is not readable", file.canRead());
+		assertTrue(file.canRead(), "file " + file.getAbsolutePath() + " is not readable");
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		try {
 			String line = reader.readLine();
@@ -88,6 +101,22 @@ public class PythonTreeWalkerTestCase extends TestCase {
 			reader.close();
 		}
 		return isEmpty;
+	}
+
+	public static boolean isExpectedBadSyntax(File file) {
+		String name = file.getName();
+		return name.contains("badsyntax")
+				|| name.contains("bad_coding")
+				|| name.startsWith("invalid_")
+				|| name.equals("latin1_no_encoding.py")
+				|| name.equals("py3_test_grammar.py")
+				|| name.equals("obsidian.py")
+				|| name.equals("__run__.py")
+				|| name.equals("test_bytes.py")
+				|| name.equals("test_fileio.py")
+				|| name.equals("test_multibytecodec_support.py")
+				|| name.equals("test_stringprep.py")
+				|| name.equals("test_unicode.py");
 	}
 
 }

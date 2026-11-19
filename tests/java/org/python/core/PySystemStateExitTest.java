@@ -1,12 +1,16 @@
 package org.python.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import org.python.util.PythonInterpreter;
 
-import junit.framework.TestCase;
 
-public class PySystemStateExitTest extends TestCase {
+class PySystemStateExitTest {
 
-    public void testNoExitPossible() {
+    @Test
+    void testNoExitPossible() {
         PySystemState.initialize();
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             interpreter.exec(callSysExit());

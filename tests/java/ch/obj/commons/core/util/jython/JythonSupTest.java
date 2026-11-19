@@ -1,54 +1,61 @@
 package ch.obj.commons.core.util.jython;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.PrintStream;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
-import junit.framework.TestCase;
 
-public class JythonSupTest extends TestCase {
-
+class JythonSupTest {
   private PrintStream _originalOut;
   private CollectingLineOutputStream _out;
 
-  @Override
-  protected void setUp() throws Exception {
+  @BeforeEach
+  void setUp() throws Exception {
     _originalOut = System.out;
     _out = new CollectingLineOutputStream();
     System.setOut(new PrintStream(_out));
   }
 
-  @Override
-  protected void tearDown() throws Exception {
+  @AfterEach
+  void tearDown() throws Exception {
     System.setOut(_originalOut);
   }
 
   /**
    * Test calling the methods of the java super class
    */
-  public void testSuperMethods() {
+  @Test
+  void testSuperMethods() {
     assertJythonCall(getSub(), getSubOutput());
   }
 
   /**
    * Test overwriting the non-final methods of the super class
    */
-  public void testOverwriteNonFinalMethods() {
+  @Test
+  void testOverwriteNonFinalMethods() {
     assertJythonCall(getSubOverwrite(), getSubOverwriteOutput());
   }
 
   /**
    * Tests calling overwritten and overloaded methods of the superclass
    */
-  public void testOverwriteOverloadMethods() {
+  @Test
+  void testOverwriteOverloadMethods() {
     assertJythonCall(getSubOverwriteOverload(), getSubOverwriteOverloadOutput());
   }
 
   /**
    * Test calling overwritten and overloaded methods of the superclass (high end version)
    */
-  public void testAll() {
+  @Test
+  void testAll() {
     assertJythonCall(getSubAll(), getSubAllOutput());
   }
 
