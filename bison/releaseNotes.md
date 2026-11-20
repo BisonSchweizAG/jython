@@ -25,7 +25,7 @@
 | bouncycastle     | 1.82            | 1.87           |
 | commons-compress | 1.27.1          | 1.28.0         |
 | commons-io       | 2.20.0          | 2.22.0         |
-| gradle           | 9.2.0           | 9.9.1          |
+| gradle           | 8.14.3          | 9.9.1          |
 | guava            | 33.5.0-jre      | 33.8.0-jre     |
 | icu4j            | 77.1            | 79.1           |
 | informix jdbc    | 15.0.0.2        | 15.0.1.4       |
