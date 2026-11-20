@@ -1,4 +1,6 @@
-# Changes (in no particular order)
+# Release 2.7.19
+
+## Changes (in no particular order)
 
 - Enable more ant targets
 - Enable snapshot publication
@@ -16,7 +18,7 @@
 - Include the installer in the gradle build (without publishing)
 
 
-# Dependency Updates
+## Dependency Updates
 
 | Artifact         | Initial Version | Actual Version |
 | ---------------- | --------------  | -------------- |
